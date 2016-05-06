@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jymf.dao.UserRecordMapper">
+    <resultMap type="org.jymf.entity.UserRecord" id="BaseResultMap">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="userid" property="userid" jdbcType="VARCHAR"/>
+        <result column="companyid" property="companyid" jdbcType="BIGINT"/>
+        <result column="prdid" property="prdid" jdbcType="BIGINT"/>
+        <result column="prdimgurl" property="prdimgurl" jdbcType="VARCHAR"/>
+        <result column="prdname" property="prdname" jdbcType="VARCHAR"/>
+        <result column="labelid" property="labelid" jdbcType="VARCHAR"/>
+        <result column="firsttime" property="firsttime" jdbcType="TIMESTAMP"/>
+        <result column="prdshowurl" property="prdshowurl" jdbcType="VARCHAR"/>
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
+        <result column="state" property="state" jdbcType="TINYINT"/>
+        <result column="playdetail" property="playdetail" jdbcType="VARCHAR"/>
+    </resultMap>
+    <update id="updateStatusByLabelId" parameterType="HashMap">
+        UPDATE TBL_USER_RECORD
+        SET STATE = #{status}
+        WHERE labelid = #{labelid,jdbcType = VARCHAR}
+    </update>
+    <select id="getStatusByLabelId" parameterType="String" resultType="int">
+        SELECT STATE FROM TBL_USER_RECORD
+        WHERE labelid = #{labelid,jdbcType = VARCHAR}
+    </select>
+    <insert id="insertUserRecord" parameterType="UserRecord">
+        INSERT INTO TBL_USER_RECORD
+        (userid,playid,companyid,prdid,prdimgurl,prdname,labelid,firsttime,prdshowurl,state,playdetail) VALUES
+        (#{userid},#{playid},#{companyid},#{prdid},#{prdimgurl},#{prdname},#{labelid},#{firsttime},#{prdshowurl},#{state},#{playdetail})
+    </insert>
+
+    
+</mapper>

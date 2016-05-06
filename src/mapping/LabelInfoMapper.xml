@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jymf.dao.LabelInfoMapper">
+	<resultMap type="org.jymf.entity.LabelInfo" id="BaseResultMap">
+		<result column="LABEL_ID" property="labelId" jdbcType="BIGINT" />
+		<result column="PRODUCT_ID" property="productId" jdbcType="BIGINT" />
+		<result column="ISPACKAGE" property="isPackage" jdbcType="TINYINT" />
+		<result column="ISPRODUCT" property="isProduct" jdbcType="TINYINT" />
+		<result column="PACKAGE_ID" property="packageId" jdbcType="TINYINT" />
+		<result column="SALES_AREA" property="salesArea" jdbcType="INTEGER" />
+		<result column="PRODUCE_DATE" property="produceDate" jdbcType="TIMESTAMP" />
+		<result column="BATCH_NUMBER" property="batchNumber" jdbcType="BIGINT" />
+		<result column="ORIGIN_ADDR" property="originAddr" jdbcType="VARCHAR" />
+		<result column="QUERY_COUNT" property="queryCount" jdbcType="INTEGER" />
+		<result column="CONS_COUNT" property="consCount" jdbcType="INTEGER" />
+		<result column="QUERY_TIME_FIRST" property="queryTimeFirst"
+			jdbcType="TIMESTAMP" />
+		<result column="CONS_TIME_FIRST" property="consTimeFirst"
+			jdbcType="TIMESTAMP" />
+		<result column="CONS_ADDR_FIRST" property="consAddrFirst"
+			jdbcType="INTEGER" />
+		<result column="TIMESTAMP" property="timestamp" jdbcType="TIMESTAMP" />
+		<result column="PACKSTAMP" property="packstamp" jdbcType="TIMESTAMP" />
+		<result column="STATUS" property="status" jdbcType="TINYINT" />
+		<result column="TERMINALTYPE" property="terminaltype" jdbcType="INTEGER" />
+		<result column="GOOD_ID" property="goodId" jdbcType="BIGINT" />
+		<result column="CARNO" property="carNo" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="findBylabelId" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+		SELECT * FROM `TBL_LABEL_INFO_{COMPANY_ID}` WHERE LABELID =
+		#{LABELId,jdbcType=BIGINT}
+	</select>
+	<select id="selPrdConsNum" resultType="java.math.BigDecimal" parameterType="java.util.HashMap">
+		SELECT COUNT(t3.LABEL_ID) num 
+		from (
+		SELECT t1.PRODUCT_ID pid, t1.SALES_AREA sa, SUBSTRING(${labelId}, 7, 1) type 
+		from tbl_label_info_${companyId} t1
+		WHERE LABEL_ID = ${labelId} ) t2, tbl_label_info_${companyId} t3
+		WHERE t2.pid = t3.PRODUCT_ID 
+		and t2.sa = t3.SALES_AREA or t3.SALES_AREA is NULL
+		and t3.CONS_COUNT is not NULL
+		and (7 >= t2.type or 8 = t2.type or 9 = t2.type)
+	</select>
+	
+	<select id="getConsNum" resultType="Integer" parameterType="HashMap">
+		SELECT COUNT(*) FROM tbl_label_info_#{companyId} WHERE cons_time_first IS NOT NULL;
+	</select>
+</mapper>
