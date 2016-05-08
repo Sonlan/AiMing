@@ -1,4 +1,4 @@
-package org.jymf.utils;
+package org.aiming.utils;
 
 import java.security.MessageDigest;
 public class MD5Util {

@@ -1,4 +1,4 @@
-package org.jymf.entity;
+package org.aiming.entity;
 
 import java.math.BigDecimal;
 

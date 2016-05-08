@@ -1,6 +1,6 @@
-package org.jymf.dao;
+package org.aiming.dao;
 
-import org.jymf.entity.User;
+import org.aiming.entity.User;
 
 /**
  * 用户基本信息

@@ -1,4 +1,4 @@
-package org.jymf.utils;
+package org.aiming.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

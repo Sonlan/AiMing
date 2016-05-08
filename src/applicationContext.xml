@@ -17,30 +17,28 @@
 
 	<description>Spring公共配置 </description>
 	<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
-	<context:component-scan base-package="org.jymf">
+	<context:component-scan base-package="org.aiming">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
+	
+	<context:property-placeholder ignore-resource-not-found="true"
+			location="classpath:application.properties" /> 
 	
 	<!-- MyBatis配置 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
-		<property name="typeAliasesPackage" value="org.jymf.entity" />
+		<property name="typeAliasesPackage" value="org.aiming.entity" />
 		<!-- 显式指定Mapper文件位置 -->
-		<property name="mapperLocations" value="classpath:/org/jymf/mapping/*Mapper.xml" />
+		<property name="mapperLocations" value="classpath:/org/aiming/mapping/*Mapper.xml" />
 	</bean>
 	<!-- 扫描basePackage下所有 接口-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="org.jymf.dao" />
+		<property name="basePackage" value="org.aiming.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
-
-	<!-- 配置事务管理器 -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
+	
 	<!-- 使用annotation定义事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	
@@ -49,34 +47,13 @@
 	
 	<!-- 使用静态变量缓存 applicationContext -->
 	<bean class="org.core.modules.utils.SpringContextHolder" lazy-init="false" />
-		
-	<!-- production环境 -->
-	<beans profile="production">
-		<context:property-placeholder ignore-resource-not-found="true"
-			location="classpath*:/application3.properties" />
 
-		<!-- 动态数据源 -->  
-        <bean id="dataSource" class="org.jymf.utils.DynamicDataSource">  
-            <property name="targetDataSources">  
-	            <map key-type="java.lang.String">  
-	                <entry key="jydb"   value-ref="baseDataSource" />
-	                <entry key="jydb00" value-ref="dataSource00" /> 
-	                <entry key="jydb01" value-ref="dataSource01" /> 
-	                <entry key="jydb02" value-ref="dataSource02" /> 
-	                <entry key="jydb03" value-ref="dataSource03" /> 
-	                <entry key="jydb04" value-ref="dataSource04" /> 
-	                <entry key="jydb05" value-ref="dataSource05" /> 
-	                <entry key="jydb06" value-ref="dataSource06" /> 
-	                <entry key="jydb07" value-ref="dataSource07" /> 
-	                <entry key="jydb08" value-ref="dataSource08" /> 
-	                <entry key="jydb09" value-ref="dataSource09" /> 
-	            </map>  
-	        </property>  
-	        <property name="defaultTargetDataSource" ref="baseDataSource" />  
-	    </bean> 
-    
-         <!-- 数据源配置--> 
-        <bean id="baseDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 数据源配置--> 
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
             <property name="driverClass">
                 <value>${jdbc.driver}</value>
             </property>
@@ -111,355 +88,6 @@
             <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
             <property name="maxStatements" value="${c3p0.maxStatements}"/>   
         </bean> 
-        <bean id="dataSource00" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url00}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username00}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password00}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean>
-        <bean id="dataSource01" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url01}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username01}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password01}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean> 
-        <bean id="dataSource02" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url02}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username02}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password02}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean> 
-        <bean id="dataSource03" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url03}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username03}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password03}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean> 
-        <bean id="dataSource04" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url04}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username04}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password04}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean> 
-        <bean id="dataSource05" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url05}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username05}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password05}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean> 
-        <bean id="dataSource06" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url06}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username06}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password06}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean>
-        <bean id="dataSource07" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url07}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username07}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password07}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean> 
-        <bean id="dataSource08" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url08}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username08}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password08}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean>
-        <bean id="dataSource09" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <property name="driverClass">
-                <value>${jdbc.driver}</value>
-            </property>
-            <property name="jdbcUrl">
-                <value>${jdbc.url09}</value>
-            </property>
-            <property name="user">
-                <value>${jdbc.username09}</value>
-            </property>
-            <property name="password">
-                <value>${jdbc.password09}</value>
-            </property>
-            
-            <!--连接池中保留的最大连接数。默认值: 15 -->   
-            <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>  
-            <!-- 连接池中保留的最小连接数，默认为：3-->  
-            <property name="minPoolSize" value="${c3p0.minPoolSize}"/>  
-            <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
-            <property name="initialPoolSize" value="${c3p0.initialPoolSize}"/>  
-    
-            <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
-            <property name="maxIdleTime" value="${c3p0.maxIdleTime}" />  
-                              
-            <!-- 当连接池连接耗尽时，客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒。默认: 0 -->   
-            <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/> 
-            
-            <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3 -->   
-            <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>  
-               
-            <!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->   
-            <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"/>  
-            <!--c3p0全局的PreparedStatements缓存的大小。如果maxStatements与maxStatementsPerConnection均为0，则缓存不生效，只要有一个不为0，则语句的缓存就能生效。如果默认值: 0-->   
-            <property name="maxStatements" value="${c3p0.maxStatements}"/>   
-        </bean>
-	</beans>
+          
+
 </beans>
