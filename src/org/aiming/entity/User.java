@@ -1,7 +1,5 @@
 package org.aiming.entity;
 
-import java.math.BigDecimal;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -10,25 +8,31 @@ import org.springframework.format.annotation.DateTimeFormat;
  *
  */
 public class User {
-	
-	private String userid;//用户id
-	private String password;//密码
-	private BigDecimal uservip;//用户级别
-	private BigDecimal gender;//性别
-	private String professional;//职业
-	private String mobile;//手机号
-	private String city;//城市
-	private String age;//年龄段
+	private int id;  //用户Id
+	private int level;  //用户级别
+	private String username;  //用户名
+	private String password;  //采用md5 base16加密
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private String createtime;//创建日期
+	private String create_time;//创建日期
 	@DateTimeFormat(pattern = "yyyy-MM-dd")	
-	private String updatetime;//修改日期
-	
-	public String getUserid() {
-		return userid;
+	private String update_time;//修改日期
+	public int getId() {
+		return id;
 	}
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -36,53 +40,16 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public BigDecimal getUservip() {
-		return uservip;
+	public String getCreate_time() {
+		return create_time;
 	}
-	public void setUservip(BigDecimal uservip) {
-		this.uservip = uservip;
+	public void setCreate_time(String create_time) {
+		this.create_time = create_time;
 	}
-	public BigDecimal getGender() {
-		return gender;
+	public String getUpdate_time() {
+		return update_time;
 	}
-	public void setGender(BigDecimal gender) {
-		this.gender = gender;
+	public void setUpdate_time(String update_time) {
+		this.update_time = update_time;
 	}
-	public String getProfessional() {
-		return professional;
-	}
-	public void setProfessional(String professional) {
-		this.professional = professional;
-	}
-	public String getMobile() {
-		return mobile;
-	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getAge() {
-		return age;
-	}
-	public void setAge(String age) {
-		this.age = age;
-	}
-	public String getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(String createtime) {
-		this.createtime = createtime;
-	}
-	public String getUpdatetime() {
-		return updatetime;
-	}
-	public void setUpdatetime(String updatetime) {
-		this.updatetime = updatetime;
-	}
-
 }
