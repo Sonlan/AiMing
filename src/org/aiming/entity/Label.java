@@ -12,10 +12,29 @@ public class Label {
 	
 	private int ac_id;  //对应空调ID号
 	
-	@DateTimeFormat(pattern="hh:mm:ss")
 	private String cumulative_time;  //上次清洗后累计使用时间
 	
 	private int washing_count;  //清洗次数
+
+	private int inuse ;  //是否在使用
+	
+	private int alive;  //是否已报废
+	
+	public int getInuse() {
+		return inuse;
+	}
+
+	public void setInuse(int inuse) {
+		this.inuse = inuse;
+	}
+
+	public int getAlive() {
+		return alive;
+	}
+
+	public void setAlive(int alive) {
+		this.alive = alive;
+	}
 
 	public int getId() {
 		return id;

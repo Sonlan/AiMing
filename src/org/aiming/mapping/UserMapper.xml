@@ -2,19 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.aiming.dao.UserMapper">
    <resultMap type="org.aiming.entity.User" id="BaseResultMap">
-     <result column="userid" property="userid" jdbcType="VARCHAR"/>
+     <result column="id" property="id" jdbcType="INTEGER"/>
+     <result column="level" property="level" jdbcType="TINYINT"/>
+     <result column="username" property="username" jdbcType="VARCHAR"/>
      <result column="password" property="password" jdbcType="VARCHAR"/>
-     <result column="uservip" property="uservip" jdbcType="TINYINT"/>
-     <result column="gender" property="gender" jdbcType="TINYINT"/>
-     <result column="professional" property="professional" jdbcType="VARCHAR"/>
-     <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
-     <result column="city" property="city" jdbcType="VARCHAR"/>
-     <result column="age" property="age" jdbcType="VARCHAR"/>
-     <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
-     <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP"/>
+     <result column="create_time" property="create_time" jdbcType="TIMESTAMP"/>
+     <result column="update_time" property="update_time" jdbcType="TIMESTAMP"/>
    </resultMap>
 
   <select id="getUserByid" parameterType="string" resultType="User">
-    SELECT * FROM tbl_user WHERE userid = #{user_id}
+    SELECT * FROM user WHERE id = #{id}
   </select>
+  
+  <select id="userExist" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    SELECT * FROM user
+	<where>
+		1=1
+		<if test="username != null and username != '' ">
+			<![CDATA[ AND username = #{username} ]]>
+		</if>
+		<if test="password != null and password != '' ">
+			<![CDATA[ AND password = #{password} ]]>
+		</if>
+	</where>
+  </select>
+  
 </mapper>
