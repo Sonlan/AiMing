@@ -20,11 +20,12 @@
 	</div>
 	<div class="navig">
 	 <ul id='navigation'>
-	   <li><a href = '${ctx}/register.html'>注册</a></li>
-	   <li><a href = 'check.html'>查询</a></li>
-	   <li><a href = 'manul.html'>手动报废</a></li>
-	   <li><a href = 'active.html'>批量激活</a></li>
-	   <li><a href = 'start'>停止计时</a></li>
+	   <li><a href = '${ctx}/main/toRegister'>注册</a></li>
+	   <li><a href = '${ctx}/main/toCheck'>查询</a></li>
+	   <li><a href = '${ctx}/main/toManul'>手动报废</a></li>
+	   <li><a href = '${ctx}/main/toActive'>批量激活</a></li>
+	   <li><a href = '${ctx}/timing/start'>开始计时</a></li>
+	   <li><a href = '${ctx}/timing/stop'>停止计时</a></li>
 	 </ul>
 	</div>
 	<div id="content">
