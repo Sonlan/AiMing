@@ -1,4 +1,4 @@
-package org.aiming.service.Impl;
+package org.aiming.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +29,36 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 		
+	}
+	/**
+	 * 注册失败返回false
+	 */
+	@Override
+	public boolean login(String username, String password, int level) {
+		try {
+			Map<Object, Object> map = new HashMap<Object, Object>();
+			map.put("username", username);
+			map.put("password", MD5Util.MD5(password));
+			map.put("level", level);
+			if(null == userDao.userRepeat(map)){
+				userDao.insert(map);
+				return true;
+			}else return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	/**
+	 * 用户名重复返回true
+	 */
+	@Override
+	public boolean userRepeat(String username) {
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		map.put("username", username);
+		if(null == userDao.userRepeat(map))
+			return false;
+		else return true;
 	}
 
 }

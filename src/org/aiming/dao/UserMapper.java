@@ -1,6 +1,5 @@
 package org.aiming.dao;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.aiming.entity.User;
@@ -19,4 +18,15 @@ public interface UserMapper {
      * @return
      */
     User userExist(Map<Object, Object> map);
+    /**
+     * 添加用户
+     * @param map
+     */
+	void insert(Map<Object, Object> map);
+	/**
+	 * 用户名是否重复
+	 * @param map
+	 * @return
+	 */
+	User userRepeat(Map<Object, Object> map);
 }

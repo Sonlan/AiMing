@@ -1,4 +1,4 @@
-package org.aiming.service.Impl;
+package org.aiming.service.impl;
 
 import org.aiming.service.LabelService;
 import org.springframework.stereotype.Service;

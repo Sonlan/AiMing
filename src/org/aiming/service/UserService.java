@@ -12,4 +12,20 @@ public interface UserService {
 	 * @return
 	 */
 	boolean logon(String username,String password);
+	/**
+	 * 注册用户
+	 * @param username
+	 * @param password
+	 * @param level
+	 * @return
+	 */
+	boolean login(String username,String password,int level);
+	/**
+	 * 用户名重复返回false
+	 * @param username
+	 * @param password
+	 * @param level
+	 * @return
+	 */
+	boolean userRepeat(String username);
 }

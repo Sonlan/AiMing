@@ -1,2 +1,5 @@
+/application.properties
+/applicationContext.xml
+/logback.xml
 /org/
 /timer.properties
