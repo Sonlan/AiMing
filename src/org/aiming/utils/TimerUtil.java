@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TimerUtil {
-	private static Timer timer = null;
+	public static Timer timer = null;
 	private static long rate = 5*60*1000;
 	static{         
 		try {

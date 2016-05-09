@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.aiming.service.UserService;
 import org.aiming.utils.JsonUtil;
-import org.aiming.utils.TimerUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,19 +26,17 @@ public class UserControl {
 	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/logon") 
-	public String logon(HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public  void logon(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-//		TimerUtil.start();
 		if (!(null==username && "".equals(username) && null==password && "".equals(password))) {
 			if(userService.logon(username, password)){
 				request.getSession().setAttribute("_LOGIN", "OK");
-				response.getWriter().write(JsonUtil.statusResponse(0, "登录成功", ""));
-				return "/main/main";
+				response.setContentType("application/json;charset=utf-8");
+				response.getWriter().write(JsonUtil.statusResponse(0, "登录成功", "user/toIndex"));
 			}
-		}
-		response.getWriter().write(JsonUtil.statusResponse(1, "登录失败", "")); 
-		return "logon";
+		}else
+		response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入", "")); 
 	}
 	/**
 	 * 登出
@@ -60,7 +58,7 @@ public class UserControl {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/login") 
-	public String login(HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public void login(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String levelstr = request.getParameter("level");
@@ -68,25 +66,13 @@ public class UserControl {
 		if (!(null==username && "".equals(username) && null==password && "".equals(password) && null==levelstr && "".equals(levelstr) )) {
 			if(userService.userRepeat(username)){
 				response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,用户名重复", "")); 
-				return "/main/main";
 			}
-			if(userService.login(username, password,level)){
+			else if(userService.login(username, password,level)){
 				response.getWriter().write(JsonUtil.statusResponse(0, "注册成功", ""));
-				return "/main/main";
 			}
 		}
-		response.getWriter().write(JsonUtil.statusResponse(1, "注册失败", "")); 
-		return "/main/main";
-	}
-	@RequestMapping(value = "/start") 
-	public  String   start(HttpServletResponse response) throws IOException{
-//		TimerUtil.start();
-		return "main";
-	}
-	@RequestMapping(value = "/stop") 
-	public String  stop(){
-//		TimerUtil.stop();
-		return "/main/main";
+		else response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,请检查输入", "")); 
+
 	}
 	/**
 	 * 返回到登录页面
@@ -96,6 +82,15 @@ public class UserControl {
 	@RequestMapping(value = "/toLogon") 
 	public  String   toLogon(HttpServletResponse response) throws IOException{
 		return "logon";
+	}
+	/**
+	 * 跳转到主页面
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/toIndex") 
+	public  String   toMain(HttpServletResponse response) throws IOException{
+		return "/main/index";
 	}
 	
 }

@@ -19,7 +19,7 @@
 	<div class="login">
 		<h1>超级用户登录</h1>
 		<div id="formwrapper">
-			<form method="get" action="${ctx}/user/logon" id="login">
+			<form method="get"  id="login">
 				<p>
 					<label for="username">用户名:</label>
 					<input type="text" name="username" id="username">
@@ -46,7 +46,7 @@
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
-	$('#login').submit(function(evt){
+/*	$('#login').submit(function(evt){
 	    evt.preventDefault();
 	    var formData = $(this).serialize();
 	    $.post("user/logon",formData,function(data,status){
@@ -56,8 +56,8 @@ $(document).ready(function() {
 	    		alert("登录失败"+data.errorCode);
 	    	}
 	    }); 
-	},"json");
-/*    $('#login').submit(function(evt){
+	},"json");*/
+    $('#login').submit(function(evt){
     evt.preventDefault();
     var formData = $(this).serialize();
 	$.get('../../AiMing/user/logon', formData, processData);
@@ -66,13 +66,14 @@ $(document).ready(function() {
     $.each(data, function(name, value){
 	  if(name == 'errorCode') {
 	    if(value == 0) {
-		  alert('OK!');
+		  alert('OK!'+data.param);
+		  location.href=data.param;
 		} else if (value == 1) {
 		} else if (value == 2) {
 		} 
 	  }
 	});
-  } */
+  } 
 }); // end ready
 </script>
 </body>
