@@ -6,7 +6,11 @@ import org.aiming.entity.Label;
 
 
 public interface LabelService {
-	
+	/**
+	 * 批量标签激活
+	 * @return
+	 */
+	public boolean labelBind(List<Label> list);
 	/**
 	 * 滤芯安装
 	 * @param id

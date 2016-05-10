@@ -95,5 +95,23 @@ public class LabelServiceImpl implements LabelService {
 			return false;
 		}
 	}
+	@Override
+	public boolean labelBind(List<Label> list) {
+		try {
+			if(null != list && 0!=list.size()){
+				Map<Object, Object> map = new HashMap<>();
+				for(int i=0;i<list.size();i++){
+					Label label = list.get(i);
+					map.put("id", label.getId());
+					map.put("ac_id ", label.getAc_id());
+					map.put("type ", label.getType());
+					labelDao.labelInsert(map);
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return false;
+	}
 
 }

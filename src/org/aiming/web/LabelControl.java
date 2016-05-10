@@ -27,8 +27,11 @@ public class LabelControl {
 	 * @return
 	 */
 	@RequestMapping(value="/bind")
-	public String bind(){
-		return null;
+	public void bind(HttpServletRequest request,HttpServletResponse response){
+		String labels = request.getParameter("labels");
+		response.setContentType("application/json;charset=utf-8");
+		JsonUtil.toObject(labels, Label.class);
+		//TO-DO
 	}
 	/**
 	 * 滤芯安装
