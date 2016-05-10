@@ -1,18 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.aiming.dao.LabelMapper">
-   <resultMap type="org.aiming.entity.User" id="BaseResultMap">
-     <result column="id" property="id" jdbcType="INTEGER"/>
+   <resultMap type="org.aiming.entity.Label" id="BaseResultMap">
+     <id column="id" property="id" jdbcType="BIGINT"/>
+     <result column="activate_date" property="activate_date" jdbcType="TIMESTAMP"/>
      <result column="type" property="type" jdbcType="TINYINT"/>
      <result column="ac_id" property="ac_id" jdbcType="INTEGER"/>
-     <result column="cumulative_time" property="cumulative_time" jdbcType="TIME"/>
+     <result column="cumulative_time" property="cumulative_time" jdbcType="VARCHAR"/>
      <result column="washing_count" property="washing_count" jdbcType="INTEGER"/>
-     <result column="activate_date" property="activate_date" jdbcType="TIMESTAMP"/>
      <result column="inuse" property="inuse" jdbcType="TINYINT"/>
      <result column="alive" property="alive" jdbcType="TINYINT"/>
    </resultMap>
-
-  <select id="getUserByid" parameterType="string" resultType="Label">
-    SELECT * FROM label WHERE id = #{id}
+	
+  <sql id="Base_Column_List">
+    id, type,ac_id,cumulative_time,washing_count,activate_date,inuse,alive
+  </sql>
+  
+  <select id="getLabelByAcId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" /> 
+    FROM label WHERE ac_id = #{ac_id,jdbcType=INTEGER}
+    and inuse=1
+    and alive=1
   </select>
+  
+  <select id="getLabelById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" /> 
+    FROM label WHERE id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="getLablesById" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" /> 
+    FROM label
+    <where>
+    	1=1
+    	<if test="id != 0 ">
+    		and id = #{id,jdbcType=BIGINT}
+    	</if>
+    </where>
+  </select>
+  
+  <insert id="labelInsert" parameterType="java.util.HashMap">
+        INSERT INTO label
+        (id,type,ac_id) VALUES
+        (#{id},#{type},#{ac_id})
+   </insert>
+   
+   <update id="deployLabel" parameterType="java.util.HashMap" >
+    update label
+    set washing_count = #{washing_count,jdbcType=INTEGER},
+    inuse = 1
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="removeLabel" parameterType="java.lang.Long" >
+    update label
+    set inuse = 0
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="scrapLabel" parameterType="java.lang.Long" >
+    update label
+    set alive = 0
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateTimeOfLabel" parameterType="java.util.HashMap" >
+    update label
+    set cumulative_time = #{cumulative_time,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
 </mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.aiming.dao.AirconditionMapper">
+  <select id="getWorkFreq1" resultType="java.lang.Float">
+    SELECT value FROM  zz4028e4a947c7b2ff0147f82c40a3017b
+  </select>
+  <select id="getWorkFreq2" resultType="java.lang.Float">
+    SELECT value FROM  zz4028e4a947c7b2ff0147f87a2e0b0249
+  </select>
+  <select id="getWorkFreq3" resultType="java.lang.Float">
+    SELECT value FROM  zz4028e4a947c7b2ff0147f901d98402d4
+  </select>
+  
+</mapper>

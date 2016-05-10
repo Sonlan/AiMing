@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.aiming.entity.User;
 import org.aiming.service.UserService;
 import org.aiming.utils.JsonUtil;
 
@@ -73,6 +74,13 @@ public class UserControl {
 		}
 		else response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,请检查输入", "")); 
 
+	}
+	@RequestMapping(value = "/query") 
+	public  void   query(HttpServletResponse response,HttpServletRequest request) throws IOException{
+		String username = request.getParameter("username");
+		User user = userService.query(username);
+		response.setContentType("application/json;charset=utf-8");
+		response.getWriter().write(JsonUtil.statusResponse(0, "查询成功", user));
 	}
 	/**
 	 * 返回到登录页面

@@ -1,4 +1,7 @@
 package org.aiming.service;
+
+import org.aiming.entity.User;
+
 /**
  * 用户相关服务
  * @author Songsong
@@ -28,4 +31,6 @@ public interface UserService {
 	 * @return
 	 */
 	boolean userRepeat(String username);
+	
+	User query(String username);
 }

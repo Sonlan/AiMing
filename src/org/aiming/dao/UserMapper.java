@@ -10,7 +10,7 @@ import org.aiming.entity.User;
  *
  */
 public interface UserMapper {
-    User getUserByid(String id);
+    User getUserByName(String username);
     
     /**
      * 根据用户名及密码判断是否存在此用户

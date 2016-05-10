@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.aiming.dao.UserMapper;
+import org.aiming.entity.User;
 import org.aiming.service.UserService;
 import org.aiming.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,17 @@ public class UserServiceImpl implements UserService {
 		if(null == userDao.userRepeat(map))
 			return false;
 		else return true;
+	}
+	@Override
+	public User query(String username) {
+		try {
+			User user = userDao.getUserByName(username);
+			return user;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 
 }

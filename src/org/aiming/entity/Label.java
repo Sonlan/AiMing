@@ -1,11 +1,12 @@
 package org.aiming.entity;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class Label {
-	private int id;  //唯一空气滤芯标识
+	private long id;  //唯一空气滤芯标识
 	
-	@DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private String activate_date; //激活绑定时间
 	
 	private int type;  //滤芯类型
@@ -36,11 +37,13 @@ public class Label {
 		this.alive = alive;
 	}
 
-	public int getId() {
+
+
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -52,11 +55,12 @@ public class Label {
 		this.activate_date = activate_date;
 	}
 
-	public int getType() {
+
+	public int getTypes() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setTypes(int type) {
 		this.type = type;
 	}
 

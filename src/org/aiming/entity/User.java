@@ -12,9 +12,9 @@ public class User {
 	private int level;  //用户级别
 	private String username;  //用户名
 	private String password;  //采用md5 base16加密
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private String create_time;//创建日期
-	@DateTimeFormat(pattern = "yyyy-MM-dd")	
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")	
 	private String update_time;//修改日期
 	public int getId() {
 		return id;
