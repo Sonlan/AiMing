@@ -119,6 +119,28 @@ input {
 	width: 75%;
 }
 
+#content .welcome {
+	text-align: center;
+	letter-spacing: -1px;
+	color: rgb(195,151,51);
+	text-shadow: 2px 2px 1px rgba(0,0,0,.25);
+	font: normal 60px 'ColaborateThinRegular', Arial, sans-serif;
+}
+
+#regBtn {
+	margin-left: 10em;
+}
+#invBtn {
+	margin-left: 10em;
+}
+#valiBtn {
+	margin-left: 10em;
+}
+#timingP {
+    text-align: center;
+	color: rgb(255,255,255);
+}
+
 #formwrapper {
     border-top: 2px solid rgba(255,255,255,.75);
 	border-bottom: 2px solid rgba(255,255,255,.75);

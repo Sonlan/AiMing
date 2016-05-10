@@ -20,15 +20,17 @@
 	</div>
 	<div class="navig">
 	 <ul id='navigation'>
-	   <li><a href = '${ctx}/main/toRegister'>注册</a></li>
-	   <li><a href = '${ctx}/main/toCheck'>查询</a></li>
-	   <li><a href = '${ctx}/main/toManul'>手动报废</a></li>
-	   <li><a href = '${ctx}/main/toActive'>批量激活</a></li>
-	   <li><a href = '${ctx}/timing/start'>开始计时</a></li>
-	   <li><a href = '${ctx}/timing/stop'>停止计时</a></li>
+	   <li><a href = 'register'>注册</a></li>
+	   <li><a href = 'inqury'>查询</a></li>
+	   <li><a href = 'invalid'>手动报废</a></li>
+	   <li><a href = 'active'>批量激活</a></li>
+	   <li><a href = 'start'>停止计时</a></li>
+	   <li><a href = 'logout'>退出登录</a></li>
 	 </ul>
 	</div>
 	<div id="content">
+	    <p class='welcome'>登录成功！</p>
+	    <p class='welcome'>欢迎来到空调滤芯查询管理系统！</p>
 	</div>
 	<div class="footer">
 		<p>爱明 制药: 空调滤芯控制系统, by <a href="http://nacerc.hust.edu.cn/">国家防伪工程技术研究中心</a>. </p>
