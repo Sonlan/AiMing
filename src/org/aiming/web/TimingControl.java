@@ -9,6 +9,9 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletResponse;
 
 import org.aiming.entity.Label;
@@ -16,7 +19,6 @@ import org.aiming.service.AirconditionService;
 import org.aiming.service.LabelService;
 import org.aiming.utils.JsonUtil;
 import org.aiming.utils.TimeRevert;
-import org.aiming.utils.TimerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,14 +70,14 @@ public class TimingControl {
 		}
 		
 	}
-	
+	@PostConstruct
 	public void start(){
 		if(null != timer){
 			stop();
 		}
 		try {
 			Properties prop=new Properties();
-			prop.load(new InputStreamReader(TimerUtil.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
+			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
 			rate = Long.parseLong(prop.getProperty("rate"))*60*1000;
 			ac_id[0] = Integer.parseInt(prop.getProperty("ac_id1"));
 			ac_id[1] = Integer.parseInt(prop.getProperty("ac_id2"));
@@ -90,7 +92,6 @@ public class TimingControl {
 				
 			@Override
 			public void run() {
-				System.out.println("in");
 				for(int i=0;i<3;i++){
 					Boolean isWork = airService.isWork(i,new BigDecimal(0));
 					if(isWork && 0==lastWorkTime[i]){

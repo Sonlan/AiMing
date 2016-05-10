@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.aiming.entity.Label;
 import org.aiming.service.LabelService;
 import org.aiming.utils.JsonUtil;
-import org.aiming.utils.TimerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +71,7 @@ public class LabelControl {
 			if(null != label){
 				//判断清洗次数是否超过上限
 				Properties prop=new Properties();
-				prop.load(new InputStreamReader(TimerUtil.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
+				prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
 				washCountLimit = Integer.parseInt((prop.getProperty("washCountLimit")));
 				if(label.getWashing_count()>=washCountLimit){
 					response.getWriter().write(JsonUtil.statusResponse(1, "已达到清洗次数上限", ""));
