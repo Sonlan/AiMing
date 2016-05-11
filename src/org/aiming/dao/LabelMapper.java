@@ -24,17 +24,17 @@ public interface LabelMapper {
 	 * @param id
 	 * @return
 	 */
-	Label getLabelById(long id);
+	Label getLabelById(String id);
 	/**
 	 * 滤芯拆除
 	 * @param id
 	 */
-	void removeLabel(long id);
+	void removeLabel(String id);
 	/**
 	 * 滤芯手动报废
 	 * @param id
 	 */
-	void scrapLabel(long id);
+	void scrapLabel(String id);
 	/**
 	 * 当id 为空时返回全部label信息
 	 * @param id
@@ -42,11 +42,11 @@ public interface LabelMapper {
 	 */
 	List<Label> getLablesById(Map<Object, Object> map);
 	/**
-	 * 根据空调id返回所有滤芯信息
-	 * @param ac_id
+	 * 根据空调id(滤芯id前两位)返回所有滤芯信息
+	 * @param map 空调id
 	 * @return
 	 */
-	List<Label> getLabelByAcId(int ac_id);
+	List<Label> getLabelByAcId(Map<Object, Object> map);
 	/**
 	 * 更新累计使用时间
 	 * @param id

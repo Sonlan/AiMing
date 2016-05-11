@@ -15,7 +15,7 @@ public class LabelServiceImpl implements LabelService {
 	@Autowired
 	private LabelMapper labelDao;
 	@Override
-	public boolean labelDepoy(long id) {
+	public boolean labelDepoy(String id) {
 		try {
 			Label label = labelDao.getLabelById(id);
 			if(null == label){
@@ -33,7 +33,7 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public Label labelRemove(long id) {
+	public Label labelRemove(String id) {
 		try {
 			Label label = labelDao.getLabelById(id);
 			if(null == label){
@@ -48,7 +48,7 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public boolean labelScrap(long id) {
+	public boolean labelScrap(String id) {
 		try {
 			Label label = labelDao.getLabelById(id);
 			if(null == label){
@@ -63,7 +63,7 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public List<Label> labelQuery(long id) {
+	public List<Label> labelQuery(String id) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
@@ -74,16 +74,18 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public List<Label> getLabelByAcId(int ac_id) {
+	public List<Label> getLabelByAcId(String id) {
 		try {
-			return labelDao.getLabelByAcId(ac_id);
+			Map<Object, Object> map = new HashMap<>();
+			map.put("id", id);
+			return labelDao.getLabelByAcId(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 	@Override
-	public boolean updateTimeofLabel(long id, String cumulative_time) {
+	public boolean updateTimeofLabel(String id, String cumulative_time) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
@@ -96,22 +98,20 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public boolean labelBind(List<Label> list) {
+	public boolean labelBind(List<String> list) {
 		try {
 			if(null != list && 0!=list.size()){
 				Map<Object, Object> map = new HashMap<>();
 				for(int i=0;i<list.size();i++){
-					Label label = list.get(i);
-					map.put("id", label.getId());
-					map.put("ac_id ", label.getAc_id());
-					map.put("type ", label.getType());
+					map.put("id", list.get(i));
 					labelDao.labelInsert(map);
 				}
-			}
+				return true;
+			}else return false;
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 }

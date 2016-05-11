@@ -10,8 +10,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletResponse;
 
 import org.aiming.entity.Label;
@@ -30,7 +28,7 @@ public class TimingControl {
 	private static Timer timer = null;
 	private static long rate = 5*60*1000;
 	private static long [] lastWorkTime = {0,0,0};
-	private static int [] ac_id = {0,0,0}; 
+	private static String [] ac_id = {"01","02","03"}; 
 	
 	@Autowired
 	private AirconditionService airService;
@@ -79,9 +77,9 @@ public class TimingControl {
 			Properties prop=new Properties();
 			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
 			rate = Long.parseLong(prop.getProperty("rate"))*60*1000;
-			ac_id[0] = Integer.parseInt(prop.getProperty("ac_id1"));
-			ac_id[1] = Integer.parseInt(prop.getProperty("ac_id2"));
-			ac_id[2] = Integer.parseInt(prop.getProperty("ac_id3"));
+			ac_id[0] = prop.getProperty("ac_id1");
+			ac_id[1] = prop.getProperty("ac_id2");
+			ac_id[2] = prop.getProperty("ac_id3");
 			rate = 5000;
 		} catch (Exception e) {
 			e.printStackTrace();

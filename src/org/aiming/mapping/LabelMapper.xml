@@ -2,10 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.aiming.dao.LabelMapper">
    <resultMap type="org.aiming.entity.Label" id="BaseResultMap">
-     <id column="id" property="id" jdbcType="BIGINT"/>
+     <id column="id" property="id" jdbcType="VARCHAR"/>
      <result column="activate_date" property="activate_date" jdbcType="TIMESTAMP"/>
-     <result column="type" property="type" jdbcType="TINYINT"/>
-     <result column="ac_id" property="ac_id" jdbcType="INTEGER"/>
      <result column="cumulative_time" property="cumulative_time" jdbcType="VARCHAR"/>
      <result column="washing_count" property="washing_count" jdbcType="INTEGER"/>
      <result column="inuse" property="inuse" jdbcType="TINYINT"/>
@@ -13,21 +11,21 @@
    </resultMap>
 	
   <sql id="Base_Column_List">
-    id, type,ac_id,cumulative_time,washing_count,activate_date,inuse,alive
+    id,cumulative_time,washing_count,activate_date,inuse,alive
   </sql>
   
-  <select id="getLabelByAcId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="getLabelByAcId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" /> 
-    FROM label WHERE ac_id = #{ac_id,jdbcType=INTEGER}
+    FROM label WHERE id LIKE '${id}%'
     and inuse=1
     and alive=1
   </select>
   
-  <select id="getLabelById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="getLabelById" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" /> 
-    FROM label WHERE id = #{id,jdbcType=BIGINT}
+    FROM label WHERE id = #{id,jdbcType=VARCHAR}
   </select>
   
   <select id="getLablesById" parameterType="java.util.HashMap" resultMap="BaseResultMap">
@@ -36,41 +34,43 @@
     FROM label
     <where>
     	1=1
-    	<if test="id != 0 ">
-    		and id = #{id,jdbcType=BIGINT}
+    	<if test="id != null and id != ''">
+    		and id = #{id,jdbcType=VARCHAR}
     	</if>
     </where>
   </select>
   
   <insert id="labelInsert" parameterType="java.util.HashMap">
         INSERT INTO label
-        (id,type,ac_id) VALUES
-        (#{id},#{type},#{ac_id})
+        (id) VALUES
+        (#{id})
    </insert>
    
    <update id="deployLabel" parameterType="java.util.HashMap" >
     update label
     set washing_count = #{washing_count,jdbcType=INTEGER},
-    inuse = 1
-    where id = #{id,jdbcType=BIGINT}
+    inuse = 1,
+    cumulative_time = '00:00:00'
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   
-  <update id="removeLabel" parameterType="java.lang.Long" >
+  <update id="removeLabel" parameterType="java.lang.String" >
     update label
     set inuse = 0
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   
-  <update id="scrapLabel" parameterType="java.lang.Long" >
+  <update id="scrapLabel" parameterType="java.lang.String" >
     update label
-    set alive = 0
-    where id = #{id,jdbcType=BIGINT}
+    set alive = 0,
+    inuse = 0
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   
   <update id="updateTimeOfLabel" parameterType="java.util.HashMap" >
     update label
     set cumulative_time = #{cumulative_time,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   
 </mapper>

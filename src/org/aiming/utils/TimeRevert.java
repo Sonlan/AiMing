@@ -17,10 +17,20 @@ public class TimeRevert {
 	}
 	public static String toString(long time){
 		try {
-			return time/3600000+":"+(time-time/3600000*3600000)/60000+":"+(time-time/60000*60000)/1000+"";
+			return strFormat(time/3600000+"")+":"+strFormat((time-time/3600000*3600000)/60000+"")+":"+strFormat((time-time/60000*60000)/1000+"");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	/**
+	 * 不足两位的时间补齐为2位
+	 * @param str
+	 * @return
+	 */
+	public static String strFormat(String str){
+		if(1>=str.length()){
+			return "0"+str;
+		}else return str;
 	}
 }

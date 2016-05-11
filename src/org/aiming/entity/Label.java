@@ -4,14 +4,10 @@ package org.aiming.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class Label {
-	private long id;  //唯一空气滤芯标识
+	private String id;  //唯一空气滤芯标识,13位，前两位为空调id(ac_id),第三位为type，初级中级
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private String activate_date; //激活绑定时间
-	
-	private int type;  //滤芯类型
-	
-	private int ac_id;  //对应空调ID号
 	
 	private String cumulative_time;  //上次清洗后累计使用时间
 	
@@ -38,12 +34,11 @@ public class Label {
 	}
 
 
-
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -53,23 +48,6 @@ public class Label {
 
 	public void setActivate_date(String activate_date) {
 		this.activate_date = activate_date;
-	}
-
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public int getAc_id() {
-		return ac_id;
-	}
-
-	public void setAc_id(int ac_id) {
-		this.ac_id = ac_id;
 	}
 
 	public String getCumulative_time() {

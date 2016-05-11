@@ -3,6 +3,7 @@ package org.aiming.web;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -24,13 +25,25 @@ public class LabelControl {
 	/**
 	 * 标签激活绑定
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping(value="/bind")
-	public void bind(HttpServletRequest request,HttpServletResponse response){
-		String labels = request.getParameter("labels");
+	public void bind(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		String data = request.getParameter("data");
 		response.setContentType("application/json;charset=utf-8");
-		JsonUtil.toObject(labels, Label.class);
-		//TO-DO
+		if(null != null && !"".equals(data));
+		try {
+			List<String> labels = JsonUtil.toObject(data, List.class);
+			if(null == labels || 0==labels.size()) 
+				response.getWriter().write(JsonUtil.statusResponse(1, "激活绑定失败,请检查数据", ""));
+			else if(labelService.labelBind(labels)){
+				response.getWriter().write(JsonUtil.statusResponse(0, "激活绑定成功", ""));
+			}else response.getWriter().write(JsonUtil.statusResponse(1, "激活绑定失败", ""));
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.getWriter().write(JsonUtil.statusResponse(2, "激活绑定失败,后台错误", ""));
+		}
+		
 	}
 	/**
 	 * 滤芯安装
@@ -41,8 +54,8 @@ public class LabelControl {
 	public void deploy(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.setContentType("application/json;charset=utf-8");
 		try {
-			long id = null == request.getParameter("id")?0:Long.parseLong((request.getParameter("id")));
-			if(0!=id){
+			String id = request.getParameter("id");
+			if(null!=id && !"".equals(id)){
 				if(labelService.labelDepoy(id)){
 					response.getWriter().write(JsonUtil.statusResponse(0, "安装成功", ""));
 				}else {
@@ -63,10 +76,10 @@ public class LabelControl {
 	 */
 	@RequestMapping(value="/remove")
 	public void remove(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
-		long id = null == request.getParameter("id")?0:Long.parseLong((request.getParameter("id")));
+		String id = request.getParameter("id");
 		int washCountLimit = 3;
 		response.setContentType("application/json;charset=utf-8");
-		if(0!=id){
+		if(null!=id && !"".equals(id)){
 			Label label = labelService.labelRemove(id);
 			if(null != label){
 				//判断清洗次数是否超过上限
@@ -88,27 +101,28 @@ public class LabelControl {
 	 */
 	@RequestMapping(value="/scrap")
 	public void scrap(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		long id = null == request.getParameter("id")?0:Long.parseLong((request.getParameter("id")));
+		String id = request.getParameter("id");
 		response.setContentType("application/json;charset=utf-8");
-		if(0!=id){
+		if(null!=id && !"".equals(id)){
 			if(labelService.labelScrap(id)){
 				response.getWriter().write(JsonUtil.statusResponse(0, "手动报废成功", ""));
 			}else response.getWriter().write(JsonUtil.statusResponse(1, "手动报废失败", ""));
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
 	}
 	/**
-	 * 标签信息查询，用于移动端
+	 * 标签信息查询，用于移动端,輸入参数为空时查询所有信息
 	 * @param request
 	 * @param response
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/query")
 	public void query(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		long id = null == request.getParameter("id")?0:Long.parseLong((request.getParameter("id")));
+		String id = null==request.getParameter("id")?"":request.getParameter("id");
 		response.setContentType("application/json;charset=utf-8");
 		List<Label> list = labelService.labelQuery(id);
 		if(null != list && 0 != list.size()){
 			response.getWriter().write(JsonUtil.statusResponse(0, "查询成功", list));
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "查询失败", ""));
+		
 	}
 }
