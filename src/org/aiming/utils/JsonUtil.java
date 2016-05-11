@@ -29,7 +29,7 @@ public class JsonUtil {
      * @param param
      * @return json字符串
      */
-	public  static <T> String statusResponse (int errorCode,String errorMsg, T param){
+	public  static <T> String statusResponse (int errorCode,Object errorMsg, T param){
 			
 			HashMap<String, Object> statusResponse = new HashMap<String, Object>();
 			statusResponse.put("errorCode", errorCode);

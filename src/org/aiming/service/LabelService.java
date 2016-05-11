@@ -2,6 +2,8 @@ package org.aiming.service;
 
 import java.util.List;
 
+import javax.ws.rs.GET;
+
 import org.aiming.entity.Label;
 
 
@@ -30,10 +32,25 @@ public interface LabelService {
 	public boolean labelScrap(String id);
 	/**
 	 * 标签信息查询
-	 * @param id
+	 * @param id 空气滤芯id
+	 * @param aliveTime 剩余待清洗时间
+	 * @param ac_id 空调id
+	 * @param alive 是否报废
+	 * @param inuse 是否在使用
+	 * @param page 
 	 * @return
 	 */
-	public List<Label> labelQuery(String id);
+	public List<Label> labelQuery(String id, String inuse, String alive, String ac_id, String aliveTime, int page);
+	/**
+	 * 返回符合查询条件的所有项的条数
+	 * @param id
+	 * @param inuse
+	 * @param alive
+	 * @param ac_id
+	 * @param aliveTime
+	 * @return
+	 */
+	public int getlabelSizeQuery(String id, String inuse, String alive, String ac_id, String aliveTime);
 	/**
 	 * 根据空调id查询得到所有label信息
 	 * @param id
@@ -47,4 +64,5 @@ public interface LabelService {
 	 * @return
 	 */
 	public boolean updateTimeofLabel(String id,String cumulative_time);
+	
 }

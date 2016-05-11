@@ -27,7 +27,26 @@
     <include refid="Base_Column_List" /> 
     FROM label WHERE id = #{id,jdbcType=VARCHAR}
   </select>
-  
+  <select id="getLablesSizeById" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" /> 
+    FROM label
+    <where>
+    	1=1
+    	<if test="id != null and id != ''">
+    		and id = #{id,jdbcType=VARCHAR}
+    	</if>
+    	<if test="inuse != null and inuse != ''">
+    		and inuse = #{inuse,jdbcType=TINYINT}
+    	</if>
+    	<if test="alive != null and alive != ''">
+    		and alive = #{alive,jdbcType=TINYINT}
+    	</if>
+    	<if test="ac_id != null and ac_id != ''">
+    		and id LIKE '${ac_id}%'
+    	</if>
+    </where>
+  </select>
   <select id="getLablesById" parameterType="java.util.HashMap" resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List" /> 
@@ -37,7 +56,18 @@
     	<if test="id != null and id != ''">
     		and id = #{id,jdbcType=VARCHAR}
     	</if>
+    	<if test="inuse != null and inuse != ''">
+    		and inuse = #{inuse,jdbcType=TINYINT}
+    	</if>
+    	<if test="alive != null and alive != ''">
+    		and alive = #{alive,jdbcType=TINYINT}
+    	</if>
+    	<if test="ac_id != null and ac_id != ''">
+    		and id LIKE '${ac_id}%'
+    	</if>
     </where>
+    ORDER BY washing_count desc
+    limit ${pageStart},${pageEnd}
   </select>
   
   <insert id="labelInsert" parameterType="java.util.HashMap">

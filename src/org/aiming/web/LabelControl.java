@@ -3,7 +3,6 @@ package org.aiming.web;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -110,19 +109,27 @@ public class LabelControl {
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
 	}
 	/**
-	 * 标签信息查询，用于移动端,輸入参数为空时查询所有信息
+	 * 标签信息查询，用于移动端和web端,輸入参数为空时查询所有信息
 	 * @param request
 	 * @param response
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/query")
 	public void query(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		String id = null==request.getParameter("id")?"":request.getParameter("id");
+		String id = null==request.getParameter("id")?"":request.getParameter("id");  //滤芯id
+		String inuse = null==request.getParameter("inuse")?"":request.getParameter("inuse");  //是否在使用
+		String alive = null==request.getParameter("alive")?"":request.getParameter("alive");  //是否报废
+		String ac_id = null==request.getParameter("ac_id")?"":request.getParameter("ac_id");  //空调id，id前两位
+		String aliveTime = null==request.getParameter("aliveTime")?"":request.getParameter("aliveTime");  //距离报废的时间，单位小时
+		int page = null==request.getParameter("page")?0:Integer.parseInt(request.getParameter("page"));  //页数，从0开始
 		response.setContentType("application/json;charset=utf-8");
-		List<Label> list = labelService.labelQuery(id);
-		if(null != list && 0 != list.size()){
-			response.getWriter().write(JsonUtil.statusResponse(0, "查询成功", list));
+		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,aliveTime,page);
+		if(null != list){
+			if(0==list.size()) response.getWriter().write(JsonUtil.statusResponse(1, "没有符合条件的数据", ""));
+			else response.getWriter().write(JsonUtil.statusResponse(0, labelService.getlabelSizeQuery(id, inuse, alive, ac_id, aliveTime), list));
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "查询失败", ""));
 		
 	}
+	
+	
 }

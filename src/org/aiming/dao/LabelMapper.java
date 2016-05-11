@@ -52,4 +52,10 @@ public interface LabelMapper {
 	 * @param id
 	 */
 	void updateTimeOfLabel(Map<Object, Object> map);
+	/**
+	 * 不限行数
+	 * @param map
+	 * @return
+	 */
+	List<Label> getLablesSizeById(Map<Object, Object> map);
 }

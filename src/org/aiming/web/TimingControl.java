@@ -28,7 +28,7 @@ public class TimingControl {
 	private static Timer timer = null;
 	private static long rate = 5*60*1000;
 	private static long [] lastWorkTime = {0,0,0};
-	private static String [] ac_id = {"01","02","03"}; 
+	private static List<String> ac_id = null; 
 	
 	@Autowired
 	private AirconditionService airService;
@@ -77,13 +77,13 @@ public class TimingControl {
 			Properties prop=new Properties();
 			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
 			rate = Long.parseLong(prop.getProperty("rate"))*60*1000;
-			ac_id[0] = prop.getProperty("ac_id1");
-			ac_id[1] = prop.getProperty("ac_id2");
-			ac_id[2] = prop.getProperty("ac_id3");
-			rate = 5000;
+			ac_id = JsonUtil.toObject(prop.getProperty("ac_id"), List.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 			rate = 5*60*1000;
+			ac_id.add("01");
+			ac_id.add("02");
+			ac_id.add("03");
 		}
 		timer = new Timer(true);
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -96,13 +96,9 @@ public class TimingControl {
 						lastWorkTime[i] = new Date().getTime();
 					}else if(!isWork && 0!=lastWorkTime[i]){
 						long sub = new Date().getTime()-lastWorkTime[i];
-						List<Label> list = labelService.getLabelByAcId(ac_id[i]);
+						List<Label> list = labelService.getLabelByAcId(ac_id.get(i));
 						for(int j=0;j<list.size();j++){
-							String time = list.get(j).getCumulative_time();
-							long t = TimeRevert.toLong(list.get(j).getCumulative_time());
-							long t1 = TimeRevert.toLong(list.get(j).getCumulative_time())+sub;
-							System.out.println("time"+time+" "+t+" "+TimeRevert.toString(t));
-							labelService.updateTimeofLabel(list.get(j).getId(), TimeRevert.toString(t1));
+							labelService.updateTimeofLabel(list.get(j).getId(), TimeRevert.toString(TimeRevert.toLong(list.get(j).getCumulative_time())+sub));
 						}
 						lastWorkTime[i] = 0;
 					}

@@ -1,13 +1,21 @@
 package org.aiming.service.impl;
 
 
+import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.aiming.dao.LabelMapper;
 import org.aiming.entity.Label;
 import org.aiming.service.LabelService;
+import org.aiming.utils.JsonUtil;
+import org.aiming.utils.LabelComparator;
+import org.aiming.utils.TimeRevert;
+import org.aiming.web.TimingControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
@@ -63,11 +71,69 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public List<Label> labelQuery(String id) {
+	public int getlabelSizeQuery(String id, String inuse, String alive, String ac_id, String aliveTime) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
-			return labelDao.getLablesById(map);
+			map.put("inuse", inuse);
+			map.put("alive", alive);
+			map.put("ac_id", ac_id);
+			List<Label> list = labelDao.getLablesSizeById(map);
+			if(!"".equals(aliveTime)){
+				if(null != list && 0!=list.size()){
+					Properties prop=new Properties();
+					prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
+					List<String> limit = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
+					for(int i=0;i<list.size();i++){
+						int index = Integer.parseInt(list.get(i).getId().substring(2, 3));
+						long upLimit = Long.parseLong(limit.get(index))*3600000;
+						long aTime =  Long.parseLong(aliveTime)*3600000;
+						long cTime = TimeRevert.toLong(list.get(i).getCumulative_time());
+						if(upLimit-aTime>cTime){
+							list.remove(i);
+							i--;
+						}
+					}
+				}
+			}
+			return list.size();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	@Override
+	public List<Label> labelQuery(String id,String inuse, String alive, String ac_id, String aliveTime,int page) {
+		try {
+			Map<Object, Object> map = new HashMap<>();
+			map.put("id", id);
+			map.put("inuse", inuse);
+			map.put("alive", alive);
+			map.put("ac_id", ac_id);
+			map.put("pageStart", page*8);
+			map.put("pageEnd", page*8+8);
+			List<Label> list = labelDao.getLablesById(map);
+			if(!"".equals(aliveTime)){
+				if(null != list && 0!=list.size()){
+					Properties prop=new Properties();
+					prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
+					List<String> limit = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
+					for(int i=0;i<list.size();i++){
+						int index = Integer.parseInt(list.get(i).getId().substring(2, 3));
+						long upLimit = Long.parseLong(limit.get(index))*3600000;
+						long aTime =  Long.parseLong(aliveTime)*3600000;
+						long cTime = TimeRevert.toLong(list.get(i).getCumulative_time());
+						if(upLimit-aTime>cTime){
+							list.remove(i);
+							i--;
+						}
+					}
+				}
+			}
+			//将查询结果按照累计使用时间排序
+			LabelComparator comparator = new LabelComparator();
+			Collections.sort(list,comparator);
+			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
