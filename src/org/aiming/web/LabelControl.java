@@ -76,16 +76,11 @@ public class LabelControl {
 	@RequestMapping(value="/remove")
 	public void remove(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
 		String id = request.getParameter("id");
-		int washCountLimit = 3;
 		response.setContentType("application/json;charset=utf-8");
 		if(null!=id && !"".equals(id)){
 			Label label = labelService.labelRemove(id);
 			if(null != label){
-				//判断清洗次数是否超过上限
-				Properties prop=new Properties();
-				prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
-				washCountLimit = Integer.parseInt((prop.getProperty("washCountLimit")));
-				if(label.getWashing_count()>=washCountLimit){
+				if(label.getWashing_count()<=0){
 					response.getWriter().write(JsonUtil.statusResponse(1, "已达到清洗次数上限", ""));
 				}else
 					response.getWriter().write(JsonUtil.statusResponse(0, "拆卸成功", ""));

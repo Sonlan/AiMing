@@ -9,9 +9,9 @@ public class Label {
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private String activate_date; //激活绑定时间
 	
-	private String cumulative_time;  //上次清洗后累计使用时间
+	private String cumulative_time;  //上次清洗后累计剩余使用时间
 	
-	private int washing_count;  //清洗次数
+	private int washing_count;  //剩余清洗次数
 
 	private int inuse ;  //是否在使用
 	

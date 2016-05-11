@@ -72,15 +72,15 @@
   
   <insert id="labelInsert" parameterType="java.util.HashMap">
         INSERT INTO label
-        (id) VALUES
-        (#{id})
+        (id,cumulative_time,washing_count) VALUES
+        (#{id,jdbcType=VARCHAR},#{cumulative_time,jdbcType=VARCHAR},#{washing_count,jdbcType=INTEGER})
    </insert>
    
    <update id="deployLabel" parameterType="java.util.HashMap" >
     update label
     set washing_count = #{washing_count,jdbcType=INTEGER},
     inuse = 1,
-    cumulative_time = '00:00:00'
+    cumulative_time = #{cumulative_time,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   

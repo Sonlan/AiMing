@@ -98,7 +98,7 @@ public class TimingControl {
 						long sub = new Date().getTime()-lastWorkTime[i];
 						List<Label> list = labelService.getLabelByAcId(ac_id.get(i));
 						for(int j=0;j<list.size();j++){
-							labelService.updateTimeofLabel(list.get(j).getId(), TimeRevert.toString(TimeRevert.toLong(list.get(j).getCumulative_time())+sub));
+							labelService.updateTimeofLabel(list.get(j).getId(), TimeRevert.toString(TimeRevert.toLong(list.get(j).getCumulative_time())-sub));
 						}
 						lastWorkTime[i] = 0;
 					}

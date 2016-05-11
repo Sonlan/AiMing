@@ -15,6 +15,7 @@ import org.aiming.service.LabelService;
 import org.aiming.utils.JsonUtil;
 import org.aiming.utils.LabelComparator;
 import org.aiming.utils.TimeRevert;
+import org.aiming.web.LabelControl;
 import org.aiming.web.TimingControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,12 @@ public class LabelServiceImpl implements LabelService {
 				return false;
 			}else{
 				Map<Object, Object> map = new HashMap<>();
+				Properties prop=new Properties();
+				prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
+				List<String> limitTimes = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
+				map.put("cumulative_time", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(id.substring(2, 3))))*3600000));
 				map.put("id", id);
-				map.put("washing_count", label.getWashing_count()+1);
+				map.put("washing_count", label.getWashing_count()-1);
 				labelDao.deployLabel(map);
 				return true;
 			}
@@ -81,15 +86,10 @@ public class LabelServiceImpl implements LabelService {
 			List<Label> list = labelDao.getLablesSizeById(map);
 			if(!"".equals(aliveTime)){
 				if(null != list && 0!=list.size()){
-					Properties prop=new Properties();
-					prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
-					List<String> limit = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
 					for(int i=0;i<list.size();i++){
-						int index = Integer.parseInt(list.get(i).getId().substring(2, 3));
-						long upLimit = Long.parseLong(limit.get(index))*3600000;
 						long aTime =  Long.parseLong(aliveTime)*3600000;
 						long cTime = TimeRevert.toLong(list.get(i).getCumulative_time());
-						if(upLimit-aTime>cTime){
+						if(aTime<=cTime){
 							list.remove(i);
 							i--;
 						}
@@ -115,15 +115,10 @@ public class LabelServiceImpl implements LabelService {
 			List<Label> list = labelDao.getLablesById(map);
 			if(!"".equals(aliveTime)){
 				if(null != list && 0!=list.size()){
-					Properties prop=new Properties();
-					prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
-					List<String> limit = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
 					for(int i=0;i<list.size();i++){
-						int index = Integer.parseInt(list.get(i).getId().substring(2, 3));
-						long upLimit = Long.parseLong(limit.get(index))*3600000;
 						long aTime =  Long.parseLong(aliveTime)*3600000;
 						long cTime = TimeRevert.toLong(list.get(i).getCumulative_time());
-						if(upLimit-aTime>cTime){
+						if(aTime<=cTime){
 							list.remove(i);
 							i--;
 						}
@@ -166,10 +161,17 @@ public class LabelServiceImpl implements LabelService {
 	@Override
 	public boolean labelBind(List<String> list) {
 		try {
+			Properties prop=new Properties();
+			prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
 			if(null != list && 0!=list.size()){
 				Map<Object, Object> map = new HashMap<>();
+				//获取使用时间上限及清洗次数上限
+				List<String> washCountLimits = JsonUtil.toObject(prop.getProperty("washCountLimit"), List.class);
+				List<String> limitTimes = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
 				for(int i=0;i<list.size();i++){
 					map.put("id", list.get(i));
+					map.put("washing_count", Integer.parseInt(washCountLimits.get(Integer.parseInt(list.get(i).substring(2, 3))))+1);
+					map.put("cumulative_time", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(list.get(i).substring(2, 3))))*3600000));
 					labelDao.labelInsert(map);
 				}
 				return true;

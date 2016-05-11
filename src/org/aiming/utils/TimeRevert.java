@@ -17,10 +17,12 @@ public class TimeRevert {
 	}
 	public static String toString(long time){
 		try {
-			return strFormat(time/3600000+"")+":"+strFormat((time-time/3600000*3600000)/60000+"")+":"+strFormat((time-time/60000*60000)/1000+"");
+			if(time>=0)
+				return strFormat(time/3600000+"")+":"+strFormat((time-time/3600000*3600000)/60000+"")+":"+strFormat((time-time/60000*60000)/1000+"");
+			else return "00:00:00";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return "00:00:00";
 		}
 	}
 	/**
