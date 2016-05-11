@@ -37,10 +37,11 @@ public interface LabelService {
 	 * @param ac_id 空调id
 	 * @param alive 是否报废
 	 * @param inuse 是否在使用
+	 * @param washRemain 
 	 * @param page 
 	 * @return
 	 */
-	public List<Label> labelQuery(String id, String inuse, String alive, String ac_id, String aliveTime, int page);
+	public List<Label> labelQuery(String id, String inuse, String alive, String ac_id, String aliveTime, String washRemain, int page);
 	/**
 	 * 返回符合查询条件的所有项的条数
 	 * @param id

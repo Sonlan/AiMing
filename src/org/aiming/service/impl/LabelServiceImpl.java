@@ -103,15 +103,16 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public List<Label> labelQuery(String id,String inuse, String alive, String ac_id, String aliveTime,int page) {
+	public List<Label> labelQuery(String id,String inuse, String alive, String ac_id, String aliveTime,String washRemain,int page) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
 			map.put("inuse", inuse);
 			map.put("alive", alive);
 			map.put("ac_id", ac_id);
-			map.put("pageStart", page*8);
-			map.put("pageEnd", page*8+8);
+			map.put("washing_count", washRemain);
+			map.put("pageStart", page*9);
+			map.put("pageEnd", page*9+9);
 			List<Label> list = labelDao.getLablesById(map);
 			if(!"".equals(aliveTime)){
 				if(null != list && 0!=list.size()){

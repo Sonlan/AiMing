@@ -116,9 +116,10 @@ public class LabelControl {
 		String alive = null==request.getParameter("alive")?"":request.getParameter("alive");  //是否报废
 		String ac_id = null==request.getParameter("ac_id")?"":request.getParameter("ac_id");  //空调id，id前两位
 		String aliveTime = null==request.getParameter("aliveTime")?"":request.getParameter("aliveTime");  //距离报废的时间，单位小时
+		String washRemain =  null==request.getParameter("washRemain")?"":request.getParameter("washRemain");  //剩余清洗次数
 		int page = null==request.getParameter("page")?0:Integer.parseInt(request.getParameter("page"));  //页数，从0开始
 		response.setContentType("application/json;charset=utf-8");
-		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,aliveTime,page);
+		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,aliveTime,washRemain,page);
 		if(null != list){
 			if(0==list.size()) response.getWriter().write(JsonUtil.statusResponse(1, "没有符合条件的数据", ""));
 			else response.getWriter().write(JsonUtil.statusResponse(0, labelService.getlabelSizeQuery(id, inuse, alive, ac_id, aliveTime), list));

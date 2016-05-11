@@ -35,7 +35,7 @@ public class UserControl {
 				request.getSession().setAttribute("_LOGIN", "OK");
 				response.setContentType("application/json;charset=utf-8");
 				response.getWriter().write(JsonUtil.statusResponse(0, "登录成功", "user/toIndex"));
-			}
+			}else response.getWriter().write(JsonUtil.statusResponse(1, "用户名或密码错误", ""));
 		}else
 		response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入", "")); 
 	}
