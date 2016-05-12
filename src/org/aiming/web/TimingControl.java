@@ -27,7 +27,7 @@ public class TimingControl {
 	
 	private static Timer timer = null;
 	private static long rate = 5*60*1000;
-	private static long [] lastWorkTime = {0,0,0};
+	private static List<Long> lastWorkTime =null;
 	private static List<String> ac_id = null; 
 	
 	@Autowired
@@ -78,6 +78,9 @@ public class TimingControl {
 			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
 			rate = Long.parseLong(prop.getProperty("rate"))*60*1000;
 			ac_id = JsonUtil.toObject(prop.getProperty("ac_id"), List.class);
+			for(int i=0;i<ac_id.size();i++){
+				lastWorkTime.add( 0l);  //初始化
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			rate = 5*60*1000;
@@ -90,17 +93,18 @@ public class TimingControl {
 				
 			@Override
 			public void run() {
-				for(int i=0;i<3;i++){
+				for(int i=0;i<ac_id.size();i++){
 					Boolean isWork = airService.isWork(i,new BigDecimal(0));
-					if(isWork && 0==lastWorkTime[i]){
-						lastWorkTime[i] = new Date().getTime();
-					}else if(!isWork && 0!=lastWorkTime[i]){
-						long sub = new Date().getTime()-lastWorkTime[i];
+					if(isWork && 0==lastWorkTime.get(i)){
+						lastWorkTime.set(i,new Date().getTime());
+					}
+					else if(0!=lastWorkTime.get(i)){
+						long sub = new Date().getTime()-lastWorkTime.get(i);
 						List<Label> list = labelService.getLabelByAcId(ac_id.get(i));
 						for(int j=0;j<list.size();j++){
 							labelService.updateTimeofLabel(list.get(j).getId(), TimeRevert.toString(TimeRevert.toLong(list.get(j).getCumulative_time())-sub));
 						}
-						lastWorkTime[i] = 0;
+						lastWorkTime.set(i, 0l);
 					}
 				}
 			}
