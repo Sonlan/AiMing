@@ -3,6 +3,7 @@ package org.aiming.web;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -27,7 +28,7 @@ public class TimingControl {
 	
 	private static Timer timer = null;
 	private static long rate = 5*60*1000;
-	private static List<Long> lastWorkTime =null;
+	private static List<Long> lastWorkTime = new ArrayList<>();
 	private static List<String> ac_id = null; 
 	
 	@Autowired
