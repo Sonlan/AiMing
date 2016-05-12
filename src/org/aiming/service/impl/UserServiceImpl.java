@@ -72,5 +72,14 @@ public class UserServiceImpl implements UserService {
 		}
 		
 	}
+	@Override
+	public boolean userDelete(String username) {
+		try {
+			userDao.deleteUserByName(username);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 }

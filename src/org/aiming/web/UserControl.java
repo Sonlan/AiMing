@@ -31,10 +31,10 @@ public class UserControl {
 	public  void logon(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		response.setContentType("application/json;charset=utf-8");
 		if (!(null==username && "".equals(username) && null==password && "".equals(password))) {
 			if(userService.logon(username, password)){
 				request.getSession().setAttribute("_LOGIN", "OK");
-				response.setContentType("application/json;charset=utf-8");
 				response.getWriter().write(JsonUtil.statusResponse(0, "登录成功", "user/toIndex"));
 			}else response.getWriter().write(JsonUtil.statusResponse(1, "用户名或密码错误", ""));
 		}else
@@ -64,6 +64,7 @@ public class UserControl {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String levelstr = request.getParameter("level");
+		response.setContentType("application/json;charset=utf-8");
 		int level = Integer.parseInt(levelstr);
 		if (!(null==username && "".equals(username) && null==password && "".equals(password) && null==levelstr && "".equals(levelstr) )) {
 			if(userService.userRepeat(username)){
@@ -85,14 +86,18 @@ public class UserControl {
 	@RequestMapping(value = "/delete")
 	public void delete(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
-		if(null == username) response.getWriter().write(JsonUtil.statusResponse(0, "用户注销失败", ""));
+		response.setContentType("application/json;charset=utf-8");
+		if(null == username) response.getWriter().write(JsonUtil.statusResponse(0, "请输入用户名", ""));
 		else{
-			
+			if(userService.userDelete(username)){
+				response.getWriter().write(JsonUtil.statusResponse(0, "用户注销成功", ""));
+			}else response.getWriter().write(JsonUtil.statusResponse(1, "后台错误", ""));
 		}
 	}
 	@RequestMapping(value = "/query") 
 	public  void   query(HttpServletResponse response,HttpServletRequest request) throws IOException{
 		String username = request.getParameter("username");
+		response.setContentType("application/json;charset=utf-8");
 		User user = userService.query(username);
 		response.setContentType("application/json;charset=utf-8");
 		response.getWriter().write(JsonUtil.statusResponse(0, "查询成功", user));

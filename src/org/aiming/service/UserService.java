@@ -33,4 +33,6 @@ public interface UserService {
 	boolean userRepeat(String username);
 	
 	User query(String username);
+	
+	boolean userDelete(String username);
 }

@@ -11,7 +11,7 @@ import org.aiming.entity.User;
  */
 public interface UserMapper {
     User getUserByName(String username);
-    
+    void deleteUserByName(String username);
     /**
      * 根据用户名及密码判断是否存在此用户
      * @param map
