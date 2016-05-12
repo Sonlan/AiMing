@@ -1,10 +1,9 @@
 package org.aiming.web;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,18 +29,28 @@ public class LabelControl {
 	public void bind(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String data = request.getParameter("data");
 		response.setContentType("application/json;charset=utf-8");
-		if(null != null && !"".equals(data));
-		try {
-			List<String> labels = JsonUtil.toObject(data, List.class);
-			if(null == labels || 0==labels.size()) 
-				response.getWriter().write(JsonUtil.statusResponse(1, "激活绑定失败,请检查数据", ""));
-			else if(labelService.labelBind(labels)){
-				response.getWriter().write(JsonUtil.statusResponse(0, "激活绑定成功", ""));
-			}else response.getWriter().write(JsonUtil.statusResponse(1, "激活绑定失败", ""));
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.getWriter().write(JsonUtil.statusResponse(2, "激活绑定失败,后台错误", ""));
-		}
+		List<String> erroMsg = new ArrayList<>();
+		if(null != data && !"".equals(data)){
+			try {
+				List<String> labels = JsonUtil.toObject(data, List.class);
+				if(null != labels){
+					for(int i = 0; i<labels.size();i++){
+						int flag= labelService.labelBind(labels.get(i));
+						if(1==flag){
+							erroMsg.add(labels.get(i)+": 激活失败，请检查滤芯id");
+						}else if(2==flag){
+							erroMsg.add(labels.get(i)+": 此次激活失败，不能重复激活");
+						}
+					}
+					if(0 == erroMsg.size()) response.getWriter().write(JsonUtil.statusResponse(0, "激活绑定成功", ""));
+					else response.getWriter().write(JsonUtil.statusResponse(1, erroMsg.toString(), ""));
+				}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				response.getWriter().write(JsonUtil.statusResponse(2, "激活绑定失败,后台错误", ""));
+			}
+		}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
 		
 	}
 	/**
@@ -52,18 +61,31 @@ public class LabelControl {
 	@RequestMapping(value="/deploy")
 	public void deploy(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.setContentType("application/json;charset=utf-8");
-		try {
-			String id = request.getParameter("id");
-			if(null!=id && !"".equals(id)){
-				if(labelService.labelDepoy(id)){
-					response.getWriter().write(JsonUtil.statusResponse(0, "安装成功", ""));
-				}else {
-					response.getWriter().write(JsonUtil.statusResponse(1, "安装失败", ""));
-				}
-			}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.getWriter().write(JsonUtil.statusResponse(2, "后台错误", ""));
+		String data = request.getParameter("data"); 
+		List<String> erroMsg = new ArrayList<>();
+		if(null != data && !"".equals(data)){
+			try {
+				List<String> labels = JsonUtil.toObject(data, List.class);
+				if(null != labels || 0!=labels.size()){
+					for(int i=0;i<labels.size();i++){
+						int flag = labelService.labelDepoy(labels.get(i));
+						if(1==flag){
+							erroMsg.add(labels.get(i)+": 该滤芯未激活");
+						}else if(2==flag){
+							erroMsg.add(labels.get(i)+": 该滤芯已报废");
+						}else if(3==flag){
+							erroMsg.add(labels.get(i)+": 安装失败，不可重复安装");
+						}else if(4==flag){
+							erroMsg.add(labels.get(i)+": 安装失败，后台错误");
+						}
+					}
+					if(0 == erroMsg.size()) response.getWriter().write(JsonUtil.statusResponse(0, "安装成功", ""));
+					else response.getWriter().write(JsonUtil.statusResponse(1, erroMsg.toString(), ""));
+				}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
+			} catch (Exception e) {
+				e.printStackTrace();
+				response.getWriter().write(JsonUtil.statusResponse(2, "后台错误，请检查输入参数", ""));
+			}
 		}
 	}
 	/**
@@ -75,16 +97,26 @@ public class LabelControl {
 	 */
 	@RequestMapping(value="/remove")
 	public void remove(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
-		String id = request.getParameter("id");
 		response.setContentType("application/json;charset=utf-8");
-		if(null!=id && !"".equals(id)){
-			Label label = labelService.labelRemove(id);
-			if(null != label){
-				if(label.getWashing_count()<=0){
-					response.getWriter().write(JsonUtil.statusResponse(1, "已达到清洗次数上限", ""));
-				}else
-					response.getWriter().write(JsonUtil.statusResponse(0, "拆卸成功", ""));
-			}
+		String data = request.getParameter("data"); 
+		List<String> erroMsg = new ArrayList<>();
+		if(null != data && !"".equals(data)){
+			List<String> labels = JsonUtil.toObject(data, List.class);
+			if(null != labels){
+				for(int i=0;i<labels.size();i++){
+					Label label = labelService.labelRemove(labels.get(i));
+					if(null != label){
+						if(label.getWashing_count()<=0){
+							erroMsg.add(labels.get(i)+": 已达到清洗次数上限");
+						}
+					}else{
+						erroMsg.add(labels.get(i)+": 移除失败");
+					}
+				}
+				if(0 == erroMsg.size()) response.getWriter().write(JsonUtil.statusResponse(0, "移除成功", ""));
+				else response.getWriter().write(JsonUtil.statusResponse(1, erroMsg.toString(), ""));
+			}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
+			
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
 	}
 	/**
@@ -95,12 +127,24 @@ public class LabelControl {
 	 */
 	@RequestMapping(value="/scrap")
 	public void scrap(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		String id = request.getParameter("id");
 		response.setContentType("application/json;charset=utf-8");
-		if(null!=id && !"".equals(id)){
-			if(labelService.labelScrap(id)){
-				response.getWriter().write(JsonUtil.statusResponse(0, "手动报废成功", ""));
-			}else response.getWriter().write(JsonUtil.statusResponse(1, "手动报废失败", ""));
+		String data = request.getParameter("data"); 
+		List<String> erroMsg = new ArrayList<>();
+		if(null != data && !"".equals(data)){
+			List<String> labels = JsonUtil.toObject(data, List.class);
+			if(null != labels){
+				for(int i=0;i<labels.size();i++){
+					int flag= labelService.labelScrap(labels.get(i));
+					if(1==flag){
+						erroMsg.add(labels.get(i)+": 手动报废失败,不存在该空气滤芯");
+					}else if(1==flag){
+						erroMsg.add(labels.get(i)+": 手动报废失败,后台错误");
+					}
+				}
+				if(0 == erroMsg.size()) response.getWriter().write(JsonUtil.statusResponse(0, "手动报废成功", ""));
+				else response.getWriter().write(JsonUtil.statusResponse(1, erroMsg.toString(), ""));
+			}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
+			
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入参数", ""));
 	}
 	/**
@@ -115,8 +159,8 @@ public class LabelControl {
 		String inuse = null==request.getParameter("inuse")?"":request.getParameter("inuse");  //是否在使用
 		String alive = null==request.getParameter("alive")?"":request.getParameter("alive");  //是否报废
 		String ac_id = null==request.getParameter("ac_id")?"":request.getParameter("ac_id");  //空调id，id前两位
-		String aliveTime = null==request.getParameter("aliveTime")?"":request.getParameter("aliveTime");  //距离报废的时间，单位小时
-		String washRemain =  null==request.getParameter("washRemain")?"":request.getParameter("washRemain");  //剩余清洗次数
+		String aliveTime = (null==request.getParameter("aliveTime") || "0".equals(request.getParameter("aliveTime")))?"":request.getParameter("aliveTime");  //距离报废的时间，单位小时
+		String washRemain =  (null==request.getParameter("aliveTime") || "0".equals(request.getParameter("washRemain")))?"":request.getParameter("washRemain");  //剩余清洗次数
 		int page = null==request.getParameter("page")?0:Integer.parseInt(request.getParameter("page"));  //页数，从0开始
 		response.setContentType("application/json;charset=utf-8");
 		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,aliveTime,washRemain,page);

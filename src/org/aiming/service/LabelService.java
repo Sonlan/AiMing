@@ -12,12 +12,12 @@ public interface LabelService {
 	 * 批量标签激活
 	 * @return
 	 */
-	public boolean labelBind(List<String> list);
+	public int labelBind(String id);
 	/**
 	 * 滤芯安装
 	 * @param id
 	 */
-	public boolean labelDepoy(String id);
+	public int labelDepoy(String id);
 	/**
 	 * 滤芯拆除
 	 * @param id
@@ -29,7 +29,7 @@ public interface LabelService {
 	 * @param id
 	 * @return
 	 */
-	public boolean labelScrap(String id);
+	public int labelScrap(String id);
 	/**
 	 * 标签信息查询
 	 * @param id 空气滤芯id

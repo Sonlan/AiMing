@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DELETE;
 
 import org.aiming.entity.User;
 import org.aiming.service.UserService;
@@ -74,6 +75,20 @@ public class UserControl {
 		}
 		else response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,请检查输入", "")); 
 
+	}
+	/**
+	 * 用户注销
+	 * @param request
+	 * @param response
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/delete")
+	public void delete(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		String username = request.getParameter("username");
+		if(null == username) response.getWriter().write(JsonUtil.statusResponse(0, "用户注销失败", ""));
+		else{
+			
+		}
 	}
 	@RequestMapping(value = "/query") 
 	public  void   query(HttpServletResponse response,HttpServletRequest request) throws IOException{

@@ -24,12 +24,17 @@ public class LabelServiceImpl implements LabelService {
 	@Autowired
 	private LabelMapper labelDao;
 	@Override
-	public boolean labelDepoy(String id) {
+	public int labelDepoy(String id) {
 		try {
 			Label label = labelDao.getLabelById(id);
 			if(null == label){
-				return false;
-			}else{
+				return 1;
+			}else if(label.getAlive()==0){
+				return 2;
+			}else if(label.getInuse()==1){
+				return 3;
+			}
+			else{
 				Map<Object, Object> map = new HashMap<>();
 				Properties prop=new Properties();
 				prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
@@ -38,11 +43,11 @@ public class LabelServiceImpl implements LabelService {
 				map.put("id", id);
 				map.put("washing_count", label.getWashing_count()-1);
 				labelDao.deployLabel(map);
-				return true;
+				return 0;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return 4;
 		}
 	}
 	@Override
@@ -53,6 +58,9 @@ public class LabelServiceImpl implements LabelService {
 				return null;
 			}else{
 				labelDao.removeLabel(id);
+				//判断是否到达报废条件
+				if(label.getWashing_count()<=0)
+					labelDao.scrapLabel(id);
 				return label;
 			}
 		} catch (Exception e) {
@@ -61,18 +69,18 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public boolean labelScrap(String id) {
+	public int labelScrap(String id) {
 		try {
 			Label label = labelDao.getLabelById(id);
 			if(null == label){
-				return false;
+				return 1;
 			}else{
 				labelDao.scrapLabel(id);
-				return true;
+				return 0;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return 2;
 		}
 	}
 	@Override
@@ -160,26 +168,24 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public boolean labelBind(List<String> list) {
+	public int labelBind(String id) {
 		try {
 			Properties prop=new Properties();
 			prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
-			if(null != list && 0!=list.size()){
+			if(null != id && !"".equals(id)){
 				Map<Object, Object> map = new HashMap<>();
 				//获取使用时间上限及清洗次数上限
 				List<String> washCountLimits = JsonUtil.toObject(prop.getProperty("washCountLimit"), List.class);
 				List<String> limitTimes = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
-				for(int i=0;i<list.size();i++){
-					map.put("id", list.get(i));
-					map.put("washing_count", Integer.parseInt(washCountLimits.get(Integer.parseInt(list.get(i).substring(2, 3))))+1);
-					map.put("cumulative_time", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(list.get(i).substring(2, 3))))*3600000));
-					labelDao.labelInsert(map);
-				}
-				return true;
-			}else return false;
+				map.put("id", id);
+				map.put("washing_count", Integer.parseInt(washCountLimits.get(Integer.parseInt(id.substring(2, 3))))+1);
+				map.put("cumulative_time", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(id.substring(2, 3))))*3600000));
+				labelDao.labelInsert(map);
+				return 0;
+			}else return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return 2;
 		}
 	}
 
