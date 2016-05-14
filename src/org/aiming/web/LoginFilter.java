@@ -25,17 +25,20 @@ public class LoginFilter implements Filter {
 		String login=null;
 		HttpServletRequest request = (HttpServletRequest)arg0;
 		HttpServletResponse response = (HttpServletResponse)arg1;
-		login = (String) request.getSession().getAttribute("_LOGIN");
-		if(login==null || !login.equals("OK")){
-			String PATH = request.getScheme() + "://"
-					+ request.getServerName() + ":" + request.getServerPort()
-					+ request.getContextPath() + "/";
-			response.sendRedirect(PATH+"/user/toLogon");
-			return;
-		}
-		else {
+		String uri = request.getRequestURI();
+		if(!uri.toUpperCase().contains("LOGON")){
+			login = (String) request.getSession().getAttribute("_LOGIN");
+			if(login==null || !login.equals("OK")){
+				String PATH = request.getScheme() + "://"
+						+ request.getServerName() + ":" + request.getServerPort()
+						+ request.getContextPath() + "/";
+				response.sendRedirect(PATH+"user/toLogon");
+			}
+			else
+				chain.doFilter(arg0, arg1);
+		}else
 			chain.doFilter(arg0, arg1);
-		}
+
 		
 	}
 

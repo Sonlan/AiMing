@@ -17,17 +17,16 @@ public class UserServiceImpl implements UserService {
 	 * 登录失败返回false
 	 */
 	@Override
-	public boolean logon(String username, String password) {
+	public User logon(String username, String password) {
 		try {
 			Map<Object, Object> map = new HashMap<Object, Object>();
 			map.put("username", username);
 			map.put("password", MD5Util.MD5(password));
-			if (null == userDao.userExist(map)) {
-				return false;
-			}else return true;
+			return userDao.userExist(map);
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 		
 	}

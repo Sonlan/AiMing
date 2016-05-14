@@ -14,7 +14,7 @@ public interface UserService {
 	 * @param password
 	 * @return
 	 */
-	boolean logon(String username,String password);
+	User logon(String username,String password);
 	/**
 	 * 注册用户
 	 * @param username

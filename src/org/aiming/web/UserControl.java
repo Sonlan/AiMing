@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.DELETE;
 
 import org.aiming.entity.User;
 import org.aiming.service.UserService;
@@ -33,9 +32,11 @@ public class UserControl {
 		String password = request.getParameter("password");
 		response.setContentType("application/json;charset=utf-8");
 		if (!(null==username && "".equals(username) && null==password && "".equals(password))) {
-			if(userService.logon(username, password)){
+			User user= userService.logon(username, password);
+			if(null !=user){
 				request.getSession().setAttribute("_LOGIN", "OK");
-				response.getWriter().write(JsonUtil.statusResponse(0, "登录成功", "user/toIndex"));
+				request.getSession().setAttribute("_USER", user);
+				response.getWriter().write(JsonUtil.statusResponse(0, "登录成功", "toIndex"));
 			}else response.getWriter().write(JsonUtil.statusResponse(1, "用户名或密码错误", ""));
 		}else
 		response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入", "")); 
@@ -66,7 +67,10 @@ public class UserControl {
 		String levelstr = request.getParameter("level");
 		response.setContentType("application/json;charset=utf-8");
 		int level = Integer.parseInt(levelstr);
-		if (!(null==username && "".equals(username) && null==password && "".equals(password) && null==levelstr && "".equals(levelstr) )) {
+		User user = (User) request.getSession().getAttribute("_USER");
+		if(0!=user.getLevel()){
+			response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
+		}else if (!(null==username && "".equals(username) && null==password && "".equals(password) && null==levelstr && "".equals(levelstr) )) {
 			if(userService.userRepeat(username)){
 				response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,用户名重复", "")); 
 			}
@@ -87,7 +91,11 @@ public class UserControl {
 	public void delete(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
 		response.setContentType("application/json;charset=utf-8");
-		if(null == username) response.getWriter().write(JsonUtil.statusResponse(0, "请输入用户名", ""));
+		User user = (User) request.getSession().getAttribute("_USER");
+		if(null == username) response.getWriter().write(JsonUtil.statusResponse(1, "请输入用户名", ""));
+		else if(0!=user.getLevel()){
+			response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
+		}
 		else{
 			if(userService.userDelete(username)){
 				response.getWriter().write(JsonUtil.statusResponse(0, "用户注销成功", ""));
