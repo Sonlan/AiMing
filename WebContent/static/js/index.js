@@ -281,14 +281,12 @@ $(document).ready(function() {
 	};
 	//翻页 done
 	document.getElementById('btnPre').onclick = function(evt) {
-	    if(currentPage == 1) {
+	    if(currentPage == 0) {
 		} else {
 		    //发送请求
 		    currentPage --;
-			pageSel.options[currentPage-1].selected = true;
 			JSONData.page = currentPage;
 			var JSONSend = changeString(JSONData);
-			alert(JSONSend);
 			sendQuery(JSONSend);
 		}
 	}
@@ -297,9 +295,7 @@ $(document).ready(function() {
 		} else {
 		    //发送请求
 		    currentPage ++;
-			pageSel.options[currentPage-1].selected = true;
 			JSONData.page = currentPage;
-			alert();
 			var JSONSend = changeString(JSONData);
 			sendQuery(JSONSend);
 		}
@@ -383,13 +379,17 @@ $(document).ready(function() {
 	    //var jsData = JSON.parse(data);
 		if(jsData.errorCode == 0) { //操作成功显示查询信息
 		    //显示页码信息
-		    maxPage = jsData.errorMsg % 9 + 1;
-			for(var i=0; i<maxPage; i++) {
+		    maxPage = Math.floor(jsData.errorMsg / 9);
+		    if((jsData.errorMsg % 9) == 0)
+		    	maxPage -= 1;
+		    document.getElementById('pageSel').innerHTML = '';
+			for(var i=0; i<=maxPage; i++) {
 			  var opt = document.createElement('option');
 			  opt.value = i;
 			  opt.innerHTML = i+1;
 			  document.getElementById('pageSel').appendChild(opt);
 			}
+			pageSel.options[currentPage].selected = true;
 			var itemNum = jsData.param.length;
 			var table1 = document.getElementById('table1');
 			for(var k=0; k<itemNum; k++) {

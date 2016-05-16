@@ -68,6 +68,9 @@
     	<if test="ac_id != null and ac_id != ''">
     		and id LIKE '${ac_id}%'
     	</if>
+    	<if test="washing_count != null and washing_count != ''">
+    		<![CDATA[	and washing_count <= #{washing_count,jdbcType=TINYINT} ]]>
+    	</if>
     </where>
     ORDER BY washing_count desc
     limit ${pageStart},${pageEnd}
