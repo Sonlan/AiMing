@@ -1,6 +1,7 @@
 package org.aiming.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.aiming.dao.UserMapper;
@@ -61,10 +62,14 @@ public class UserServiceImpl implements UserService {
 		else return true;
 	}
 	@Override
-	public User query(String username) {
+	public List<User> query(String username,int page) {
 		try {
-			User user = userDao.getUserByName(username);
-			return user;
+			Map<Object, Object> map = new HashMap<>();
+			map.put("username", username);
+			map.put("pageStart", page*9);
+			map.put("pageEnd", page*9+9);
+			List<User> users = userDao.getUserByName(map);
+			return users;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -78,6 +83,18 @@ public class UserServiceImpl implements UserService {
 			return true;
 		} catch (Exception e) {
 			return false;
+		}
+	}
+	@Override
+	public int queryForSize(String username) {
+		try {
+			Map<Object, Object> map = new HashMap<>();
+			map.put("username", username);
+			List<User> users = userDao.getUserByName1(map);
+			return users.size();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
 	}
 

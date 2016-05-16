@@ -1,5 +1,6 @@
 package org.aiming.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.aiming.entity.User;
@@ -10,7 +11,7 @@ import org.aiming.entity.User;
  *
  */
 public interface UserMapper {
-    User getUserByName(String username);
+    List<User> getUserByName(Map<Object, Object> map);
     void deleteUserByName(String username);
     /**
      * 根据用户名及密码判断是否存在此用户
@@ -29,4 +30,5 @@ public interface UserMapper {
 	 * @return
 	 */
 	User userRepeat(Map<Object, Object> map);
+	List<User> getUserByName1(Map<Object, Object> map);
 }
