@@ -15,6 +15,18 @@ $(document).ready(function() {
     var content = document.getElementById('content'),
         defcon = document.getElementById('defContent'),
 	    pageSel = document.getElementById('pageSel');
+    
+    function changeString(data){
+    	var str = '';
+    	str += 'aliveTime=' + data.aliveTime
+    	    + '&washRemain=' + data.washRemain
+    	    + '&inuse=' + data.inuse
+    	    + '&alive=' + data.alive
+    	    + '&ac_id=' + data.ac_id
+    	    + '&page=' + data.page;
+    	alert(str);
+    	return str;
+    }
 		
 	/* 注册模块 done*/
 	var form1 = document.createElement('form'),
@@ -117,7 +129,6 @@ $(document).ready(function() {
 			}
 		});
 		form1.reset();
-		alert(regMessage);
 	}
 	var delete_btn = form1.querySelectorAll('.user_delete');
 	for(var i=0; i<5; i++) {
@@ -265,7 +276,7 @@ $(document).ready(function() {
 		var value = pageSel.options[index].value;
 		currentPage = value;
 		JSONData.page = currentPage;
-		var JSONSend = JSON.stringify(JSONData);
+		var JSONSend = changeString(JSONData);
 		sendQuery(JSONSend);
 	};
 	//翻页 done
@@ -276,7 +287,7 @@ $(document).ready(function() {
 		    currentPage --;
 			pageSel.options[currentPage-1].selected = true;
 			JSONData.page = currentPage;
-			var JSONSend = JSON.stringify(JSONData);
+			var JSONSend = changeString(JSONData);
 			alert(JSONSend);
 			sendQuery(JSONSend);
 		}
@@ -288,7 +299,8 @@ $(document).ready(function() {
 		    currentPage ++;
 			pageSel.options[currentPage-1].selected = true;
 			JSONData.page = currentPage;
-			var JSONSend = JSON.stringify(JSONData);
+			alert();
+			var JSONSend = changeString(JSONData);
 			sendQuery(JSONSend);
 		}
 	}
@@ -297,11 +309,11 @@ $(document).ready(function() {
 	    var check = document.getElementById('baofei');
 		if(check.children[0].checked) {
 		  JSONData.alive = 1;
-		  var JSONSend = JSON.stringify(JSONData);
+		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);
 		}else {
 		  JSONData.alive = 0;
-		  var JSONSend = JSON.stringify(JSONData);
+		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);
 		}
 	};
@@ -310,11 +322,11 @@ $(document).ready(function() {
 	    var check = document.getElementById('inuse');
 		if(check.children[0].checked) {
 		  JSONData.inuse = 1;
-		  var JSONSend = JSON.stringify(JSONData);
+		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);		  
 		}else {
 		  JSONData.inuse = 0;
-		  var JSONSend = JSON.stringify(JSONData);
+		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);	
 		}
 	};
@@ -323,15 +335,15 @@ $(document).ready(function() {
 	    var check = document.getElementById('adId');
 		if(check.children[0].checked) {
 		  JSONData.ac_id = '01';
-		  var JSONSend = JSON.stringify(JSONData);
+		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);			  
 		} else if(check.children[1].checked) {
 		  JSONData.ac_id = '02';
-		  var JSONSend = JSON.stringify(JSONData);
+		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);
 		} else {
 		  JSONData.ac_id = '03';
-		  var JSONSend = JSON.stringify(JSONData);
+		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);
 		}
 	};
@@ -341,7 +353,7 @@ $(document).ready(function() {
 		var index = check.selectedIndex;
 		var value = check.options[index].value;
 		JSONData.washRemain = value;
-		var JSONSend = JSON.stringify(JSONData);
+		var JSONSend = changeString(JSONData);
 		sendQuery(JSONSend);
 	};
 	//剩余时间 done
@@ -350,7 +362,7 @@ $(document).ready(function() {
 		var index = check.selectedIndex;
 		var value = check.options[index].value;
 		JSONData.aliveTime = value;
-		var JSONSend = JSON.stringify(JSONData);
+		var JSONSend = changeString(JSONData);
 		sendQuery(JSONSend);
 	};
 	
@@ -360,7 +372,15 @@ $(document).ready(function() {
 	}
 	//回调显示函数
 	function contentDisplay(data){
-	    var jsData = JSON.parse(data);
+		var jsData = data;
+		//清零
+		var table1 = document.getElementById('table1');
+		for(var i=0; i<9; i++) {
+		  for(var j=0; j<6; j++) {
+		    table1.children[0].children[i+1].children[j].innerHTML = '';
+		  }
+		}
+	    //var jsData = JSON.parse(data);
 		if(jsData.errorCode == 0) { //操作成功显示查询信息
 		    //显示页码信息
 		    maxPage = jsData.errorMsg % 9 + 1;
@@ -374,9 +394,9 @@ $(document).ready(function() {
 			var table1 = document.getElementById('table1');
 			for(var k=0; k<itemNum; k++) {
 			  table1.children[0].children[k+1].children[0].innerHTML = jsData.param[k].id;
-			  table1.children[0].children[k+1].children[1].innerHTML = jsData.param[k].ac_id;
-              table1.children[0].children[k+1].children[2].innerHTML = jsData.param[k].washRemain;
-			  table1.children[0].children[k+1].children[3].innerHTML = jsData.param[k].aliveTime;
+			  table1.children[0].children[k+1].children[1].innerHTML = jsData.param[k].id.substring(0,2);
+              table1.children[0].children[k+1].children[2].innerHTML = jsData.param[k].washing_count;
+			  table1.children[0].children[k+1].children[3].innerHTML = jsData.param[k].cumulative_time;
 			  table1.children[0].children[k+1].children[4].innerHTML = jsData.param[k].inuse;
 			  table1.children[0].children[k+1].children[5].innerHTML = jsData.param[k].alive;
 			}
@@ -429,14 +449,15 @@ $(document).ready(function() {
 			JSONData.alive = 1;
 			JSONData.ac_id = '01';
 			JSONData.page = 0;
+			//清零
 			var table1 = document.getElementById('table1');
 			for(var i=0; i<9; i++) {
 			  for(var j=0; j<6; j++) {
 			    table1.children[0].children[i+1].children[j].innerHTML = '';
 			  }
 			}
-			var JSONSend = JSON.stringify(JSONData);
-            sendQuery();
+			var JSONSend = changeString(JSONData);
+            sendQuery(JSONSend);
 		}
 	});
 	$('#navigation a[href="inqury"]').click();
