@@ -29,8 +29,7 @@
 					<input type="text" name="password" id="password">
 				</p>
 				<p>
-					<label for="level">Level: </label>
-					<input type="text" name="level" id="level" disabled value=1>
+					<input type="hidden" name="level" id="level" value=1>
 				</p>
 				<p>
 					<input type="submit" name="button" id="button" value="Submit" >
@@ -66,7 +65,6 @@ $(document).ready(function() {
     $.each(data, function(name, value){
 	  if(name == 'errorCode') {
 	    if(value == 0) {
-		  alert('OK!'+data.param);
 		  location.href=data.param;
 		} else if (value == 1) {
 		} else if (value == 2) {

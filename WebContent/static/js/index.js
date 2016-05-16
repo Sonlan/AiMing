@@ -206,6 +206,7 @@ $(document).ready(function() {
 		opt2 = document.createElement('option'),
 		selectLab = document.createElement('label'),
 		valiBtn = document.createElement('input');
+	    valiP3 = document.createElement('p');
 		//手动激活页面生成
 	form3.id = 'valid';
 	valiLab1.appendChild(document.createTextNode('激活条码'));
@@ -229,9 +230,10 @@ $(document).ready(function() {
 	valiBtn.id = 'valiBtn';
 	valiBtn.name = 'valiBtn';
 	valiBtn.value = 'Submit';
+	valiP3.appendChild(valiBtn);
 	form3.appendChild(valiP1);
 	form3.appendChild(valiP2);
-	form3.appendChild(valiBtn);
+	form3.appendChild(valiP3);
 	  //手动激活页面响应
 	form3.onsubmit = function(evt){
 	    evt.preventDefault();
@@ -400,6 +402,15 @@ $(document).ready(function() {
 			  table1.children[0].children[k+1].children[4].innerHTML = jsData.param[k].inuse;
 			  table1.children[0].children[k+1].children[5].innerHTML = jsData.param[k].alive;
 			}
+		}else {
+			document.getElementById('pageSel').innerHTML = '';
+			  var opt = document.createElement('option');
+			  opt.value = 1;
+			  opt.innerHTML = 1;
+			  document.getElementById('pageSel').appendChild(opt);
+			currentPage = 0;
+			maxPage = 0;
+			JSONData.page = currentPage;
 		}
 	}
 

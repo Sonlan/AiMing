@@ -34,8 +34,8 @@
 		  <tr>
 			  <th>滤芯号</th>
 			  <th>空调号</th>
-			  <th>清洗次数</th>
-			  <th>使用时间</th>
+			  <th>剩余清洗次数</th>
+			  <th>剩余使用时间</th>
 			  <th>1:正在使用</th>
 			  <th>1:未报废</th>
 		  </tr>
@@ -151,7 +151,6 @@
 				<option value=6><=6</option>
 				<option value=8><=8</option>
 				<option value=10><=10</option>
-				<option value=12>>10</option>
 			  </select>
 			</div>
 		</div>
