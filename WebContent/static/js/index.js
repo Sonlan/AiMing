@@ -170,7 +170,7 @@ $(document).ready(function() {
 			if((data.errorMsg%5) == 0)
 				user_maxPage -= 1;
 			for(var j=0; j<len; j++) {
-			  trs[i].children[0].innerHTML = data.param[i].username;
+			  trs[j].children[0].innerHTML = data.param[j].username;
 			}
 		}
 	}

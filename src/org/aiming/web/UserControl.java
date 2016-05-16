@@ -14,6 +14,10 @@ import org.aiming.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.sun.org.apache.xerces.internal.impl.ExternalSubsetResolver;
+
+import sun.rmi.server.UnicastServerRef2;
 /**
  * 用户相关后台处理
  * @author Songsong
@@ -103,6 +107,8 @@ public class UserControl {
 		if(null == username) response.getWriter().write(JsonUtil.statusResponse(1, "请输入用户名", ""));
 		else if(0!=user.getLevel()){
 			response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
+		}else if(username.equals(user.getUsername())){
+			response.getWriter().write(JsonUtil.statusResponse(1, "您不能删除自己", ""));
 		}
 		else{
 			if(userService.userDelete(username)){
