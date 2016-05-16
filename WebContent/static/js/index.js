@@ -24,7 +24,6 @@ $(document).ready(function() {
     	    + '&alive=' + data.alive
     	    + '&ac_id=' + data.ac_id
     	    + '&page=' + data.page;
-    	alert(str);
     	return str;
     }
 		
@@ -167,7 +166,7 @@ $(document).ready(function() {
 	  //手动报废页面提交按钮响应
 	form2.onsubmit = function(evt){
 	    evt.preventDefault();
-		var formData = $('#invalid').serialize();
+	    var formData = 'data=[' + document.getElementById('invInp').value + ']';
 		$.post('../../AiMing/label/scrap',formData,invalidProcess);	
 	};
 	function invalidProcess(data){
@@ -200,11 +199,7 @@ $(document).ready(function() {
 	    valiP1 = document.createElement('p'),
 	    valiLab1 = document.createElement('label'),
 		valiInp1 = document.createElement('input'),
-		valiP2 = document.createElement('p'),
-		select = document.createElement('select'),
-	    opt1 = document.createElement('option'),
-		opt2 = document.createElement('option'),
-		selectLab = document.createElement('label'),
+
 		valiBtn = document.createElement('input');
 	    valiP3 = document.createElement('p');
 		//手动激活页面生成
@@ -216,28 +211,17 @@ $(document).ready(function() {
 	valiInp1.name = 'valiInp1';
 	valiP1.appendChild(valiLab1);
 	valiP1.appendChild(valiInp1);  //p1
-	opt1.value = 0;
-	opt1.appendChild(document.createTextNode('0 初级滤芯'));
-	opt2.value = 1;
-	opt2.appendChild(document.createTextNode('1 中级滤芯'));
-	select.appendChild(opt1);
-	select.appendChild(opt2);
-	selectLab.htmlFor = 'select';
-	selectLab.appendChild(document.createTextNode('滤芯类型'));
-	valiP2.appendChild(selectLab);
-	valiP2.appendChild(select);  //p2 select
 	valiBtn.type = 'submit';
 	valiBtn.id = 'valiBtn';
 	valiBtn.name = 'valiBtn';
 	valiBtn.value = 'Submit';
 	valiP3.appendChild(valiBtn);
 	form3.appendChild(valiP1);
-	form3.appendChild(valiP2);
 	form3.appendChild(valiP3);
 	  //手动激活页面响应
 	form3.onsubmit = function(evt){
 	    evt.preventDefault();
-		var formData = $('#valid').serialize();
+	    var formData = 'data=[' + document.getElementById('valiInp1').value + ']';
 		$.post('../../AiMing/label/bind',formData,validProcess);			
 	};
 	function validProcess(data){

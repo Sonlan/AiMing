@@ -26,7 +26,7 @@
 				</p>
 				<p>
 					<label for="password">密码: </label>
-					<input type="text" name="password" id="password">
+					<input type="password" name="password" id="password">
 				</p>
 				<p>
 					<input type="hidden" name="level" id="level" value=1>
