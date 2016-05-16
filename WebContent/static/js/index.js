@@ -190,6 +190,7 @@ $(document).ready(function() {
 				trs[j].children[0].innerHTML = data.param[j].username;
 				trs[j].children[1].querySelectorAll('input')[0].style.display = "";
 				trs[j].children[1].querySelectorAll('input')[1].style.display = "";
+			  trs[j].children[0].innerHTML = data.param[j].username;
 			}
 		}
 	}
