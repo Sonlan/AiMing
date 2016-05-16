@@ -36,7 +36,9 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/user</url-pattern>
+		<url-pattern>/main</url-pattern>
+		<url-pattern>/manager</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>ERROR</dispatcher>
