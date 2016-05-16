@@ -453,9 +453,9 @@ $(document).ready(function() {
 	}
 
 	/* 按钮点击 */
-    $('#navigation a').click(function(evt){
+    $('#navigation li').click(function(evt){
 	    evt.preventDefault();
-	    var url = $(this).attr('href');
+	    var url = this.children[0].getAttribute('href');
 		//计时启停按钮
 		if(url == 'start') {
 		    if($(this).text() == '停止计时') {
