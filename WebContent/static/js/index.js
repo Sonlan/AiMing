@@ -157,7 +157,8 @@ $(document).ready(function() {
 	//注册回调函数
 	function regCallBack(data){
 		//清零
-		var trs = form1.querySelector('table').children[1].querySelecorAll('tr');
+		alert(form1.querySelector('table').children[1]);
+		var trs = form1.querySelector('table').children[1].querySelectorAll('tr');
 		for(var i=0; i<5; i++) {
 			trs[i].children[0].innerHTML = '';
 		}
@@ -165,7 +166,7 @@ $(document).ready(function() {
 		if(data.errorCode == 0) {
 			var len = data.param.length;
 			//最大页数
-			user_maxPage = Math(data.errorMsg/5);
+			user_maxPage = Math.floor(data.errorMsg/5);
 			if((data.errorMsg%5) == 0)
 				user_maxPage -= 1;
 			for(var j=0; j<len; j++) {
