@@ -1,5 +1,7 @@
 package org.aiming.service;
 
+import java.util.List;
+
 import org.aiming.entity.User;
 
 /**
@@ -32,7 +34,8 @@ public interface UserService {
 	 */
 	boolean userRepeat(String username);
 	
-	User query(String username);
+	List<User> query(String username, int page);
 	
+	int queryForSize(String username);
 	boolean userDelete(String username);
 }

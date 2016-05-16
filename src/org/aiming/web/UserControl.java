@@ -1,6 +1,8 @@
 package org.aiming.web;
 
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserControl {
 	@Autowired
 	private UserService userService;
+	
 	/**
 	 * 用户登录处理
 	 * @throws IOException 
@@ -36,7 +39,7 @@ public class UserControl {
 			if(null !=user){
 				request.getSession().setAttribute("_LOGIN", "OK");
 				request.getSession().setAttribute("_USER", user);
-				response.getWriter().write(JsonUtil.statusResponse(0, "登录成功", "toIndex"));
+				response.getWriter().write(JsonUtil.statusResponse(0, "登录成功", "user/toIndex"));
 			}else response.getWriter().write(JsonUtil.statusResponse(1, "用户名或密码错误", ""));
 		}else
 		response.getWriter().write(JsonUtil.statusResponse(1, "请检查输入", "")); 
@@ -66,19 +69,24 @@ public class UserControl {
 		String password = request.getParameter("password");
 		String levelstr = request.getParameter("level");
 		response.setContentType("application/json;charset=utf-8");
-		int level = Integer.parseInt(levelstr);
-		User user = (User) request.getSession().getAttribute("_USER");
-		if(0!=user.getLevel()){
-			response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
-		}else if (!(null==username && "".equals(username) && null==password && "".equals(password) && null==levelstr && "".equals(levelstr) )) {
-			if(userService.userRepeat(username)){
-				response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,用户名重复", "")); 
+		try {
+			User user = (User) request.getSession().getAttribute("_USER");	
+			if(0!=user.getLevel()){
+				response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
+			}else if (!(null==username && "".equals(username) && null==password && "".equals(password) && null==levelstr && "".equals(levelstr) )) {
+				int level = Integer.parseInt(levelstr);
+				if(userService.userRepeat(username)){
+					response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,用户名重复", "")); 
+				}
+				else if(userService.login(username, password,level)){
+					response.getWriter().write(JsonUtil.statusResponse(0, "注册成功", ""));
+				}
 			}
-			else if(userService.login(username, password,level)){
-				response.getWriter().write(JsonUtil.statusResponse(0, "注册成功", ""));
-			}
+			else response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,请检查输入", "")); 
+		} catch (Exception e) {
+			response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,请检查输入", ""));
 		}
-		else response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,请检查输入", "")); 
+		
 
 	}
 	/**
@@ -104,11 +112,14 @@ public class UserControl {
 	}
 	@RequestMapping(value = "/query") 
 	public  void   query(HttpServletResponse response,HttpServletRequest request) throws IOException{
-		String username = request.getParameter("username");
+		String username = null==request.getParameter("username")?"":request.getParameter("username");
+		int page = null==request.getParameter("page")?0:Integer.parseInt(request.getParameter("page"));  //页数，从0开始
 		response.setContentType("application/json;charset=utf-8");
-		User user = userService.query(username);
+		List<User> users = userService.query(username,page);
 		response.setContentType("application/json;charset=utf-8");
-		response.getWriter().write(JsonUtil.statusResponse(0, "查询成功", user));
+		if(null==users || 0==users.size())
+			response.getWriter().write(JsonUtil.statusResponse(1, "查询失败", ""));
+		else response.getWriter().write(JsonUtil.statusResponse(0, userService.queryForSize(username), users));
 	}
 	/**
 	 * 返回到登录页面

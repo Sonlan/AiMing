@@ -32,7 +32,7 @@ public class LoginFilter implements Filter {
 				String PATH = request.getScheme() + "://"
 						+ request.getServerName() + ":" + request.getServerPort()
 						+ request.getContextPath() + "/";
-				response.sendRedirect(PATH+"user/toLogon");
+				response.sendRedirect(PATH);
 			}
 			else
 				chain.doFilter(arg0, arg1);

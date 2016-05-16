@@ -13,8 +13,25 @@
   <delete id="deleteUserByName" parameterType="java.lang.String">
   	delete from user where username = #{username}
   </delete>
-  <select id="getUserByName" parameterType="java.lang.String" resultType="org.aiming.entity.User">
-    SELECT * FROM user WHERE username = #{username}
+  <select id="getUserByName" parameterType="java.util.HashMap" resultType="org.aiming.entity.User">
+    SELECT * FROM user
+    <where>
+		1=1
+		<if test="username != null and username != '' ">
+			<![CDATA[ AND username = #{username} ]]>
+		</if>
+	</where>
+	limit ${pageStart},${pageEnd}
+  </select>
+  
+  <select id="getUserByName1" parameterType="java.util.HashMap" resultType="org.aiming.entity.User">
+    SELECT * FROM user
+    <where>
+		1=1
+		<if test="username != null and username != '' ">
+			<![CDATA[ AND username = #{username} ]]>
+		</if>
+	</where>
   </select>
   
   <select id="userExist" parameterType="java.util.HashMap" resultMap="BaseResultMap">
