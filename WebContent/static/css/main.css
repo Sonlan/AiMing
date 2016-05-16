@@ -10,7 +10,20 @@ a {
 }
 
 form {
-	padding: 20px 10px 20px 40%;
+	padding: 0;
+}
+form p {
+	text-align: center;
+}
+form table {
+	margin-left: 15%;
+	margin-top: 5%;
+	color: white;
+}
+table td {
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
+	text-align: center;
 }
 label {
 	display: inline-block;
@@ -110,13 +123,66 @@ input {
 	background-color: #000;
 }
 
+#conbtn {
+	position: absolute;
+	bottom: 5%;
+	left: 20%;
+}
+#conbtn input {
+	width: 10em;
+	margin-left: 5em;
+}
+
+#select {
+	position: absolute;
+	top: 5%;
+	left: 79%;
+	height: 90%;
+	width: 20%;
+	color: white;
+}
+
+#select p{
+	font:  20px 'ColaborateLightRegular', Arial, sans-serif;	
+}
+
+#select div {
+	margin-bottom: 30px;
+}
 #content {
     border: 3px solid #fff;
 	position: absolute;
-	top: 13%;
+	top: 15%;
 	left: 13%;
 	height: 65%;
 	width: 75%;
+}
+
+#table1 {
+	margin-left: 7%;
+	margin-top: 1em;
+}
+
+#table1 th{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	width: 10em;
+	color: white;
+	background-color: gray;
+}
+#table1 td{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	width: 10em;
+	height: 2em;
+	color:white;
+	text-align: center;
+}
+
+#conPage {
+	padding: 0.5em 0 0 7%;
+	color: white;
+	font: normal 25px 'ColaborateThinRegular', Arial, sans-serif;
 }
 
 #content .welcome {

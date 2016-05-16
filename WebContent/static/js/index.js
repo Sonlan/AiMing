@@ -1,45 +1,57 @@
 $(document).ready(function() {
-
-    var content = document.getElementById('content');
-
-	/* 注册模块 */
-	var form1 = document.createElement('form');
-	form1.id = 'register';	
-	var p1 = document.createElement('p');
-	var p2 = document.createElement('p');
-	var p3 = document.createElement('p');
-	var p4 = document.createElement('p');
-	var username = document.createElement('input');
+    /* 查询条件 */
+    var currentPage = 0,	            //当前页面 首页为0
+	    maxPage = 0,                    //最大页面
+	    JSONData = {                    //查询请求JSON
+			aliveTime : 0,
+			washRemain : 0,
+			inuse : 1,
+			alive : 1,
+			ac_id : '01',
+			page : 0
+	    };
+	
+	/* 需要变动的DOM */
+    var content = document.getElementById('content'),
+        defcon = document.getElementById('defContent'),
+	    pageSel = document.getElementById('pageSel');
+		
+	/* 注册模块 done*/
+	var form1 = document.createElement('form'),
+	    p1 = document.createElement('p'),
+	    p2 = document.createElement('p'),
+	    p3 = document.createElement('p'),
+	    p4 = document.createElement('p'),
+	    username = document.createElement('input'),
+		label1 = document.createElement('label'),
+		password = document.createElement('input'),
+		label2 = document.createElement('label'),
+		confirm = document.createElement('input'),
+		label3 = document.createElement('label'),
+		submit = document.createElement('input');
+	//注册模块页面生成
+	form1.id = 'register';
 	username.type = 'text';
 	username.name = 'username';
 	username.id = 'username';
-	var label1 = document.createElement('label');
-	var label1text = document.createTextNode('用户名：');
 	label1.htmlFor = 'username';
-	label1.appendChild(label1text);			
+	label1.appendChild(document.createTextNode('用户名：'));			
 	p1.appendChild(label1);
 	p1.appendChild(username);
-	var password = document.createElement('input');
 	password.type = 'password';
 	password.name = 'password';
 	password.id = 'password';
-	var label2 = document.createElement('label');
-	var label2text = document.createTextNode('密码：');
 	label2.htmlFor = 'password';
-	label2.appendChild(label2text);			
+	label2.appendChild(document.createTextNode('密码：'));			
 	p2.appendChild(label2);
 	p2.appendChild(password);
-	var confirm = document.createElement('input');
 	confirm.type = 'password';
 	confirm.name = 'confirm';
 	confirm.id = 'confirm';
-	var label3 = document.createElement('label');
-	var label3text = document.createTextNode('确认密码：');
 	label3.htmlFor = 'confirm';
-	label3.appendChild(label3text);			
+	label3.appendChild(document.createTextNode('确认密码：'));			
 	p3.appendChild(label3);
 	p3.appendChild(confirm);
-	var submit = document.createElement('input');
 	submit.type = 'submit';
 	submit.id = 'regBtn';
 	submit.name = 'submit';
@@ -49,7 +61,24 @@ $(document).ready(function() {
 	form1.appendChild(p2);
 	form1.appendChild(p3);
 	form1.appendChild(p4);
-	
+	function userManage(){
+	  var i, h=['<table border="1" width="70%">'];
+	  h.push('<thead>');
+	    h.push('<tr><th>用户名<\/th><th>操作<\/th><\/tr>');
+	  h.push('<\/thead>');
+	  h.push('<tbody>');
+	    for(i=0; i<5; i++) {
+		  h.push('<tr><td>');
+		  h.push(i);
+	      h.push('<\/td><td>');
+		  h.push('<input type="button" value="删除" class="user_delete" />');
+		  h.push('<\/td><\/tr>');
+		}
+	  h.push('<\/tbody>');
+	  form1.innerHTML += h.join('');
+	}
+    userManage();
+	//注册模块提交按钮响应
     form1.onsubmit = function(evt){
 	    evt.preventDefault();
 		if($('#username').val() == '') {
@@ -90,30 +119,41 @@ $(document).ready(function() {
 		form1.reset();
 		alert(regMessage);
 	}
-	
-	/* 手动报废 */
-	var form2 = document.createElement('form');
+	var delete_btn = form1.querySelectorAll('.user_delete');
+	for(var i=0; i<5; i++) {
+	  delete_btn[i].onclick = function(){
+	    var con = window.confirm('确定删除该用户？');
+		if(con) {
+		  
+		}
+	    //alert(this.parentNode.previousSibling.innerHTML);
+	  };
+	}
+		
+	/* 手动报废 done*/
+	var form2 = document.createElement('form'),
+	    invP1 = document.createElement('p'),
+	    invLab = document.createElement('label'),
+		invInp = document.createElement('input'),
+		invP2 = document.createElement('p'),
+		invBtn = document.createElement('input');
+		//手动报废页面生成
 	form2.id = 'invalid';
-	var invP1 = document.createElement('p');
-	var invLab = document.createElement('label');
-	var invLabText = document.createTextNode('报废条码');
-	invLab.appendChild(invLabText);
+	invLab.appendChild(document.createTextNode('报废条码'));
 	invLab.htmlFor = 'invInp';
-	var invInp = document.createElement('input');
 	invInp.type = 'text';
 	invInp.id = 'invInp';
 	invInp.name = 'invInp';
 	invP1.appendChild(invLab);
 	invP1.appendChild(invInp);
-	var invP2 = document.createElement('p');
-	var invBtn = document.createElement('input');
 	invBtn.type = 'submit';
 	invBtn.id = 'invBtn';
 	invBtn.name = 'invBtn';
 	invBtn.value = 'Submit';
 	invP2.appendChild(invBtn);
 	form2.appendChild(invP1);
-	form2.appendChild(invP2);//手动报废
+	form2.appendChild(invP2);
+	  //手动报废页面提交按钮响应
 	form2.onsubmit = function(evt){
 	    evt.preventDefault();
 		var formData = $('#invalid').serialize();
@@ -144,47 +184,44 @@ $(document).ready(function() {
 		alert(invalidMsg);
 	}
 	
-	/* 手动激活 */
-	var form3 = document.createElement('form');
+	/* 手动激活 done*/
+	var form3 = document.createElement('form'),
+	    valiP1 = document.createElement('p'),
+	    valiLab1 = document.createElement('label'),
+		valiInp1 = document.createElement('input'),
+		valiP2 = document.createElement('p'),
+		select = document.createElement('select'),
+	    opt1 = document.createElement('option'),
+		opt2 = document.createElement('option'),
+		selectLab = document.createElement('label'),
+		valiBtn = document.createElement('input');
+		//手动激活页面生成
 	form3.id = 'valid';
-	var valiP1 = document.createElement('p');
-	var valiLab1 = document.createElement('label');
-	var valiLab1Text = document.createTextNode('激活条码');
-	valiLab1.appendChild(valiLab1Text);
+	valiLab1.appendChild(document.createTextNode('激活条码'));
 	valiLab1.htmlFor = 'valiInp1';
-	var valiInp1 = document.createElement('input');
 	valiInp1.type = 'text';
 	valiInp1.id = 'valiInp1';
 	valiInp1.name = 'valiInp1';
 	valiP1.appendChild(valiLab1);
 	valiP1.appendChild(valiInp1);  //p1
-	var valiP2 = document.createElement('p');
-	var select = document.createElement('select');
-	select.id = 'select';
-	var opt1 = document.createElement('option');
 	opt1.value = 0;
-	var opt1Text = document.createTextNode('0 初级滤芯');
-	opt1.appendChild(opt1Text);
-	var opt2 = document.createElement('option');
+	opt1.appendChild(document.createTextNode('0 初级滤芯'));
 	opt2.value = 1;
-	var opt2Text = document.createTextNode('1 中级滤芯');
-	opt2.appendChild(opt2Text);
+	opt2.appendChild(document.createTextNode('1 中级滤芯'));
 	select.appendChild(opt1);
 	select.appendChild(opt2);
-	var selectLab = document.createElement('label');
 	selectLab.htmlFor = 'select';
-	var selectText = document.createTextNode('滤芯类型');
-	selectLab.appendChild(selectText);
+	selectLab.appendChild(document.createTextNode('滤芯类型'));
 	valiP2.appendChild(selectLab);
 	valiP2.appendChild(select);  //p2 select
-	var valiBtn = document.createElement('input');
 	valiBtn.type = 'submit';
 	valiBtn.id = 'valiBtn';
 	valiBtn.name = 'valiBtn';
 	valiBtn.value = 'Submit';
 	form3.appendChild(valiP1);
 	form3.appendChild(valiP2);
-	form3.appendChild(valiBtn);//激活
+	form3.appendChild(valiBtn);
+	  //手动激活页面响应
 	form3.onsubmit = function(evt){
 	    evt.preventDefault();
 		var formData = $('#valid').serialize();
@@ -220,11 +257,137 @@ $(document).ready(function() {
 	timingP.id = 'timingP';
 	var stopText = document.createTextNode('计时已停止...');
 	var startText = document.createTextNode('计时已启动...');
+	
+	/* 查询条件 */
+	//更改页码 done
+	document.getElementById('pageSel').onchange = function(evt){
+	    var index = pageSel.selectedIndex;
+		var value = pageSel.options[index].value;
+		currentPage = value;
+		JSONData.page = currentPage;
+		var JSONSend = JSON.stringify(JSONData);
+		sendQuery(JSONSend);
+	};
+	//翻页 done
+	document.getElementById('btnPre').onclick = function(evt) {
+	    if(currentPage == 1) {
+		} else {
+		    //发送请求
+		    currentPage --;
+			pageSel.options[currentPage-1].selected = true;
+			JSONData.page = currentPage;
+			var JSONSend = JSON.stringify(JSONData);
+			alert(JSONSend);
+			sendQuery(JSONSend);
+		}
+	}
+	document.getElementById('btnNext').onclick = function(evt) {
+	    if(currentPage == maxPage) {
+		} else {
+		    //发送请求
+		    currentPage ++;
+			pageSel.options[currentPage-1].selected = true;
+			JSONData.page = currentPage;
+			var JSONSend = JSON.stringify(JSONData);
+			sendQuery(JSONSend);
+		}
+	}
+	//是否报废 done
+	document.getElementById('baofei').onchange = function(evt){
+	    var check = document.getElementById('baofei');
+		if(check.children[0].checked) {
+		  JSONData.alive = 1;
+		  var JSONSend = JSON.stringify(JSONData);
+		  sendQuery(JSONSend);
+		}else {
+		  JSONData.alive = 0;
+		  var JSONSend = JSON.stringify(JSONData);
+		  sendQuery(JSONSend);
+		}
+	};
+	//是否正在使用 done
+	document.getElementById('inuse').onchange = function(evt){
+	    var check = document.getElementById('inuse');
+		if(check.children[0].checked) {
+		  JSONData.inuse = 1;
+		  var JSONSend = JSON.stringify(JSONData);
+		  sendQuery(JSONSend);		  
+		}else {
+		  JSONData.inuse = 0;
+		  var JSONSend = JSON.stringify(JSONData);
+		  sendQuery(JSONSend);	
+		}
+	};
+	//空调号选择
+	document.getElementById('adId').onchange = function(evt){
+	    var check = document.getElementById('adId');
+		if(check.children[0].checked) {
+		  JSONData.ac_id = '01';
+		  var JSONSend = JSON.stringify(JSONData);
+		  sendQuery(JSONSend);			  
+		} else if(check.children[1].checked) {
+		  JSONData.ac_id = '02';
+		  var JSONSend = JSON.stringify(JSONData);
+		  sendQuery(JSONSend);
+		} else {
+		  JSONData.ac_id = '03';
+		  var JSONSend = JSON.stringify(JSONData);
+		  sendQuery(JSONSend);
+		}
+	};
+	//剩余清洗次数 done
+	document.getElementById('washRemain').onchange = function(evt){
+	    var check = document.getElementById('washRemain');
+		var index = check.selectedIndex;
+		var value = check.options[index].value;
+		JSONData.washRemain = value;
+		var JSONSend = JSON.stringify(JSONData);
+		sendQuery(JSONSend);
+	};
+	//剩余时间 done
+	document.getElementById('timeRemain').onchange = function(evt){
+	    var check = document.getElementById('timeRemain');
+		var index = check.selectedIndex;
+		var value = check.options[index].value;
+		JSONData.aliveTime = value;
+		var JSONSend = JSON.stringify(JSONData);
+		sendQuery(JSONSend);
+	};
+	
+	/* 查询请求 undefined*/ 
+	function sendQuery(jsonData){
+	    $.get('../../AiMing/label/query',jsonData,contentDisplay);
+	}
+	//回调显示函数
+	function contentDisplay(data){
+	    var jsData = JSON.parse(data);
+		if(jsData.errorCode == 0) { //操作成功显示查询信息
+		    //显示页码信息
+		    maxPage = jsData.errorMsg % 9 + 1;
+			for(var i=0; i<maxPage; i++) {
+			  var opt = document.createElement('option');
+			  opt.value = i;
+			  opt.innerHTML = i+1;
+			  document.getElementById('pageSel').appendChild(opt);
+			}
+			var itemNum = jsData.param.length;
+			var table1 = document.getElementById('table1');
+			for(var k=0; k<itemNum; k++) {
+			  table1.children[0].children[k+1].children[0].innerHTML = jsData.param[k].id;
+			  table1.children[0].children[k+1].children[1].innerHTML = jsData.param[k].ac_id;
+              table1.children[0].children[k+1].children[2].innerHTML = jsData.param[k].washRemain;
+			  table1.children[0].children[k+1].children[3].innerHTML = jsData.param[k].aliveTime;
+			  table1.children[0].children[k+1].children[4].innerHTML = jsData.param[k].inuse;
+			  table1.children[0].children[k+1].children[5].innerHTML = jsData.param[k].alive;
+			}
+		}
+	}
 
 	/* 按钮点击 */
     $('#navigation a').click(function(evt){
 	    evt.preventDefault();
 	    var url = $(this).attr('href');
+		//计时启停按钮
 		if(url == 'start') {
 		    if($(this).text() == '停止计时') {
 			  $(this).text('开始计时');
@@ -242,19 +405,39 @@ $(document).ready(function() {
 			  document.getElementById('content').appendChild(timingP);
 			  $.get('../../AiMing/timing/start');
 			}
-		}else if(url == 'register'){//注册
+		}else if(url == 'register'){//注册按钮
 			content.innerHTML = '';			
 			document.getElementById('content').appendChild(form1);
 		}else if(url == 'invalid'){//手动报废
 			content.innerHTML = '';			
 			document.getElementById('content').appendChild(form2);
-		}else if(url == 'valid') {
+		}else if(url == 'valid') {//手动激活
 		    content.innerHTML = '';			
 			document.getElementById('content').appendChild(form3);
 		}else if(url == 'logout') {
 		    $.get('../../AiMing/user/logout');
+			window.location.href = 'login.html';
+		}else if(url == 'inqury') {
+		    content.innerHTML = '';
+			pageSel.innerHTML = '';
+			content.appendChild(defcon);
+			currentPage = 0;
+			maxPage = 0;
+			JSONData.aliveTime = 0;
+			JSONData.washRemain = 0;
+			JSONData.inuse = 1;
+			JSONData.alive = 1;
+			JSONData.ac_id = '01';
+			JSONData.page = 0;
+			var table1 = document.getElementById('table1');
+			for(var i=0; i<9; i++) {
+			  for(var j=0; j<6; j++) {
+			    table1.children[0].children[i+1].children[j].innerHTML = '';
+			  }
+			}
+			var JSONSend = JSON.stringify(JSONData);
+            sendQuery();
 		}
 	});
-
-
+	$('#navigation a[href="inqury"]').click();
 });
