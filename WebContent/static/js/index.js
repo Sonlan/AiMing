@@ -2,6 +2,8 @@ $(document).ready(function() {
     /* 查询条件 */
     var currentPage = 0,	            //当前页面 首页为0
 	    maxPage = 0,                    //最大页面
+	    user_currentPage = 0;               //当前用户页面
+        user_maxPage = 0;                   //用户最大页面
 	    JSONData = {                    //查询请求JSON
 			aliveTime : 0,
 			washRemain : 0,
@@ -77,18 +79,31 @@ $(document).ready(function() {
 	  h.push('<thead>');
 	    h.push('<tr><th>用户名<\/th><th>操作<\/th><\/tr>');
 	  h.push('<\/thead>');
-	  h.push('<tbody>');
+	  h.push('<tbody id="regBody">');
 	    for(i=0; i<5; i++) {
 		  h.push('<tr><td>');
-		  h.push(i);
 	      h.push('<\/td><td>');
 		  h.push('<input type="button" value="删除" class="user_delete" />');
 		  h.push('<\/td><\/tr>');
 		}
 	  h.push('<\/tbody>');
+	  h.push('<\/table>');
+	  //h.push('<p><input type="button" value="上一页" id="user_pre"\/>');
+	  //h.push('<input type="button" value="下一页" id="user_next"\/><\/p>');
+	  
 	  form1.innerHTML += h.join('');
 	}
     userManage();
+    var user_p = document.createElement('p');
+    var btn_pre = document.createElement('input');
+    var btn_next = document.createElement('input');
+    btn_pre.type = "button";
+    btn_pre.value = "上一页";
+    btn_next.type = "button";
+    btn_next.value = "下一页";
+    user_p.appendChild(btn_pre);
+    user_p.appendChild(btn_next);
+    form1.appendChild(user_p);
 	//注册模块提交按钮响应
     form1.onsubmit = function(evt){
 	    evt.preventDefault();
@@ -134,11 +149,50 @@ $(document).ready(function() {
 	  delete_btn[i].onclick = function(){
 	    var con = window.confirm('确定删除该用户？');
 		if(con) {
-		  
+			var dataSend = 'username=' + this.parentNode.previousSibling.innerHTML;
+			$.get('../../AiMing/user/delete',dataSend);
 		}
-	    //alert(this.parentNode.previousSibling.innerHTML);
 	  };
 	}
+	//注册回调函数
+	function regCallBack(data){
+		//清零
+		var trs = document.getElementById('regBody').querySelecorAll('tr');
+		for(var i=0; i<5; i++) {
+			trs[i].children[0].innerHTML = '';
+		}
+		//显示
+		if(data.errorCode == 0) {
+			var len = data.param.length;
+			//最大页数
+			user_maxPage = Math(data.errorMsg/5);
+			if((data.errorMsg%5) == 0)
+				user_maxPage -= 1;
+			for(var j=0; j<len; j++) {
+			  trs[i].children[0].innerHTML = data.param[i].username;
+			}
+		}
+	}
+	//用户管理上下翻页
+    btn_pre.onclick = function(){
+    	if(user_currentPage == userMaxPage) {
+    		
+    	} else {
+    		user_currentPage ++;
+    		var dataSend = 'page=' + user_currentPage;
+    		$.get('../../AiMing/user/query',dataSend,regCallBack);
+    		
+    	}
+    };
+    btn_next.onclick = function(){
+    	if(user_currentPage == 0) {
+    		
+    	} else {
+    		user_currentPage --;
+    		var dataSend = 'page=' + user_currentPage;
+    		$.get('../../AiMing/user/query',dataSend,regCallBack);  		
+    	}
+    };
 		
 	/* 手动报废 done*/
 	var form2 = document.createElement('form'),
@@ -423,6 +477,7 @@ $(document).ready(function() {
 		}else if(url == 'register'){//注册按钮
 			content.innerHTML = '';			
 			document.getElementById('content').appendChild(form1);
+			$.get('../../AiMing/user/query','page=0',regCallBack);
 		}else if(url == 'invalid'){//手动报废
 			content.innerHTML = '';			
 			document.getElementById('content').appendChild(form2);
