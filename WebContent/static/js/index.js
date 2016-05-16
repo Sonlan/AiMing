@@ -157,7 +157,7 @@ $(document).ready(function() {
 	//注册回调函数
 	function regCallBack(data){
 		//清零
-		var trs = document.getElementById('regBody').querySelecorAll('tr');
+		var trs = form1.querySelector('table').children[1].querySelecorAll('tr');
 		for(var i=0; i<5; i++) {
 			trs[i].children[0].innerHTML = '';
 		}
@@ -455,6 +455,7 @@ $(document).ready(function() {
 	/* 按钮点击 */
     $('#navigation li').click(function(evt){
 	    evt.preventDefault();
+	    
 	    var url = this.children[0].getAttribute('href');
 		//计时启停按钮
 		if(url == 'start') {
