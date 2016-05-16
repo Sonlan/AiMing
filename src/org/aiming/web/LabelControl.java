@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.aiming.entity.Label;
 import org.aiming.service.LabelService;
 import org.aiming.utils.JsonUtil;
+import org.aiming.utils.LabelValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,12 +36,14 @@ public class LabelControl {
 				List<String> labels = JsonUtil.toObject(data, List.class);
 				if(null != labels){
 					for(int i = 0; i<labels.size();i++){
-						int flag= labelService.labelBind(labels.get(i));
-						if(1==flag){
-							erroMsg.add(labels.get(i)+": 激活失败，请检查滤芯id");
-						}else if(2==flag){
-							erroMsg.add(labels.get(i)+": 此次激活失败，不能重复激活");
-						}
+						if(LabelValidate.validate(labels.get(i))){
+							int flag= labelService.labelBind(labels.get(i));
+							if(1==flag){
+								erroMsg.add(labels.get(i)+": 激活失败，请检查滤芯id");
+							}else if(2==flag){
+								erroMsg.add(labels.get(i)+": 此次激活失败，不能重复激活");
+							}
+						}else erroMsg.add(labels.get(i)+": 激活失败，滤芯id不合法");
 					}
 					if(0 == erroMsg.size()) response.getWriter().write(JsonUtil.statusResponse(0, "激活绑定成功", ""));
 					else response.getWriter().write(JsonUtil.statusResponse(1, erroMsg.toString(), ""));
