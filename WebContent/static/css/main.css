@@ -136,9 +136,9 @@ input {
 #select {
 	position: absolute;
 	top: 5%;
-	left: 79%;
+	right: 2%;
 	height: 90%;
-	width: 20%;
+	width: 6em;
 	color: white;
 }
 
