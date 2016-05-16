@@ -83,7 +83,8 @@ $(document).ready(function() {
 	    for(i=0; i<5; i++) {
 		  h.push('<tr><td>');
 	      h.push('<\/td><td>');
-		  h.push('<input type="button" value="删除" class="user_delete" />');
+		  h.push('<input type="button" value="删除" class="user_delete"/>');
+		  h.push('<input type="button" value="修改密码" class="user_edit"/>');
 		  h.push('<\/td><\/tr>');
 		}
 	  h.push('<\/tbody>');
@@ -144,32 +145,51 @@ $(document).ready(function() {
 		});
 		form1.reset();
 	}
+	//删除操作
 	var delete_btn = form1.querySelectorAll('.user_delete');
 	for(var i=0; i<5; i++) {
 	  delete_btn[i].onclick = function(){
 	    var con = window.confirm('确定删除该用户？');
 		if(con) {
 			var dataSend = 'username=' + this.parentNode.previousSibling.innerHTML;
-			$.get('../../AiMing/user/delete',dataSend);
+			$.get('../../AiMing/user/delete',dataSend,deleteCallBack);
 		}
 	  };
+	}
+	function deleteCallBack(data){
+		if(data.errorCode == 0) {
+			var dataSend = 'page=' + user_currentPage;
+    		$.get('../../AiMing/user/query',dataSend,regCallBack);
+		}
+	}
+	//修改密码操作
+	var edit_btn = form1.querySelectorAll('.user_edit');
+	for (var i=0; i<5; i++) {
+		edit_btn[i].onclick = function(){
+			var newPassword = window.prompt("请输入新密码","");
+			//发送新密码
+		};
 	}
 	//注册回调函数
 	function regCallBack(data){
 		//清零
-		var trs = form1.querySelector('table').children[1].querySelecorAll('tr');
+		var trs = form1.querySelector('table').children[1].querySelectorAll('tr');
 		for(var i=0; i<5; i++) {
 			trs[i].children[0].innerHTML = '';
+			trs[i].children[1].querySelectorAll('input')[0].style.display = "none";
+			trs[i].children[1].querySelectorAll('input')[1].style.display = "none";
 		}
 		//显示
 		if(data.errorCode == 0) {
 			var len = data.param.length;
 			//最大页数
-			user_maxPage = Math(data.errorMsg/5);
+			user_maxPage = Math.floor(data.errorMsg/5);
 			if((data.errorMsg%5) == 0)
 				user_maxPage -= 1;
 			for(var j=0; j<len; j++) {
-			  trs[i].children[0].innerHTML = data.param[i].username;
+				trs[j].children[0].innerHTML = data.param[j].username;
+				trs[j].children[1].querySelectorAll('input')[0].style.display = "";
+				trs[j].children[1].querySelectorAll('input')[1].style.display = "";
 			}
 		}
 	}
