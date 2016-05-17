@@ -57,7 +57,7 @@ public class UserControl {
 		return "logon";
 	}
 	/**
-	 * 用户注册
+	 * 用户注册，默认注册用户等级为1
 	 * @param request
 	 * @param response
 	 * @return
@@ -67,7 +67,7 @@ public class UserControl {
 	public void login(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		String levelstr = request.getParameter("level");
+		String levelstr = "1";
 		response.setContentType("application/json;charset=utf-8");
 		try {
 			User user = (User) request.getSession().getAttribute("_USER");	
