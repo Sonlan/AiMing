@@ -207,20 +207,20 @@ $(document).ready(function() {
 	};
 	//用户管理上下翻页
     btn_pre.onclick = function(){
-    	if(user_currentPage == userMaxPage) {
+    	if(user_currentPage == 0) {
     		
     	} else {
-    		user_currentPage ++;
+    		user_currentPage --;
     		var dataSend = 'page=' + user_currentPage;
     		$.get('../../AiMing/user/query',dataSend,regCallBack);
     		
     	}
     };
     btn_next.onclick = function(){
-    	if(user_currentPage == 0) {
+    	if(user_currentPage == user_MaxPage) {
     		
     	} else {
-    		user_currentPage --;
+    		user_currentPage ++;
     		var dataSend = 'page=' + user_currentPage;
     		$.get('../../AiMing/user/query',dataSend,regCallBack);  		
     	}
