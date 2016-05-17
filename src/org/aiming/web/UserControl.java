@@ -73,7 +73,7 @@ public class UserControl {
 			User user = (User) request.getSession().getAttribute("_USER");	
 			if(0!=user.getLevel()){
 				response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
-			}else if (!(null==username && "".equals(username) && null==password && "".equals(password) && null==levelstr && "".equals(levelstr) )) {
+			}else if (!(null==username || "".equals(username) || null==password || "".equals(password) || null==levelstr || "".equals(levelstr) )) {
 				int level = Integer.parseInt(levelstr);
 				if(userService.userRepeat(username)){
 					response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,用户名重复", "")); 
