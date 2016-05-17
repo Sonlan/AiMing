@@ -31,4 +31,6 @@ public interface UserMapper {
 	 */
 	User userRepeat(Map<Object, Object> map);
 	List<User> getUserByName1(Map<Object, Object> map);
+	
+	void updateUser(Map<Object, Object> map);
 }

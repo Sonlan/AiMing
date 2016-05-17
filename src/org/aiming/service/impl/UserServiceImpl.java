@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.PUT;
+
 import org.aiming.dao.UserMapper;
 import org.aiming.entity.User;
 import org.aiming.service.UserService;
@@ -95,6 +97,19 @@ public class UserServiceImpl implements UserService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+	@Override
+	public boolean userEdit(String username, String password) {
+		try {
+			Map<Object, Object> map = new HashMap<>();
+			map.put("username", username);
+			map.put("password", MD5Util.MD5(password));
+			userDao.updateUser(map);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 

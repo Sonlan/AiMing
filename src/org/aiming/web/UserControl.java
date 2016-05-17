@@ -128,6 +128,26 @@ public class UserControl {
 		else response.getWriter().write(JsonUtil.statusResponse(0, userService.queryForSize(username), users));
 	}
 	/**
+	 * 用户修改密码，传入参数为username 和 newPassword
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/edit")
+	public void edit(HttpServletResponse response,HttpServletRequest request) throws IOException{
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		response.setContentType("application/json;charset=utf-8");
+		if(null != username && !"".equals(username) && null != password && !"".equals(password)){
+			if(userService.userEdit(username, password)){
+				response.getWriter().write(JsonUtil.statusResponse(0, "修改密码成功", ""));
+			}else{
+				response.getWriter().write(JsonUtil.statusResponse(1, "修改密码失败", ""));
+			}
+		}else{
+			response.getWriter().write(JsonUtil.statusResponse(1, "输入信息不能为空", ""));
+		}
+		
+	}
+	/**
 	 * 返回到登录页面
 	 * @param response
 	 * @return

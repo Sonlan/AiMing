@@ -38,4 +38,5 @@ public interface UserService {
 	
 	int queryForSize(String username);
 	boolean userDelete(String username);
+	boolean userEdit(String username,String password);
 }

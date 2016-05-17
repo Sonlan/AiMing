@@ -13,6 +13,11 @@
   <delete id="deleteUserByName" parameterType="java.lang.String">
   	delete from user where username = #{username}
   </delete>
+  <update id="updateUser" parameterType="java.util.HashMap">
+  	update user
+  	set password = #{password}
+  	where username = #{username}
+  </update>
   <select id="getUserByName" parameterType="java.util.HashMap" resultType="org.aiming.entity.User">
     SELECT * FROM user
     <where>
