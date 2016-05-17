@@ -119,8 +119,8 @@ public class LabelServiceImpl implements LabelService {
 			map.put("alive", alive);
 			map.put("ac_id", ac_id);
 			map.put("washing_count", washRemain);
-			map.put("pageStart", page*9);
-			map.put("pageEnd", page*9+9);
+/*			map.put("pageStart", page*9);
+			map.put("pageEnd", page*9+9);*/
 			List<Label> list = labelDao.getLablesById(map);
 			if(!"".equals(aliveTime)){
 				if(null != list && 0!=list.size()){
@@ -137,7 +137,7 @@ public class LabelServiceImpl implements LabelService {
 			//将查询结果按照累计使用时间排序
 			LabelComparator comparator = new LabelComparator();
 			Collections.sort(list,comparator);
-			return list;
+			return list.subList(page*9, (page+1)*9<list.size()?(page+1)*9:list.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

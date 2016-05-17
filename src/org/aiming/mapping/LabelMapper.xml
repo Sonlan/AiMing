@@ -72,8 +72,7 @@
     		<![CDATA[	and washing_count <= #{washing_count,jdbcType=TINYINT} ]]>
     	</if>
     </where>
-    ORDER BY washing_count desc
-    limit ${pageStart},${pageEnd}
+    ORDER BY washing_count asc
   </select>
   
   <insert id="labelInsert" parameterType="java.util.HashMap">
