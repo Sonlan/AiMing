@@ -122,6 +122,7 @@ $(document).ready(function() {
 		  }
 		}
 	};
+	//注册回调函数
 	function regProcess(data){
 	    var regMessage = '';
 	    $.each(data, function(name, value){
@@ -144,6 +145,7 @@ $(document).ready(function() {
 			}
 		});
 		form1.reset();
+		alert(regMessage);
 	}
 	//删除操作
 	var delete_btn = form1.querySelectorAll('.user_delete');
@@ -162,15 +164,7 @@ $(document).ready(function() {
     		$.get('../../AiMing/user/query',dataSend,regCallBack);
 		}
 	}
-	//修改密码操作
-	var edit_btn = form1.querySelectorAll('.user_edit');
-	for (var i=0; i<5; i++) {
-		edit_btn[i].onclick = function(){
-			var newPassword = window.prompt("请输入新密码","");
-			//发送新密码
-		};
-	}
-	//注册回调函数
+	//注册页面更新回调
 	function regCallBack(data){
 		//清零
 		var trs = form1.querySelector('table').children[1].querySelectorAll('tr');
@@ -194,6 +188,22 @@ $(document).ready(function() {
 			}
 		}
 	}
+	//修改密码操作
+	var edit_btn = form1.querySelectorAll('.user_edit');
+	for (var i=0; i<5; i++) {
+		edit_btn[i].onclick = function(){
+			var newPassword = window.prompt("请输入新密码","");
+			//发送新密码
+			var dataSend = 'username=' + this.parentNode.previousSibling.innerHTML
+			             + '&password=' + newPassword;
+			$.get('../../AiMing/user/edit', dataSend, editCallBack);
+		};
+	}
+	var editCallBack = function(data){
+		if(data.errorCode == 0) {
+			alert('密码修改成功！');
+		}
+	};
 	//用户管理上下翻页
     btn_pre.onclick = function(){
     	if(user_currentPage == userMaxPage) {
