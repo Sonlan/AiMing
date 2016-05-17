@@ -23,6 +23,7 @@ form table {
 table td {
 	padding-top: 0.3em;
 	padding-bottom: 0.3em;
+	height: 1.6em;
 	text-align: center;
 }
 label {

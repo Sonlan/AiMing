@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("username", username);
-			map.put("pageStart", page*5);
-			map.put("pageEnd", page*5+5);
+			map.put("pageStart", page*9);
+			map.put("pageEnd", page*9+9);
 			List<User> users = userDao.getUserByName(map);
 			return users;
 		} catch (Exception e) {
