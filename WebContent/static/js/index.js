@@ -114,8 +114,9 @@ $(document).ready(function() {
 		} else {
 		  if($('#password').val() == $('#confirm').val()) {
 		    //向后台提交
-			var formData = $('#register').serialize();
-			$.post('../../AiMing/user/login',formData,regProcess);
+			var dataSend = 'username=' + this.querySelector("#username").value
+			             + '&password=' + this.querySelector("#password").value;
+			$.post('../../AiMing/user/login',dataSend,regProcess);
 		  }else {
 		    alert('两次密码不一致！');
 			form1.reset();
