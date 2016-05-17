@@ -346,6 +346,12 @@ $(document).ready(function() {
 	var startText = document.createTextNode('计时已启动...');
 	
 	/* 查询条件 */
+	//查询页面归零
+	function toZero(){
+		JSONData.page = 0;
+		currentPage = 0;
+		maxPage = 0;
+	}
 	//更改页码 done
 	document.getElementById('pageSel').onchange = function(evt){
 	    var index = pageSel.selectedIndex;
@@ -381,10 +387,12 @@ $(document).ready(function() {
 	    var check = document.getElementById('baofei');
 		if(check.children[0].checked) {
 		  JSONData.alive = 1;
+		  toZero(); //归零查询页面 最大页面等信息
 		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);
 		}else {
 		  JSONData.alive = 0;
+		  toZero(); //归零查询页面 最大页面等信息
 		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);
 		}
@@ -394,10 +402,12 @@ $(document).ready(function() {
 	    var check = document.getElementById('inuse');
 		if(check.children[0].checked) {
 		  JSONData.inuse = 1;
+		  toZero(); //归零查询页面 最大页面等信息
 		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);		  
 		}else {
 		  JSONData.inuse = 0;
+		  toZero(); //归零查询页面 最大页面等信息
 		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);	
 		}
@@ -407,14 +417,17 @@ $(document).ready(function() {
 	    var check = document.getElementById('adId');
 		if(check.children[0].checked) {
 		  JSONData.ac_id = '01';
+		  toZero(); //归零查询页面 最大页面等信息
 		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);			  
 		} else if(check.children[1].checked) {
 		  JSONData.ac_id = '02';
+		  toZero(); //归零查询页面 最大页面等信息
 		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);
 		} else {
 		  JSONData.ac_id = '03';
+		  toZero(); //归零查询页面 最大页面等信息
 		  var JSONSend = changeString(JSONData);
 		  sendQuery(JSONSend);
 		}
@@ -425,6 +438,7 @@ $(document).ready(function() {
 		var index = check.selectedIndex;
 		var value = check.options[index].value;
 		JSONData.washRemain = value;
+		toZero(); //归零查询页面 最大页面等信息
 		var JSONSend = changeString(JSONData);
 		sendQuery(JSONSend);
 	};
@@ -434,6 +448,7 @@ $(document).ready(function() {
 		var index = check.selectedIndex;
 		var value = check.options[index].value;
 		JSONData.aliveTime = value;
+		toZero(); //归零查询页面 最大页面等信息
 		var JSONSend = changeString(JSONData);
 		sendQuery(JSONSend);
 	};
