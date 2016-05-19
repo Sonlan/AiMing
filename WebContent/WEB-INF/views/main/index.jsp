@@ -24,7 +24,7 @@
 	   <li><a href = 'inqury'>查询</a></li>
 	   <li><a href = 'invalid'>手动报废</a></li>
 	   <li><a href = 'valid'>批量激活</a></li>
-	   <li><a href = 'start'>停止计时</a></li>
+	   <li><a href = 'start'>计时启停</a></li>
 	   <li><a href = 'logout'>退出登录</a></li>
 	 </ul>
 	</div>

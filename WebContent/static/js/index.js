@@ -502,7 +502,29 @@ $(document).ready(function() {
 			JSONData.page = currentPage;
 		}
 	}
+	
+	/* 计时启停回调 */
+	function timingCallBack(data) {
+		if(data.errorCode == 0) {
+			var bool = window.confirm('当前计时开启，是否关闭计时');
+			if(bool) {
+				$.get('../../AiMing/timing/stop','',timeOptCallBack,'json');
+			}else {}
+		}else if(data.errorCode == 1) {
+			var bool = window.confirm('当前计时关闭，是否开启计时');
+			if(bool) {
+				$.get('../../AiMing/timing/start','',timeOptCallBack,'json');
+			} else {}
+		}
+	}
 
+	function timeOptCallBack(data) {
+		if(data.errorCode == 1) {
+			alert('计时已关闭');
+		} else if(data.errorCode == 0) {
+			alert('计时已开始');
+		}
+	}
 	/* 按钮点击 */
     $('#navigation li').click(function(evt){
 	    evt.preventDefault();
@@ -510,22 +532,7 @@ $(document).ready(function() {
 	    var url = this.children[0].getAttribute('href');
 		//计时启停按钮
 		if(url == 'start') {
-		    if($(this).text() == '停止计时') {
-			  $(this).text('开始计时');
-			  content.innerHTML = '';		
-              timingP.innerHTML = '';
-              timingP.appendChild(stopText);				  
-			  document.getElementById('content').appendChild(timingP);
-			  $.get('../../AiMing/timing/stop');
-			  
-			}else {
-			  $(this).text('停止计时');
-			  content.innerHTML = '';		
-              timingP.innerHTML = '';
-              timingP.appendChild(startText);			  
-			  document.getElementById('content').appendChild(timingP);
-			  $.get('../../AiMing/timing/start');
-			}
+			$.get('../../AiMing/timing/query','',timingCallBack,'json');
 		}else if(url == 'register'){//注册按钮
 			content.innerHTML = '';			
 			document.getElementById('content').appendChild(form1);
