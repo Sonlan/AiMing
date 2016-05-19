@@ -92,7 +92,7 @@ public class TimingControl {
 		try {
 			Properties prop=new Properties();
 			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
-			rate = Long.parseLong(prop.getProperty("rate"))*60*1000;
+			rate = (long) (Float.parseFloat(prop.getProperty("rate"))*60*1000);
 			ac_id = JsonUtil.toObject(prop.getProperty("ac_id"), List.class);
 			for(int i=0;i<ac_id.size();i++){
 				lastWorkTime.add( 0l);  //初始化
