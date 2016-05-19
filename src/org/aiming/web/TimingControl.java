@@ -46,9 +46,9 @@ public class TimingControl {
 			if(null != timer){
 				response.getWriter().write(JsonUtil.statusResponse(0, "开启成功", ""));
 			}else
-				response.getWriter().write(JsonUtil.statusResponse(0, "开启失败", ""));
+				response.getWriter().write(JsonUtil.statusResponse(1, "开启失败", ""));
 		} catch (Exception e) {
-			response.getWriter().write(JsonUtil.statusResponse(0, "开启失败,后台错误", ""));
+			response.getWriter().write(JsonUtil.statusResponse(2, "开启失败,后台错误", ""));
 		}
 		
 			
@@ -61,11 +61,26 @@ public class TimingControl {
 		try {
 			this.stop();
 			if(null != timer){
-				response.getWriter().write(JsonUtil.statusResponse(0, "关闭失败", ""));
+				response.getWriter().write(JsonUtil.statusResponse(1, "关闭失败", ""));
 			}else
 				response.getWriter().write(JsonUtil.statusResponse(0, "关闭成功", ""));
 		} catch (Exception e) {
-			response.getWriter().write(JsonUtil.statusResponse(0, "关闭失败,后台错误", ""));
+			response.getWriter().write(JsonUtil.statusResponse(2, "关闭失败,后台错误", ""));
+		}
+		
+	}
+	/**
+	 * 定时器状态查询
+	 */
+	@RequestMapping(value = "/query") 
+	public void  query(HttpServletResponse response) throws IOException{
+		try {
+			if(null != timer){
+				response.getWriter().write(JsonUtil.statusResponse(0, "开启状态", ""));
+			}else
+				response.getWriter().write(JsonUtil.statusResponse(1, "关闭状态", ""));
+		} catch (Exception e) {
+			response.getWriter().write(JsonUtil.statusResponse(2, "后台错误", ""));
 		}
 		
 	}
