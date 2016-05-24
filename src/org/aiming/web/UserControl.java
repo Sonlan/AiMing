@@ -130,7 +130,10 @@ public class UserControl {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		response.setContentType("application/json;charset=utf-8");
-		if(null != username && !"".equals(username) && null != password && !"".equals(password)){
+		User user = (User) request.getSession().getAttribute("_USER");	
+		if(0!=user.getLevel()){
+			response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
+		}else if(null != username && !"".equals(username) && null != password && !"".equals(password)){
 			if(userService.userEdit(username, password)){
 				response.getWriter().write(JsonUtil.statusResponse(0, "修改密码成功", ""));
 			}else{

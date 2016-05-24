@@ -197,11 +197,14 @@ $(document).ready(function() {
 	var edit_btn = form1.querySelectorAll('.user_edit');
 	for (var i=0; i<5; i++) {
 		edit_btn[i].onclick = function(){
-			var newPassword = window.prompt("请输入新密码","");
-			//发送新密码
-			var dataSend = 'username=' + this.parentNode.previousSibling.innerHTML
-			             + '&password=' + newPassword;
-			$.get('../../AiMin/user/edit', dataSend, editCallBack);
+			var newPassword ='';
+			newPassword = window.prompt("请输入新密码","");
+			if(newPassword!= null){
+				//发送新密码
+				var dataSend = 'username=' + this.parentNode.previousSibling.innerHTML
+				             + '&password=' + newPassword;
+				$.get('../../AiMin/user/edit', dataSend, editCallBack);
+			}
 		};
 	}
 	var editCallBack = function(data){

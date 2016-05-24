@@ -37,7 +37,7 @@ public class LabelServiceImpl implements LabelService {
 			else{
 				Map<Object, Object> map = new HashMap<>();
 				Properties prop=new Properties();
-				prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
+				prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
 				List<String> limitTimes = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
 				map.put("cumulative_time", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(id.substring(2, 3))))*3600000));
 				map.put("id", id);
@@ -171,7 +171,7 @@ public class LabelServiceImpl implements LabelService {
 	public int labelBind(String id) {
 		try {
 			Properties prop=new Properties();
-			prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
+			prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
 			if(null != id && !"".equals(id)){
 				Map<Object, Object> map = new HashMap<>();
 				//获取使用时间上限及清洗次数上限

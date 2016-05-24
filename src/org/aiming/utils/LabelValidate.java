@@ -22,7 +22,7 @@ public class LabelValidate {
 				return false;
 			}
 			Properties prop=new Properties();
-			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConig.properties"), "UTF-8"));
+			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
 			ac_id = JsonUtil.toObject(prop.getProperty("ac_id"), List.class);
 			washCountLimit = JsonUtil.toObject(prop.getProperty("washCountLimit"), List.class);
 			//前两位必须与所配置的空调id一致

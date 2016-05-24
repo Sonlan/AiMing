@@ -14,22 +14,15 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
      * @param workMode
      */
     public static void setDataSource(BigDecimal workMode){
-    	String lookupKey="aiming";
+    	String lookupKey="aimin";
 
     	switch(workMode.intValue()){
     	case 0:
     		lookupKey+="00";
     		break;
-    	case 1:
-    		lookupKey+="01";
-    		break;
     	}
-    	
-    	//String oldDataSource = (String) contextHolder.get();
-    	
-    	//if(!lookupKey.equals(oldDataSource)){
-    	    contextHolder.set(lookupKey);  
-    	//}
+    	contextHolder.set(lookupKey);  
+
     }
     
 	/* 
