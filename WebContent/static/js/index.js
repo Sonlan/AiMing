@@ -256,7 +256,9 @@ $(document).ready(function() {
 	  //手动报废页面提交按钮响应
 	form2.onsubmit = function(evt){
 	    evt.preventDefault();
-	    var formData = 'data=[' + document.getElementById('invInp').value + ']';
+	    var data1 = document.getElementById('invInp').value;
+	    data1 = data1.replace(/\D/g,'');
+	    var formData = 'data=[' + data1 + ']';
 		$.post('../../AiMing/label/scrap',formData,invalidProcess);	
 	};
 	function invalidProcess(data){
@@ -311,7 +313,10 @@ $(document).ready(function() {
 	  //手动激活页面响应
 	form3.onsubmit = function(evt){
 	    evt.preventDefault();
-	    var formData = 'data=[' + document.getElementById('valiInp1').value + ']';
+	    var data1 = document.getElementById('valiInp1').value;
+	    data1 = data1.replace(/\D/g,'');
+	    var formData = 'data=[' + data1 + ']';
+	    alert(data1);
 		$.post('../../AiMing/label/bind',formData,validProcess);			
 	};
 	function validProcess(data){

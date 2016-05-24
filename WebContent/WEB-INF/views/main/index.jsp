@@ -14,9 +14,7 @@
 <body>
 <div class="wrapper">
 	<div class="header">
-		<p class="logo">爱民 <span>制药</span> <span class="mm">Air<br/>
-			Filter<br/>
-			Management</span></p>
+	    <img src="${ctx}/static/images/logo.png" alt="logo"/>
 	</div>
 	<div class="navig">
 	 <ul id='navigation'>
@@ -159,9 +157,6 @@
 			<input type='button' value='下一页' id='btnNext'></input>
 		</div>
 	  </div>
-	</div>
-	<div class="footer">
-		<p>爱民 制药: 空调滤芯控制系统, by <a href="http://nacerc.hust.edu.cn/">国家防伪工程技术研究中心</a>. </p>
 	</div>
 </div>
 </body>

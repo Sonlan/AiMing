@@ -12,12 +12,11 @@
 <body>
 <div class="wrapper">
 	<div class="header">
-		<p class="logo">爱民 <span>制药</span> <span class="mm">Air<br/>
-			Filter<br/>
-			Management</span></p>
+	    <img src="${ctx}/static/images/logo.png" alt="logo" />
+	    <p>空调滤芯管理系统</p>
 	</div>
 	<div class="login">
-		<h1>超级用户登录</h1>
+		<h1>用户登录</h1>
 		<div id="formwrapper">
 			<form method="get"  id="login">
 				<p>
@@ -36,9 +35,6 @@
 				</p>
 			</form>
 		</div>
-	</div>
-	<div class="footer">
-		<p>爱民 制药: 空调滤芯控制系统, by <a href="http://nacerc.hust.edu.cn/">国家防伪工程技术研究中心</a>. </p>
 	</div>
 </div>
 
