@@ -55,7 +55,7 @@ $(document).ready(function() {
     $('#login').submit(function(evt){
     evt.preventDefault();
     var formData = $(this).serialize();
-	$.get('../../AiMing/user/logon', formData, processData);
+	$.get('../../AiMin/user/logon', formData, processData);
   });
   function processData(data) {
     $.each(data, function(name, value){
