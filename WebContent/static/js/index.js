@@ -316,7 +316,6 @@ $(document).ready(function() {
 	    var data1 = document.getElementById('valiInp1').value;
 	    data1 = data1.replace(/\D/g,'');
 	    var formData = 'data=[' + data1 + ']';
-	    alert(data1);
 		$.post('../../AiMing/label/bind',formData,validProcess);			
 	};
 	function validProcess(data){
