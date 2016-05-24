@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>滤芯管理系统</title>
 <link href="${ctx}/static/css/main.css" rel="stylesheet"/>
+<link href="${ctx}/static/css/reset.css" rel="stylesheet"/>
 <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="${ctx}/static/js/index.js"></script>
 </head>
