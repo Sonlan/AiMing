@@ -253,13 +253,22 @@ $(document).ready(function() {
 	invP2.appendChild(invBtn);
 	form2.appendChild(invP1);
 	form2.appendChild(invP2);
-	  //手动报废页面提交按钮响应
+	
+	//$('#invInp').live("onkeyup", function(){
+	//	this.value=this.value.replace(/\D/g,'');
+	//});
+	//手动报废页面提交按钮响应
 	form2.onsubmit = function(evt){
 	    evt.preventDefault();
 	    var data1 = document.getElementById('invInp').value;
-	    data1 = data1.replace(/\D/g,'');
-	    var formData = 'data=[' + data1 + ']';
-		$.post('../../AiMing/label/scrap',formData,invalidProcess);	
+	    var data2 = data1.replace(/\D/g,'');
+	    if(data1 != data2) {
+	    	alert("输入有误，只能输入数字！");
+	    	document.getElementById('invInp').value = "";
+	    } else {
+		    var formData = 'data=[' + data1 + ']';
+			$.post('../../AiMing/label/scrap',formData,invalidProcess);
+	    }	
 	};
 	function invalidProcess(data){
 	    var invalidMsg = '';
@@ -314,9 +323,14 @@ $(document).ready(function() {
 	form3.onsubmit = function(evt){
 	    evt.preventDefault();
 	    var data1 = document.getElementById('valiInp1').value;
-	    data1 = data1.replace(/\D/g,'');
-	    var formData = 'data=[' + data1 + ']';
-		$.post('../../AiMing/label/bind',formData,validProcess);			
+	    var data2 = data1.replace(/\D/g,'');
+	    if(data1 != data2) {
+	    	alert("输入有误，只能输入数字！");
+	    	document.getElementById('valiInp1').value = "";
+	    } else {
+		    var formData = 'data=[' + data1 + ']';
+			$.post('../../AiMing/label/bind',formData,validProcess);
+	    }			
 	};
 	function validProcess(data){
 	    var validMsg = '';

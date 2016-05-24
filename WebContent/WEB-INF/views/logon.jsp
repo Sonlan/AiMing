@@ -13,7 +13,6 @@
 <div class="wrapper">
 	<div class="header">
 	    <img src="${ctx}/static/images/logo.png" alt="logo" />
-	    <p>空调滤芯管理系统</p>
 	</div>
 	<div class="login">
 		<h1>用户登录</h1>
