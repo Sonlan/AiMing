@@ -267,7 +267,7 @@ $(document).ready(function() {
 	    	document.getElementById('invInp').value = "";
 	    } else {
 		    var formData = 'data=[' + data1 + ']';
-			$.post('../../AiMing/label/scrap',formData,invalidProcess);
+			$.post('../../AiMing/label/scrap',formData,invalidProcess,"json");
 	    }	
 	};
 	function invalidProcess(data){
@@ -329,7 +329,7 @@ $(document).ready(function() {
 	    	document.getElementById('valiInp1').value = "";
 	    } else {
 		    var formData = 'data=[' + data1 + ']';
-			$.post('../../AiMing/label/bind',formData,validProcess);
+			$.post('../../AiMing/label/bind',formData,validProcess,"json");
 	    }			
 	};
 	function validProcess(data){

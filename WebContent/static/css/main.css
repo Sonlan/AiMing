@@ -40,6 +40,16 @@ input {
 	margin-bottom: 0.75em;
 }
 
+.header {
+	text-align: center;
+}
+
+.header p {
+    font-family: ºÚÌå;
+    font-weight: bold;	
+    font-size: 35px;
+}
+
 .footer p {
 	font-size: 14px;
 	font-family: 'ColaborateLightRegular', Arial, sans-serif;
@@ -147,7 +157,7 @@ input {
 #content {
     border: 3px solid #000;
 	position: absolute;
-	top: 15%;
+	top: 20%;
 	left: 13%;
 	height: 65%;
 	width: 75%;
@@ -202,8 +212,10 @@ input {
 }
 
 #formwrapper {
-    border-top: 2px solid rgba(255,255,255,.75);
-	border-bottom: 2px solid rgba(255,255,255,.75);
+	border: 2px solid black;
+	margin-top: 50px;
+	text-align: center;
+	font-family: ºÚÌå;
 }
 
 #formwrapper #button {
