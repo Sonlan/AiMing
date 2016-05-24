@@ -266,7 +266,7 @@ $(document).ready(function() {
 	    	alert("输入有误，只能输入数字！");
 	    	document.getElementById('invInp').value = "";
 	    } else {
-		    var formData = 'data=[' + data1 + ']';
+		    var formData ="data=['" + data1 + "']";
 			$.post('../../AiMing/label/scrap',formData,invalidProcess,"json");
 	    }	
 	};
@@ -328,7 +328,7 @@ $(document).ready(function() {
 	    	alert("输入有误，只能输入数字！");
 	    	document.getElementById('valiInp1').value = "";
 	    } else {
-		    var formData = 'data=[' + data1 + ']';
+		    var formData = "data=['" + data1 + "']";
 			$.post('../../AiMing/label/bind',formData,validProcess,"json");
 	    }			
 	};
