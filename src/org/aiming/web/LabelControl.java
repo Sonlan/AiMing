@@ -173,6 +173,23 @@ public class LabelControl {
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "查询失败", ""));
 		
 	}
-	
+	/**
+	 * 空气滤芯信息修改
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/edit")
+	public void edit(HttpServletRequest request, HttpServletResponse response){
+		
+	}
+	/**
+	 * 空气滤芯信息删除
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/delete")
+	public void delete(HttpServletRequest request, HttpServletResponse response){
+		
+	}
 	
 }

@@ -10,5 +10,7 @@
   <select id="getWorkFreq3" resultType="java.lang.Float">
     SELECT value FROM  zz4028e4a947c7b2ff0147f901d98402d4
   </select>
-  
+  <select id="getWorkFreq" parameterType="java.util.HashMap" resultType="java.lang.Float">
+    SELECT ${valueName} FROM  ${tableName}
+  </select>
 </mapper>
