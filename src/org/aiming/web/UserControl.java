@@ -52,9 +52,12 @@ public class UserControl {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/logout") 
-	public String logout(HttpServletRequest request,HttpServletResponse response) throws IOException{
+	public void logout(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		request.getSession().invalidate();	
-		return "logon";
+		String PATH = request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort()
+				+ request.getContextPath() + "/";
+		response.sendRedirect(PATH);
 	}
 	/**
 	 * 用户注册，默认注册用户等级为1

@@ -571,8 +571,8 @@ $(document).ready(function() {
 		    content.innerHTML = '';			
 			document.getElementById('content').appendChild(form3);
 		}else if(url == 'logout') {
-		    $.get('../../AiMin/user/logout');
-			window.location.href = 'login.html';
+		    //$.get('../../AiMin/user/logout');
+			window.location.href = '../../AiMin/user/logout';
 		}else if(url == 'inqury') {
 		    content.innerHTML = '';
 			pageSel.innerHTML = '';
