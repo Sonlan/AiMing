@@ -188,5 +188,25 @@ public class LabelServiceImpl implements LabelService {
 			return 2;
 		}
 	}
+	@Override
+	public boolean deleteLabelInfo(String id) {
+		try {
+			labelDao.deleteById(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	@Override
+	public boolean editLabel(Label label) {
+		try {
+			Map<Object, Object> map = new HashMap<>();
+			map.put("label", label);
+			labelDao.editLabel(map);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 }

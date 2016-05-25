@@ -65,5 +65,16 @@ public interface LabelService {
 	 * @return
 	 */
 	public boolean updateTimeofLabel(String id,String cumulative_time);
-	
+	/**
+	 * 根据id删除对应label信息
+	 * @param id
+	 * @return
+	 */
+	public boolean deleteLabelInfo(String id);
+	/**
+	 * 修改label信息
+	 * @param label
+	 * @return
+	 */
+	public boolean editLabel(Label label);
 }

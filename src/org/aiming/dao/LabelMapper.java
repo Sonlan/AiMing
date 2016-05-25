@@ -58,4 +58,14 @@ public interface LabelMapper {
 	 * @return
 	 */
 	List<Label> getLablesSizeById(Map<Object, Object> map);
+	/**
+	 * 删除对应记录
+	 * @param id
+	 */
+	void deleteById(String id);
+	/**
+	 * 修改label记录
+	 * @param map
+	 */
+	void editLabel(Map<Object, Object> map);
 }
