@@ -8,10 +8,11 @@
      <result column="washing_count" property="washing_count" jdbcType="INTEGER"/>
      <result column="inuse" property="inuse" jdbcType="TINYINT"/>
      <result column="alive" property="alive" jdbcType="TINYINT"/>
+     <result column="scrap_time" property="scrap_time" jdbcType="TIMESTAMP"/>
    </resultMap>
 	
   <sql id="Base_Column_List">
-    id,cumulative_time,washing_count,activate_date,inuse,alive
+    id,cumulative_time,washing_count,activate_date,inuse,alive,scrap_time
   </sql>
   
   <select id="getLabelByAcId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
@@ -98,7 +99,8 @@
   <update id="scrapLabel" parameterType="java.lang.String" >
     update label
     set alive = 0,
-    inuse = 0
+    inuse = 0,
+    scrap_time = current_timestamp()
     where id = #{id,jdbcType=VARCHAR}
   </update>
   

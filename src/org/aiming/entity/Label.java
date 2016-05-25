@@ -17,6 +17,17 @@ public class Label {
 	
 	private int alive;  //是否已报废
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private String scrap_time;  //报废时间
+	
+	public String getScrap_time() {
+		return scrap_time;
+	}
+
+	public void setScrap_time(String scrap_time) {
+		this.scrap_time = scrap_time;
+	}
+
 	public int getInuse() {
 		return inuse;
 	}
