@@ -507,8 +507,8 @@ $(document).ready(function() {
 			for(var k=0; k<itemNum; k++) {
 			  table1.children[0].children[k+1].children[0].innerHTML = jsData.param[k].id;
 			  table1.children[0].children[k+1].children[1].innerHTML = jsData.param[k].id.substring(0,2);
-              table1.children[0].children[k+1].children[2].innerHTML = jsData.param[k].washing_count;
-			  table1.children[0].children[k+1].children[3].innerHTML = jsData.param[k].cumulative_time;
+              table1.children[0].children[k+1].children[2].innerHTML = jsData.param[k].washRemain;
+			  table1.children[0].children[k+1].children[3].innerHTML = jsData.param[k].aliveTime;
 			  table1.children[0].children[k+1].children[4].innerHTML = jsData.param[k].inuse;
 			  table1.children[0].children[k+1].children[5].innerHTML = jsData.param[k].alive;
 			}
