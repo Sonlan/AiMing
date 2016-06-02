@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -109,8 +110,9 @@ public class TimingControl {
 				
 			@Override
 			public void run() {
+				Map<String, Float> values = airService.getWorkValue(new BigDecimal(0));
 				for(int i=0;i<ac_id.size();i++){
-					Boolean isWork = airService.isWork(ac_id.get(i),new BigDecimal(0));
+					Boolean isWork = values.get("value"+(i+1))==0?false:true;
 					if(isWork && 0==lastWorkTime.get(i)){
 						lastWorkTime.set(i,new Date().getTime());
 					}

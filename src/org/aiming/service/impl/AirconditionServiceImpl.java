@@ -2,6 +2,7 @@ package org.aiming.service.impl;
 
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,25 +21,27 @@ public class AirconditionServiceImpl implements AirconditionService {
 	@Autowired
 	private AirconditionMapper airDao;
 	@Override
-	public boolean isWork(String ac_id,BigDecimal workmode) {
+	public Map<String, Float> getWorkValue(BigDecimal workMode) {
 		try {
 			Properties prop=new Properties();
 			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
+			List<String> ac_ids = JsonUtil.toObject(prop.getProperty("ac_id"), List.class);
 			String tableName = prop.getProperty("ac_table_name");
-			String valueName = prop.getProperty("ac_value_name");
-			Float freq = 0.0f;
+			List<String> valueNames = new ArrayList<>();
+			for(int i=0;i<ac_ids.size();i++){
+				valueNames.add("value"+(i+1));
+			}
+			String teString = valueNames.toString().replace('[', ' ').replace(']', ' ');
 			Map<Object, Object> map = new HashMap<>();
 			map.put("tableName", tableName);
-			map.put("valueName", valueName);
-			map.put("ac_id",ac_id);
-			freq = airDao.getWorkFreq(map);
-			if(freq != 0){
-				return true;
-			}else return false;
+			map.put("valueNames",teString);
+			List<Map<String, Float>> result = airDao.getWorkStatus(map);
+			return result.get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
+
 	}
 
 }

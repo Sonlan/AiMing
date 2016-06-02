@@ -13,4 +13,7 @@
   <select id="getWorkFreq" parameterType="java.util.HashMap" resultType="java.lang.Float">
     SELECT ${valueName} FROM  ${tableName} where ac_id = ${ac_id} 
   </select>
+  <select id="getWorkStatus" parameterType="java.util.HashMap" resultType="java.util.Map">
+    SELECT ${valueNames} FROM  ${tableName}
+  </select>
 </mapper>

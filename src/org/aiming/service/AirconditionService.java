@@ -1,11 +1,9 @@
 package org.aiming.service;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public interface AirconditionService {
-	/**
-	 * false空调停止工作
-	 * @return
-	 */
-	public boolean isWork(String ac_id,BigDecimal workMode);
+
+	public Map<String, Float> getWorkValue(BigDecimal workMode);
 }

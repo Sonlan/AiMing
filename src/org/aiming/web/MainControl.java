@@ -22,4 +22,5 @@ public class MainControl {
 	public String toActive(){
 		return "/main/active";
 	}
+	
 }
