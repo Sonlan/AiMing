@@ -70,18 +70,16 @@ public class UserControl {
 	public void login(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		String levelstr = "1";
 		response.setContentType("application/json;charset=utf-8");
 		try {
 			User user = (User) request.getSession().getAttribute("_USER");	
 			if(0!=user.getLevel()){
 				response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
-			}else if (!(null==username || "".equals(username) || null==password || "".equals(password) || null==levelstr || "".equals(levelstr) )) {
-				int level = Integer.parseInt(levelstr);
+			}else if (!(null==username || "".equals(username) || null==password || "".equals(password) )) {
 				if(userService.userRepeat(username)){
 					response.getWriter().write(JsonUtil.statusResponse(1, "注册失败,用户名重复", "")); 
 				}
-				else if(userService.login(username, password,level)){
+				else if(userService.login(username, password,1)){
 					response.getWriter().write(JsonUtil.statusResponse(0, "注册成功", ""));
 				}
 			}
