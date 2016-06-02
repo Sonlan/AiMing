@@ -109,7 +109,7 @@ public class LabelControl {
 				for(int i=0;i<labels.size();i++){
 					Label label = labelService.labelRemove(labels.get(i));
 					if(null != label){
-						if(label.getWashing_count()<=0){
+						if(label.getWashRemain()<=0){
 							erroMsg.add(labels.get(i)+": 已达到清洗次数上限");
 						}
 					}else{
@@ -162,14 +162,15 @@ public class LabelControl {
 		String inuse = null==request.getParameter("inuse")?"":request.getParameter("inuse");  //是否在使用
 		String alive = null==request.getParameter("alive")?"":request.getParameter("alive");  //是否报废
 		String ac_id = null==request.getParameter("ac_id")?"":request.getParameter("ac_id");  //空调id，id前两位
+		String level = null==request.getParameter("level")?"":request.getParameter("level"); //空调滤芯等级id第三位
 		String aliveTime = (null==request.getParameter("aliveTime") || "0".equals(request.getParameter("aliveTime")))?"":request.getParameter("aliveTime");  //距离报废的时间，单位小时
-		String washRemain =  (null==request.getParameter("aliveTime") || "0".equals(request.getParameter("washRemain")))?"":request.getParameter("washRemain");  //剩余清洗次数
+		String washRemain =  (null==request.getParameter("washRemain") || "0".equals(request.getParameter("washRemain")))?"":request.getParameter("washRemain");  //剩余清洗次数
 		int page = null==request.getParameter("page")?0:Integer.parseInt(request.getParameter("page"));  //页数，从0开始
 		response.setContentType("application/json;charset=utf-8");
-		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,aliveTime,washRemain,page);
+		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,level,aliveTime,washRemain,page);
 		if(null != list){
 			if(0==list.size()) response.getWriter().write(JsonUtil.statusResponse(1, "没有符合条件的数据", ""));
-			else response.getWriter().write(JsonUtil.statusResponse(0, labelService.getlabelSizeQuery(id, inuse, alive, ac_id, aliveTime), list));
+			else response.getWriter().write(JsonUtil.statusResponse(0, labelService.getlabelSizeQuery(id, inuse, alive, ac_id,level,aliveTime,washRemain), list));
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "查询失败", ""));
 		
 	}
@@ -177,19 +178,48 @@ public class LabelControl {
 	 * 空气滤芯信息修改
 	 * @param request
 	 * @param response
+	 * @throws IOException 
 	 */
 	@RequestMapping(value="/edit")
-	public void edit(HttpServletRequest request, HttpServletResponse response){
-		
+	public void edit(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		try {
+			response.setContentType("application/json;charset=utf-8");
+			String id = request.getParameter("id");
+			String inuse = (null == request.getParameter("inuse")|| "".equals(request.getParameter("inuse")))?"-1":request.getParameter("inuse");
+			String alive = (null == request.getParameter("alive")|| "".equals(request.getParameter("alive")))?"-1":request.getParameter("alive");
+			String aliveTime = request.getParameter("aliveTime");
+			String washRemain = (null == request.getParameter("washRemain")|| "".equals(request.getParameter("washRemain")))?"-1":request.getParameter("washRemain");
+			Label label = new Label();
+			label.setId(id);
+			label.setAlive(Integer.parseInt(alive));
+			label.setInuse(Integer.parseInt(inuse));
+			label.setWashRemain(Integer.parseInt(washRemain));
+			label.setAliveTime(aliveTime);
+			if(labelService.editLabel(label)){
+				response.getWriter().write(JsonUtil.statusResponse(0, "修改成功", ""));
+			}else{
+				response.getWriter().write(JsonUtil.statusResponse(1, "修改失败", ""));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.getWriter().write(JsonUtil.statusResponse(2, "输入参数不合法", ""));
+		}
 	}
 	/**
 	 * 空气滤芯信息删除
 	 * @param request
 	 * @param response
+	 * @throws IOException 
 	 */
 	@RequestMapping(value="/delete")
-	public void delete(HttpServletRequest request, HttpServletResponse response){
-		
+	public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		response.setContentType("application/json;charset=utf-8");
+		String id = request.getParameter("id");
+		if(labelService.deleteLabelInfo(id)){
+			response.getWriter().write(JsonUtil.statusResponse(0, "删除成功", ""));
+		}else{
+			response.getWriter().write(JsonUtil.statusResponse(1, "删除失败", ""));
+		}
 	}
 	
 }

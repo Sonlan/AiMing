@@ -39,9 +39,9 @@ public class LabelServiceImpl implements LabelService {
 				Properties prop=new Properties();
 				prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
 				List<String> limitTimes = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
-				map.put("cumulative_time", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(id.substring(2, 3))))*3600000));
+				map.put("aliveTime", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(id.substring(2, 3))))*3600000));
 				map.put("id", id);
-				map.put("washing_count", label.getWashing_count()-1);
+				map.put("washRemain", label.getWashRemain()-1);
 				labelDao.deployLabel(map);
 				return 0;
 			}
@@ -59,7 +59,7 @@ public class LabelServiceImpl implements LabelService {
 			}else{
 				labelDao.removeLabel(id);
 				//判断是否到达报废条件
-				if(label.getWashing_count()<=0)
+				if(label.getWashRemain()<=0)
 					labelDao.scrapLabel(id);
 				return label;
 			}
@@ -84,19 +84,21 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public int getlabelSizeQuery(String id, String inuse, String alive, String ac_id, String aliveTime) {
+	public int getlabelSizeQuery(String id, String inuse, String alive, String ac_id,String level, String aliveTime,String washRemain) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
 			map.put("inuse", inuse);
 			map.put("alive", alive);
 			map.put("ac_id", ac_id);
+			map.put("level", level);
+			map.put("washRemain", washRemain);
 			List<Label> list = labelDao.getLablesSizeById(map);
 			if(!"".equals(aliveTime)){
 				if(null != list && 0!=list.size()){
 					for(int i=0;i<list.size();i++){
 						long aTime =  Long.parseLong(aliveTime)*3600000;
-						long cTime = TimeRevert.toLong(list.get(i).getCumulative_time());
+						long cTime = TimeRevert.toLong(list.get(i).getAliveTime());
 						if(aTime<=cTime){
 							list.remove(i);
 							i--;
@@ -111,22 +113,21 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public List<Label> labelQuery(String id,String inuse, String alive, String ac_id, String aliveTime,String washRemain,int page) {
+	public List<Label> labelQuery(String id,String inuse, String alive, String ac_id,String level,String aliveTime,String washRemain,int page) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
 			map.put("inuse", inuse);
 			map.put("alive", alive);
 			map.put("ac_id", ac_id);
-			map.put("washing_count", washRemain);
-/*			map.put("pageStart", page*9);
-			map.put("pageEnd", page*9+9);*/
+			map.put("level", level);
+			map.put("washRemain", washRemain);
 			List<Label> list = labelDao.getLablesById(map);
 			if(!"".equals(aliveTime)){
 				if(null != list && 0!=list.size()){
 					for(int i=0;i<list.size();i++){
 						long aTime =  Long.parseLong(aliveTime)*3600000;
-						long cTime = TimeRevert.toLong(list.get(i).getCumulative_time());
+						long cTime = TimeRevert.toLong(list.get(i).getAliveTime());
 						if(aTime<=cTime){
 							list.remove(i);
 							i--;
@@ -155,11 +156,11 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public boolean updateTimeofLabel(String id, String cumulative_time) {
+	public boolean updateTimeofLabel(String id, String aliveTime) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
-			map.put("cumulative_time",cumulative_time);
+			map.put("aliveTime",aliveTime);
 			labelDao.updateTimeOfLabel(map);
 			return true;
 		} catch (Exception e) {
@@ -178,8 +179,8 @@ public class LabelServiceImpl implements LabelService {
 				List<String> washCountLimits = JsonUtil.toObject(prop.getProperty("washCountLimit"), List.class);
 				List<String> limitTimes = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
 				map.put("id", id);
-				map.put("washing_count", Integer.parseInt(washCountLimits.get(Integer.parseInt(id.substring(2, 3))))+1);
-				map.put("cumulative_time", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(id.substring(2, 3))))*3600000));
+				map.put("washRemain", Integer.parseInt(washCountLimits.get(Integer.parseInt(id.substring(2, 3))))+1);
+				map.put("aliveTime", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(id.substring(2, 3))))*3600000));
 				labelDao.labelInsert(map);
 				return 0;
 			}else return 1;

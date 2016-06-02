@@ -110,7 +110,7 @@ public class TimingControl {
 			@Override
 			public void run() {
 				for(int i=0;i<ac_id.size();i++){
-					Boolean isWork = airService.isWork(i,new BigDecimal(0));
+					Boolean isWork = airService.isWork(ac_id.get(i),new BigDecimal(0));
 					if(isWork && 0==lastWorkTime.get(i)){
 						lastWorkTime.set(i,new Date().getTime());
 					}
@@ -118,7 +118,7 @@ public class TimingControl {
 						long sub = new Date().getTime()-lastWorkTime.get(i);
 						List<Label> list = labelService.getLabelByAcId(ac_id.get(i));
 						for(int j=0;j<list.size();j++){
-							labelService.updateTimeofLabel(list.get(j).getId(), TimeRevert.toString(TimeRevert.toLong(list.get(j).getCumulative_time())-sub));
+							labelService.updateTimeofLabel(list.get(j).getId(), TimeRevert.toString(TimeRevert.toLong(list.get(j).getAliveTime())-sub));
 						}
 						lastWorkTime.set(i, 0l);
 					}

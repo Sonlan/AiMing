@@ -9,9 +9,9 @@ public class Label {
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private String activate_date; //激活绑定时间
 	
-	private String cumulative_time;  //上次清洗后累计剩余使用时间
+	private String aliveTime;  //上次清洗后累计剩余使用时间
 	
-	private int washing_count;  //剩余清洗次数
+	private int washRemain;  //剩余清洗次数
 
 	private int inuse ;  //是否在使用
 	
@@ -61,19 +61,20 @@ public class Label {
 		this.activate_date = activate_date;
 	}
 
-	public String getCumulative_time() {
-		return cumulative_time;
+	public String getAliveTime() {
+		return aliveTime;
 	}
 
-	public void setCumulative_time(String cumulative_time) {
-		this.cumulative_time = cumulative_time;
+	public void setAliveTime(String aliveTime) {
+		this.aliveTime = aliveTime;
 	}
 
-	public int getWashing_count() {
-		return washing_count;
+	public int getWashRemain() {
+		return washRemain;
 	}
 
-	public void setWashing_count(int washing_count) {
-		this.washing_count = washing_count;
+	public void setWashRemain(int washRemain) {
+		this.washRemain = washRemain;
 	}
+
 }

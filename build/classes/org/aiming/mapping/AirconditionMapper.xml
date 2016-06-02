@@ -11,6 +11,6 @@
     SELECT value FROM  zz4028e4a947c7b2ff0147f901d98402d4
   </select>
   <select id="getWorkFreq" parameterType="java.util.HashMap" resultType="java.lang.Float">
-    SELECT ${valueName} FROM  ${tableName}
+    SELECT ${valueName} FROM  ${tableName} where ac_id = ${ac_id} 
   </select>
 </mapper>

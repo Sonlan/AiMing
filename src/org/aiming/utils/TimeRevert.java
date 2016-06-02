@@ -9,7 +9,7 @@ public class TimeRevert {
 	public static Long toLong(String time){
 		String [] res = time.split(":");
 		try {
-			return (long)(Long.parseLong(res[res.length-1])+Long.parseLong(res[res.length-2])*60+Long.parseLong(res[res.length-3])*3600)*1000;
+			return (long)(Long.parseLong(res[res.length-1])*60+Long.parseLong(res[res.length-2])*3600+Long.parseLong(res[res.length-3])*3600*24)*1000;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return -1l;
@@ -17,8 +17,11 @@ public class TimeRevert {
 	}
 	public static String toString(long time){
 		try {
-			if(time>=0)
-				return strFormat(time/3600000+"")+":"+strFormat((time-time/3600000*3600000)/60000+"")+":"+strFormat((time-time/60000*60000)/1000+"");
+			if(time>=0){
+				String string =  strFormat(time/(3600000*24)+"")+":"+strFormat((time%(3600000*24))/3600000+"")+":"+strFormat((time%3600000)/60000+"");
+				return string;
+			}
+				
 			else return "00:00:00";
 		} catch (Exception e) {
 			e.printStackTrace();

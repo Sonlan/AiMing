@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.ws.rs.PUT;
+
 import org.aiming.dao.AirconditionMapper;
 import org.aiming.service.AirconditionService;
 import org.aiming.utils.JsonUtil;
@@ -18,16 +20,17 @@ public class AirconditionServiceImpl implements AirconditionService {
 	@Autowired
 	private AirconditionMapper airDao;
 	@Override
-	public boolean isWork(int index,BigDecimal workmode) {
+	public boolean isWork(String ac_id,BigDecimal workmode) {
 		try {
 			Properties prop=new Properties();
 			prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
-			List<String> tableNames = JsonUtil.toObject(prop.getProperty("ac_table_name"), List.class);
-			List<String> valueNames = JsonUtil.toObject(prop.getProperty("ac_value_name"), List.class);
+			String tableName = prop.getProperty("ac_table_name");
+			String valueName = prop.getProperty("ac_value_name");
 			Float freq = 0.0f;
 			Map<Object, Object> map = new HashMap<>();
-			map.put("tableName", tableNames.get(index));
-			map.put("valueName", valueNames.get(index));
+			map.put("tableName", tableName);
+			map.put("valueName", valueName);
+			map.put("ac_id",ac_id);
 			freq = airDao.getWorkFreq(map);
 			if(freq != 0){
 				return true;
