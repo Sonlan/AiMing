@@ -116,7 +116,7 @@ $(document).ready(function() {
 		    //向后台提交
 			var dataSend = 'username=' + this.querySelector("#username").value
 			             + '&password=' + this.querySelector("#password").value;
-			$.post('../../AiMin/user/login',dataSend,regProcess);
+			$.post('../../aimin/user/login',dataSend,regProcess);
 		  }else {
 		    alert('两次密码不一致！');
 			form1.reset();
@@ -149,7 +149,7 @@ $(document).ready(function() {
 		alert(regMessage);
 		user_currentPage = 0;
 		var dataSend = 'page=' + user_currentPage;
-		$.get('../../AiMin/user/query',dataSend,regCallBack);
+		$.get('../../aimin/user/query',dataSend,regCallBack);
 		
 	}
 	//删除操作
@@ -159,14 +159,14 @@ $(document).ready(function() {
 	    var con = window.confirm('确定删除该用户？');
 		if(con) {
 			var dataSend = 'username=' + this.parentNode.previousSibling.innerHTML;
-			$.get('../../AiMin/user/delete',dataSend,deleteCallBack);
+			$.get('../../aimin/user/delete',dataSend,deleteCallBack);
 		}
 	  };
 	}
 	function deleteCallBack(data){
 		if(data.errorCode == 0) {
 			var dataSend = 'page=' + user_currentPage;
-    		$.get('../../AiMin/user/query',dataSend,regCallBack);
+    		$.get('../../aimin/user/query',dataSend,regCallBack);
 		}
 	}
 	//注册页面更新回调
@@ -203,7 +203,7 @@ $(document).ready(function() {
 				//发送新密码
 				var dataSend = 'username=' + this.parentNode.previousSibling.innerHTML
 				             + '&password=' + newPassword;
-				$.get('../../AiMin/user/edit', dataSend, editCallBack);
+				$.get('../../aimin/user/edit', dataSend, editCallBack);
 			}
 		};
 	}
@@ -219,7 +219,7 @@ $(document).ready(function() {
     	} else {
     		user_currentPage --;
     		var dataSend = 'page=' + user_currentPage;
-    		$.get('../../AiMin/user/query',dataSend,regCallBack);
+    		$.get('../../aimin/user/query',dataSend,regCallBack);
     		
     	}
     };
@@ -229,7 +229,7 @@ $(document).ready(function() {
     	} else {
     		user_currentPage ++;
     		var dataSend = 'page=' + user_currentPage;
-    		$.get('../../AiMin/user/query',dataSend,regCallBack);  		
+    		$.get('../../aimin/user/query',dataSend,regCallBack);  		
     	}
     };
 		
@@ -270,7 +270,7 @@ $(document).ready(function() {
 	    	document.getElementById('invInp').value = "";
 	    } else {
 		    var formData ="data=['" + data1 + "']";
-			$.post('../../AiMin/label/scrap',formData,invalidProcess,"json");
+			$.post('../../aimin/label/scrap',formData,invalidProcess,"json");
 	    }	
 	};
 	function invalidProcess(data){
@@ -332,7 +332,7 @@ $(document).ready(function() {
 	    	document.getElementById('valiInp1').value = "";
 	    } else {
 		    var formData = "data=['" + data1 + "']";
-			$.post('../../AiMin/label/bind',formData,validProcess,"json");
+			$.post('../../aimin/label/bind',formData,validProcess,"json");
 	    }			
 	};
 	function validProcess(data){
@@ -476,7 +476,7 @@ $(document).ready(function() {
 	
 	/* 查询请求 undefined*/ 
 	function sendQuery(jsonData){
-	    $.get('../../AiMin/label/query',jsonData,contentDisplay);
+	    $.get('../../aimin/label/query',jsonData,contentDisplay);
 	}
 	//回调显示函数
 	function contentDisplay(data){
@@ -529,12 +529,12 @@ $(document).ready(function() {
 		if(data.errorCode == 0) {
 			var bool = window.confirm('当前计时开启，是否关闭计时');
 			if(bool) {
-				$.get('../../AiMin/timing/stop','',timeOptCallBack0,'json');
+				$.get('../../aimin/timing/stop','',timeOptCallBack0,'json');
 			}else {}
 		}else if(data.errorCode == 1) {
 			var bool = window.confirm('当前计时关闭，是否开启计时');
 			if(bool) {
-				$.get('../../AiMin/timing/start','',timeOptCallBack,'json');
+				$.get('../../aimin/timing/start','',timeOptCallBack,'json');
 			} else {}
 		}
 	}
@@ -559,11 +559,11 @@ $(document).ready(function() {
 	    var url = this.children[0].getAttribute('href');
 		//计时启停按钮
 		if(url == 'start') {
-			$.get('../../AiMin/timing/query','',timingCallBack,'json');
+			$.get('../../aimin/timing/query','',timingCallBack,'json');
 		}else if(url == 'register'){//注册按钮
 			content.innerHTML = '';			
 			document.getElementById('content').appendChild(form1);
-			$.get('../../AiMin/user/query','page=0',regCallBack);
+			$.get('../../aimin/user/query','page=0',regCallBack);
 		}else if(url == 'invalid'){//手动报废
 			content.innerHTML = '';			
 			document.getElementById('content').appendChild(form2);
@@ -571,8 +571,8 @@ $(document).ready(function() {
 		    content.innerHTML = '';			
 			document.getElementById('content').appendChild(form3);
 		}else if(url == 'logout') {
-		    //$.get('../../AiMin/user/logout');
-			window.location.href = '../../AiMin/user/logout';
+		    //$.get('../../aimin/user/logout');
+			window.location.href = '../../aimin/user/logout';
 		}else if(url == 'inqury') {
 		    content.innerHTML = '';
 			pageSel.innerHTML = '';
