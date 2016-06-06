@@ -163,10 +163,13 @@ public class LabelControl {
 		String alive = null==request.getParameter("alive")?"":request.getParameter("alive");  //是否报废
 		String ac_id = null==request.getParameter("ac_id")?"":request.getParameter("ac_id");  //空调id，id前两位
 		String level = null==request.getParameter("level")?"":request.getParameter("level"); //空调滤芯等级id第三位
-		String aliveTime = (null==request.getParameter("aliveTime") || "0".equals(request.getParameter("aliveTime")))?"":request.getParameter("aliveTime");  //距离报废的时间，单位小时
-		String washRemain =  (null==request.getParameter("washRemain") || "0".equals(request.getParameter("washRemain")))?"":request.getParameter("washRemain");  //剩余清洗次数
+		String aliveTime_day = (null==request.getParameter("aliveTime") || "".equals(request.getParameter("aliveTime")))?"0":request.getParameter("aliveTime");  //距离报废的时间，单位小时
+		String aliveTime_hour = (null==request.getParameter("aliveTime") || "".equals(request.getParameter("aliveTime")))?"0":request.getParameter("aliveTime");  //距离报废的时间，单位小时
+		String aliveTime_min = (null==request.getParameter("aliveTime") || "".equals(request.getParameter("aliveTime")))?"0":request.getParameter("aliveTime");  //距离报废的时间，单位小时
+		String washRemain =  (null==request.getParameter("washRemain") || "".equals(request.getParameter("washRemain")))?"0":request.getParameter("washRemain");  //剩余清洗次数
 		int page = null==request.getParameter("page")?0:Integer.parseInt(request.getParameter("page"));  //页数，从0开始
 		response.setContentType("application/json;charset=utf-8");
+		long aliveTime = Long.parseLong(aliveTime_day)*24*3600000+Long.parseLong(aliveTime_hour)*3600000+Long.parseLong(aliveTime_min)*60000;
 		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,level,aliveTime,washRemain,page);
 		if(null != list){
 			if(0==list.size()) response.getWriter().write(JsonUtil.statusResponse(1, "没有符合条件的数据", ""));

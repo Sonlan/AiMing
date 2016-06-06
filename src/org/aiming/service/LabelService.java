@@ -42,7 +42,7 @@ public interface LabelService {
 	 * @param page 
 	 * @return
 	 */
-	public List<Label> labelQuery(String id, String inuse, String alive, String ac_id,String level,String aliveTime, String washRemain, int page);
+	public List<Label> labelQuery(String id, String inuse, String alive, String ac_id,String level,long aliveTime, String washRemain, int page);
 	/**
 	 * 返回符合查询条件的所有项的条数
 	 * @param id
@@ -52,7 +52,7 @@ public interface LabelService {
 	 * @param aliveTime
 	 * @return
 	 */
-	public int getlabelSizeQuery(String id, String inuse, String alive, String ac_id,String level, String aliveTime,String washRemain);
+	public int getlabelSizeQuery(String id, String inuse, String alive, String ac_id,String level, long aliveTime,String washRemain);
 	/**
 	 * 根据空调id查询得到所有label信息
 	 * @param id

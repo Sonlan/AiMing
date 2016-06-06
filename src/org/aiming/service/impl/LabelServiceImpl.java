@@ -84,7 +84,7 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public int getlabelSizeQuery(String id, String inuse, String alive, String ac_id,String level, String aliveTime,String washRemain) {
+	public int getlabelSizeQuery(String id, String inuse, String alive, String ac_id,String level, long aliveTime,String washRemain) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
@@ -97,9 +97,8 @@ public class LabelServiceImpl implements LabelService {
 			if(!"".equals(aliveTime)){
 				if(null != list && 0!=list.size()){
 					for(int i=0;i<list.size();i++){
-						long aTime =  Long.parseLong(aliveTime)*3600000;
 						long cTime = TimeRevert.toLong(list.get(i).getAliveTime());
-						if(aTime<=cTime){
+						if(aliveTime<=cTime){
 							list.remove(i);
 							i--;
 						}
@@ -113,7 +112,7 @@ public class LabelServiceImpl implements LabelService {
 		}
 	}
 	@Override
-	public List<Label> labelQuery(String id,String inuse, String alive, String ac_id,String level,String aliveTime,String washRemain,int page) {
+	public List<Label> labelQuery(String id,String inuse, String alive, String ac_id,String level,long aliveTime,String washRemain,int page) {
 		try {
 			Map<Object, Object> map = new HashMap<>();
 			map.put("id", id);
@@ -126,9 +125,8 @@ public class LabelServiceImpl implements LabelService {
 			if(!"".equals(aliveTime)){
 				if(null != list && 0!=list.size()){
 					for(int i=0;i<list.size();i++){
-						long aTime =  Long.parseLong(aliveTime)*3600000;
 						long cTime = TimeRevert.toLong(list.get(i).getAliveTime());
-						if(aTime<=cTime){
+						if(aliveTime<=cTime){
 							list.remove(i);
 							i--;
 						}
