@@ -98,6 +98,7 @@ $(document).ready(function(){
 			currentPage --;
 			JSONData.page = currentPage;
 			var dataSend = changeString();
+			alert(dataSend);
 			$.get('../../aimin/label/query',sendData,indexInquiryProcess);
 		}
 	});
@@ -116,7 +117,8 @@ $(document).ready(function(){
     //提交查询
     $('div#inquiryStatus button[type="submit"]').bind('click',function(evt){
 	    evt.preventDefault();
-		var sendData = changeString();		 	 		
+		var sendData = changeString();	
+		alert(sendData);
 	    $.get('../../aimin/label/query',sendData,indexInquiryProcess);
 	});
 	
@@ -139,6 +141,7 @@ $(document).ready(function(){
 	//初始页面查询
 	function defaultInquiry(){
 	    var dataSend = changeString();
+	    alert(dataSend);
 		$.get('../../aimin/label/query',dataSend,indexInquiryProcess);
 	}
 	

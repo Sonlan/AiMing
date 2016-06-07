@@ -163,10 +163,10 @@ public class LabelControl {
 		String alive = null==request.getParameter("alive")?"":request.getParameter("alive");  //是否报废
 		String ac_id = null==request.getParameter("ac_id")?"":request.getParameter("ac_id");  //空调id，id前两位
 		String level = null==request.getParameter("level")?"":request.getParameter("level"); //空调滤芯等级id第三位
-		String aliveTime_day = (null==request.getParameter("aliveTime") || "".equals(request.getParameter("aliveTime")))?"0":request.getParameter("aliveTime");  //距离报废的时间，单位小时
-		String aliveTime_hour = (null==request.getParameter("aliveTime") || "".equals(request.getParameter("aliveTime")))?"0":request.getParameter("aliveTime");  //距离报废的时间，单位小时
-		String aliveTime_min = (null==request.getParameter("aliveTime") || "".equals(request.getParameter("aliveTime")))?"0":request.getParameter("aliveTime");  //距离报废的时间，单位小时
-		String washRemain =  (null==request.getParameter("washRemain") || "".equals(request.getParameter("washRemain")))?"0":request.getParameter("washRemain");  //剩余清洗次数
+		String aliveTime_day = (null==request.getParameter("aliveTime_day") || "".equals(request.getParameter("aliveTime_day")))?"0":request.getParameter("aliveTime_day");  //距离报废的时间，单位小时
+		String aliveTime_hour = (null==request.getParameter("aliveTime_hour") || "".equals(request.getParameter("aliveTime_hour")))?"0":request.getParameter("aliveTime_hour");  //距离报废的时间，单位小时
+		String aliveTime_min = (null==request.getParameter("aliveTime_min") || "".equals(request.getParameter("aliveTime_min")))?"0":request.getParameter("aliveTime_min");  //距离报废的时间，单位小时
+		String washRemain =  null==request.getParameter("washRemain")?"":request.getParameter("washRemain");  //剩余清洗次数
 		int page = null==request.getParameter("page")?0:Integer.parseInt(request.getParameter("page"));  //页数，从0开始
 		response.setContentType("application/json;charset=utf-8");
 		long aliveTime = Long.parseLong(aliveTime_day)*24*3600000+Long.parseLong(aliveTime_hour)*3600000+Long.parseLong(aliveTime_min)*60000;
