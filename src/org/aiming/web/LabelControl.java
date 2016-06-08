@@ -174,7 +174,7 @@ public class LabelControl {
 		Properties prop=new Properties();
 		prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
 		String  rate =prop.getProperty("rate");
-		List<String> limitTime = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
+		List<String> limitTime = JsonUtil.toObject(prop.getProperty("limitTime").replace(":", "-"), List.class);
 		List<String> washCountLimit = JsonUtil.toObject(prop.getProperty("washCountLimit"), List.class);
 		List<String> ac_ids = JsonUtil.toObject(prop.getProperty("ac_id"), List.class);
 		
@@ -184,7 +184,7 @@ public class LabelControl {
 		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,level,aliveTime,washRemain,page);
 		if(null != list){
 			if(0==list.size()) response.getWriter().write(JsonUtil.statusResponse(1, "没有符合条件的数据", ""));
-			else response.getWriter().write(JsonUtil.statusResponse(0, "{\"pageSize\":"+labelService.getlabelSizeQuery(id, inuse, alive, ac_id,level,aliveTime,washRemain)+",\"rate\":"+rate+",\"ac_ids\":"+ac_ids+",\"washCountLimit\":"+washCountLimit+",\"limitTime\":"+limitTime+"}", list));
+			else response.getWriter().write(JsonUtil.statusResponse(0, "{\"limitTime\":"+limitTime+",\"pageSize\":"+labelService.getlabelSizeQuery(id, inuse, alive, ac_id,level,aliveTime,washRemain)+",\"rate\":"+rate+",\"ac_ids\":"+ac_ids+",\"washCountLimit\":"+washCountLimit+"}", list));
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "查询失败", ""));
 		
 	}
