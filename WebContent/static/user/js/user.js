@@ -108,8 +108,8 @@ $(document).ready(function(){
 			var disLen = (data.param.length < 5) ? data.param.length : 5;
 			for(var j=0; j<disLen; j++) {
 				trs[j].children[0].innerHTML = data.param[j].username;
-			    trs[i].children[1].querySelectorAll('input')[0].style.display = "none";
-			    trs[i].children[1].querySelectorAll('input')[1].style.display = "none";
+			    trs[j].children[1].querySelectorAll('input')[0].style.display = "";
+			    trs[j].children[1].querySelectorAll('input')[1].style.display = "";
 			}
 		}
 	}

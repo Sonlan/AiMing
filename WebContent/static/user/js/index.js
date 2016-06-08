@@ -3,6 +3,18 @@ $(document).ready(function(){
     var 
 	maxPage = 0,  //最大页数
 	currentPage = 0,  //当前页数
+	
+	maxDay_prim = 0;
+    maxHour_prim = 0;
+    maxMin_prim = 0;
+    maxWash_prim = 0;  //最大清洗次数
+	maxDay_mid = 0;
+    maxHour_mid = 0;
+    maxMin_mid = 0;
+    maxWash_mid = 0;  //最大清洗次数
+    maxAirNum = 0;  //最大空调数
+    refreshRate = 0;  //刷新周期
+    
 	JSONData = {                    //查询请求JSON
 		aliveTime_day : 1,  //剩余时间
 		aliveTime_hour : 0,  
@@ -14,6 +26,33 @@ $(document).ready(function(){
 		ac_id : '01',  //空调号
 		page : 0  //当前页面
 	};
+	
+	//剩余清洗次数刷新
+	function refreshWashRemain(maxWash){
+		$('select#selectWashRemain option:gt(0)').remove();
+		for(var i = 0; i < maxWash + 1; i ++) {
+			var opt = "<option value=" + i + ">" + i + "</option>";
+			$('select#selectWashRemain').append(opt);
+		}
+	}
+	
+	//空调号查询
+	function refreshAirNum(maxAir) {
+		$('select#selectAIRId option').remove();
+		for(var i = 0; i < maxAir; i ++) {
+			var opt = "<option value=" + i + ">" + (i+1) + "</option>";
+			$('select#selectAIRId').append(opt);
+		}
+	}
+	
+	//清洗时间
+	function refreshTime(day) {
+		$('select#selectRemainDay option').remove();
+		for(var i = 0; i <= day; i ++) {
+			var opt = "<option value=" + i + ">" + i + "</option>";
+			$('select#selectRemainDay').append(opt);
+		}
+	}
 	
 	//构造发送串
 	function changeString(){
@@ -46,38 +85,115 @@ $(document).ready(function(){
 		//清零
 		var table = document.getElementById('mainTable');
 		for(var i=0; i<9; i++) {
-		  for(var j=0; j<7; j++) {
-		    table.children[0].children[i+1].children[j].innerHTML = '';
-		  }
+            table.children[0].children[i+1].children[0].innerHTML = '';    
 		}
+	  $('input.input_air').val('').hide();
+	  $('input.input_wash').val('').hide();
+	  $('input.input_time').val('').hide();
+	  $('select.select_filter').hide();
+	  $('select.select_inuse').hide();
+	  $('select.select_invalid').hide();
+	  $('button.buttonEdit').hide();
+	  $('button.buttonDone').hide();
+		
 
 		if(data.errorCode == 0) { //操作成功显示查询信息
 		    //显示页码信息
 			alert(data.errorMsg);
-			var Msg = eval ("(" + data.errorMsg + ")");
-			alert(Msg.pageSize);
-		    maxPage = Math.floor(Msg.pageSize / 9);
+			//data.errorMsg转化为JSON对象
+			var msg = eval ("(" + data.errorMsg + ")");
+			//剩余时间信息
+			var timeMsg_prim = msg.limitTime[0].split('-');
+			maxDay_prim = timeMsg_prim[0];
+			maxHour_prim = timeMsg_prim[1];
+			maxMin_prim = timeMsg_prim[2];
+			var timeMsg_mid = msg.limitTime[1].split('-');
+			maxDay_mid = timeMsg_mid[0];
+			maxHour_mid = timeMsg_mid[1];
+			maxMin_mid = timeMsg_mid[2];
+			
+			//清洗次数信息
+			maxWash_prim = msg.washCountLimit[0];
+			maxWash_mid = msg.washCountLimit[1];
+			
+			//空调数
+			maxAirNum = msg.ac_ids.length;
+			
+			//刷新周期
+			refreshRate = msg.rate;
+			
+			
+		    maxPage = Math.floor(msg.pageSize / 9);
 		    if((data.errorMsg % 9) == 0)
 		    	maxPage -= 1;
+		    
+		    /* 更新查询项 */
+		    // 清洗次数及时间
+		    //初级
+		    if($('input[name="filter-class"]:checked').attr('value') == 0) {
+		    	refreshWashRemain(maxWash_prim);
+		    	refreshTime(maxDay_prim);
+		    }else if($('input[name="filter-class"]:checked').attr('value') == 1) {
+		    	refreshWashRemain(maxWash_mid);
+		    	refreshTime(maxDay_mid);
+		    }
+		    // 空调号查询 
+		    refreshAirNum(maxAirNum);
 
 			var itemNum = data.param.length;  //本次返回条目数
-			for(var k=0; k<itemNum; k++) {//具体内容待定
+
+			for(var k=0; k<itemNum; k++) {
+			  $('.select_filter:eq(' + k + ')').show().attr('disabled', 'disabled');
+			  $('.select_invalid:eq(' + k + ')').show().attr('disabled', 'disabled');
+			  $('.select_inuse:eq(' + k + ')').show().attr('disabled', 'disabled');
+			  $('button.buttonEdit:eq(' + k + ')').show();
+			  $('button.buttonDone:eq(' + k + ')').show();
 			  table.children[0].children[k+1].children[0].innerHTML = data.param[k].id;  //滤芯id
-			  if(data.param[k].id.substring(2,3) == '0') {
-				  table.children[0].children[k+1].children[1].innerHTML = "初级滤芯";
-			  }else if(data.param[k].id.substring(2,3) == '1') {
-				  table.children[0].children[k+1].children[1].innerHTML = "中级滤芯";
-			  }
-              table.children[0].children[k+1].children[2].innerHTML = data.param[k].id.toString().substring(0,2);
-			  table.children[0].children[k+1].children[3].innerHTML = data.param[k].washRemain;
-			  table.children[0].children[k+1].children[4].innerHTML = data.param[k].aliveTime;
-			  table.children[0].children[k+1].children[5].innerHTML = (data.param[k].inuse == 1) ? '正在使用' : '未使用';
-			  table.children[0].children[k+1].children[6].innerHTML = (data.param[k].alive == 1) ? '未报废' : '已报废';
+			  //滤芯等级
+			  (data.param[k].id.substring(2,3) == '0') ?
+					                     ($('.select_filter:eq(' + k + ') option:eq(0)').attr('selected','selected')) : 
+		                                 ($('.select_filter:eq(' + k + ') option:eq(1)').attr('selected','selected'));
+				                                    
+              $('input.input_air:eq(' + k + ')').val(data.param[k].id.toString().substring(0,2)).show().attr('disabled', 'disabled');
+              $('input.input_wash:eq(' + k + ')').val(data.param[k].washRemain).show().attr('disabled', 'disabled');
+              $('input.input_time:eq(' + k + ')').val(data.param[k].aliveTime).show().attr('disabled', 'disabled');
+
+			  (data.param[k].inuse == 1) ? 
+					                     ($('.select_inuse:eq(' + k + ') option:eq(0)').attr('selected','selected')) : 
+					                     ($('.select_inuse:eq(' + k + ') option:eq(1)').attr('selected','selected'));
+			  
+			  (data.param[k].alive == 1) ? 
+					                     ($('.select_invalid:eq(' + k + ') option:eq(1)').attr('selected','selected')) : 
+					                     ($('.select_invalid:eq(' + k + ') option:eq(0)').attr('selected','selected'));
 			}
 		}else {
 
 		}
 	}
+	
+	//表单编辑
+	$('button.buttonEdit').bind('click', function(evt){
+		var conf = window.confirm('数据将被修改，是否继续？');
+		if(conf) {
+			$('button.buttonDone').click();
+			$(this).parent().parent().children('td:eq(1)').children('select').attr('disabled', false);
+			$(this).parent().parent().children('td:eq(2)').children('input').attr('disabled', false);
+			$(this).parent().parent().children('td:eq(3)').children('input').attr('disabled', false);
+			$(this).parent().parent().children('td:eq(4)').children('input').attr('disabled', false);
+			$(this).parent().parent().children('td:eq(5)').children('select').attr('disabled', false);
+			$(this).parent().parent().children('td:eq(6)').children('select').attr('disabled', false);
+		}else {
+			
+		}
+	});
+	$('button.buttonDone').bind('click', function(evt){
+		$(this).parent().parent().children('td:eq(1)').children('select').attr('disabled', 'disabled');
+		$(this).parent().parent().children('td:eq(2)').children('input').attr('disabled', 'disabled');
+		$(this).parent().parent().children('td:eq(3)').children('input').attr('disabled', 'disabled');
+		$(this).parent().parent().children('td:eq(4)').children('input').attr('disabled', 'disabled');
+		$(this).parent().parent().children('td:eq(5)').children('select').attr('disabled', 'disabled');
+		$(this).parent().parent().children('td:eq(6)').children('select').attr('disabled', 'disabled');
+	});
 	
 	//计时查询
 	function timingStopProcess(data){
@@ -98,6 +214,16 @@ $(document).ready(function(){
 			$('p#timingStatus').html("当前状态：停止计时");
 		}
 	}
+	
+	/* 操作 */
+	$('select.select_invalid').bind('focus', function(evt){
+		var conf = window.confirm('数据将被改变！是否继续？');
+		if(!conf) {
+
+		} 
+	});
+	$('td.td_invalid').bind('dblclick', function(evt){
+	});
 	
 	//计时操作 
 	$('button#stopTiming').bind('click',function(evt){
@@ -130,6 +256,15 @@ $(document).ready(function(){
 			sendQuery(JSONSend);
 		}
 	});
+	
+	//滤芯类型选择
+	$('input[name="filter-class"]').bind('change',function(evt){
+		if($(this).val() == 0) {//初级滤芯
+			refreshWashRemain(maxWash_prim);
+		}else if($(this).val() == 1) {//中级滤芯
+			refreshWashRemain(maxWash_mid);
+		}
+	});
 
     //提交查询
     $('div#inquiryStatus button[type="submit"]').bind('click',function(evt){
@@ -158,9 +293,11 @@ $(document).ready(function(){
 	function defaultInquiry(){
 	    var dataSend = changeString();
 		$.get('../../aimin/label/query',dataSend,indexInquiryProcess);
+		//查询计时功能
+		$.get('../../aimin/timing/query','',timingQueryProcess,'json');
 	}
 	
 	defaultInquiry();
-	$.get('../../aimin/timing/query','',timingQueryProcess,'json');
+	
 	//空调动态查询
 });

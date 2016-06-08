@@ -97,11 +97,11 @@
 			  <p class="inline-display">剩余清洗次数：</p>
 			  <select class="form-control inline-display width-middle" id="selectWashRemain">
 			    <option value=''>--所有--</option>
-			    <option value=1><=1</option>
-				<option value=2><=2</option>
-				<option value=3><=3</option>
-				<option value=4><=4</option>
-				<option value=5><=5</option>
+			    <option value=1>1</option>
+				<option value=2>2</option>
+				<option value=3>3</option>
+				<option value=4>4</option>
+				<option value=5>5</option>
 			  </select>
 			</div>
 			
@@ -220,87 +220,178 @@
 			  <th>使用时间</th>
 			  <th>是否使用</th>
 			  <th>是否报废</th>
+			  <th>编辑</th>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
+		            <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
+		            <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
+		            <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
+		            <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
+		            <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
+		            <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
+		            <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
+		            <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
-			  <td></td>
+			  <td><select class='form-control inline-display width-middle select_filter'>
+			        <option value=0 selected>初级</option>
+		            <option value=1>中级</option>
+		          </select></td>
+			  <td><input type="text" class="input_air width-small"></td>
+			  <td><input type="text" class="input_wash width-small"></td>
+			  <td><input type="text" class="input_time width-small"></td>
+			  <td><select class='form-control inline-display width-middle select_inuse'>
+			        <option value=0 selected>正使用</option>
+		            <option value=1>未使用</option>
+		          </select></td>
+			  <td><select class='form-control inline-display width-middle select_invalid'>
+			        <option value=0 selected>已报废</option>
+		            <option value=1>未报废</option>
+		          </select></td>
+		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		  </tr>
 		</table>
 		
