@@ -174,9 +174,9 @@ public class LabelControl {
 		Properties prop=new Properties();
 		prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
 		String  rate =prop.getProperty("rate");
-		List<String> limitTime = JsonUtil.toObject(prop.getProperty("limitTime").replace(":", "-"), List.class);
+		String limitTime = prop.getProperty("limitTime").replace(":", "-");
 		List<String> washCountLimit = JsonUtil.toObject(prop.getProperty("washCountLimit"), List.class);
-		List<String> ac_ids = JsonUtil.toObject(prop.getProperty("ac_id"), List.class);
+		String ac_ids = prop.getProperty("ac_id");
 		
 		response.setContentType("application/json;charset=utf-8");
 		long aliveTime = Long.parseLong(aliveTime_day)*24*3600000+Long.parseLong(aliveTime_hour)*3600000+Long.parseLong(aliveTime_min)*60000;
