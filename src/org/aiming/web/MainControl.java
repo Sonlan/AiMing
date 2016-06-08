@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value="/main")
 public class MainControl {
-	@RequestMapping(value="/toRegister")
-	public String toRegister(){
-		return "/main/register";
+	@RequestMapping(value="/index")
+	public String toIndex(){
+		return "/main/index";
 	}
-	@RequestMapping(value="/toCheck")
-	public String toCheck(){
-		return "/main/check";
+	@RequestMapping(value="/valid")
+	public String toValid(){
+		return "/main/valid";
 	}
-	@RequestMapping(value="/toManul")
-	public String toManul(){
-		return "/main/manul";
+	@RequestMapping(value="/invalid")
+	public String toInvalid(){
+		return "/main/invalid";
 	}
-	@RequestMapping(value="/toActive")
-	public String toActive(){
-		return "/main/active";
+	@RequestMapping(value="/user")
+	public String toUser(){
+		return "/main/user";
 	}
 	
 }

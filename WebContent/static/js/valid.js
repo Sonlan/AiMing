@@ -3,6 +3,7 @@ $(document).ready(function(){
     //批量激活
 	function validProcess(data){
 	    $('div#validControl input').val("");
+	    alert("OK");
 	    if(data.errorCode == 0) {
 		    alert('激活成功！');
 		} else if (data.errorCode == 1) {
@@ -14,7 +15,8 @@ $(document).ready(function(){
 
     $('div#validControl button').bind('click',function(){
 	    var dataSend = $('div#validControl input').val();
-		$.post('../../aimin/label/bind',dataSend,validProcess,"json");
+	    alert(dataSend);
+		$.post('../../aimin/label/bind',"data=["+dataSend+"]",validProcess,"json");
 	});
 
 
@@ -29,7 +31,6 @@ $(document).ready(function(){
 	    var conf = window.confirm("是否退出登录？");
 		if(conf) {
 		    $.get('../../aimin/user/logout');
-			window.location.href = 'login.html';
 		} else {
 		}
 	});

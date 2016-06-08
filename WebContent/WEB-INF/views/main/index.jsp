@@ -40,10 +40,10 @@
 	
 	<div class="container">
 	  <ul class="nav nav-tabs nav-justified">
-		<li role="presentation" id="navIndex" class="active"><a href="index.html">状态查询</a></li>
-		<li role="presentation" id="navValid"><a href="valid.html">批量激活</a></li>
-		<li role="presentation" id="navInvalid"><a href="invalid.html">手动报废</a></li>
-		<li role="presentation" id="navUser"><a href="user.html">用户管理</a></li>
+		<li role="presentation" id="navIndex" class="active"><a href="${ctx}/main/index">状态查询</a></li>
+		<li role="presentation" id="navValid"><a href="${ctx}/main/valid">批量激活</a></li>
+		<li role="presentation" id="navInvalid"><a href="${ctx}/main/invalid">手动报废</a></li>
+		<li role="presentation" id="navUser"><a href="${ctx}/main/user">用户管理</a></li>
 	  </ul>
 	</div>
 	
