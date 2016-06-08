@@ -7,7 +7,7 @@ $(document).ready(function(){
 		aliveTime_day : 1,  //剩余时间
 		aliveTime_hour : 0,  
 		aliveTime_min : 0,
-		filter : 0,  //滤芯等级 0 初级
+		level : 0,  //滤芯等级 0 初级
 		washRemain : 0,  //剩余清洗次数
 		inuse : 1,  //是否使用,正在使用
 		alive : 1,  //是否报废,未报废
@@ -22,7 +22,7 @@ $(document).ready(function(){
 		JSONData.alive = $('div#inquiryStatus input[name="in-valid"]:checked').attr('value');
 		JSONData.inuse = $('div#inquiryStatus input[name="in-use"]:checked').attr('value');
 		JSONData.ac_id = $('select#selectAIRId option:selected').attr('value');
-		JSONData.filter = $('div#inquiryStatus input[name="filter-class"]:checked').attr('value');
+		JSONData.level = $('div#inquiryStatus input[name="filter-class"]:checked').attr('value');
 		JSONData.washRemain = $('select#selectWashRemain option:selected').attr('value');
 		JSONData.aliveTime_day = $('select#selectRemainDay option:selected').attr('value');
 		JSONData.aliveTime_hour = $('select#selectRemainHour option:selected').attr('value');
@@ -32,7 +32,7 @@ $(document).ready(function(){
 			 + '&aliveTime_hour=' + JSONData.aliveTime_hour
 			 + '&aliveTime_min=' + JSONData.aliveTime_min
 			 + '&washRemain=' + JSONData.washRemain
-			 + '&filter=' + JSONData.filter
+			 + '&level=' + JSONData.level
 			 + '&inuse=' + JSONData.inuse
 			 + '&alive=' + JSONData.alive
 			 + '&ac_id=' + JSONData.ac_id
@@ -54,18 +54,22 @@ $(document).ready(function(){
 		if(data.errorCode == 0) { //操作成功显示查询信息
 		    //显示页码信息
 		    maxPage = Math.floor(data.errorMsg / 9);
-		    if((jsData.errorMsg % 9) == 0)
+		    if((data.errorMsg % 9) == 0)
 		    	maxPage -= 1;
 
-			var itemNum = jsData.param.length;  //本次返回条目数
+			var itemNum = data.param.length;  //本次返回条目数
 			for(var k=0; k<itemNum; k++) {//具体内容待定
 			  table.children[0].children[k+1].children[0].innerHTML = data.param[k].id;  //滤芯id
-			  table.children[0].children[k+1].children[1].innerHTML = "初级滤芯";
-              table.children[0].children[k+1].children[2].innerHTML = data.param[k].subString(0,2);
-			  table.children[0].children[k+1].children[3].innerHTML = data.param[k].washing_count;
-			  table.children[0].children[k+1].children[4].innerHTML = "1天20小时3分";
-			  table.children[0].children[k+1].children[5].innerHTML = data.param[k].inuse;
-			  table.children[0].children[k+1].children[6].innerHTML = data.param[k].alive;
+			  if(data.param[k].id.substring(2,3) == '0') {
+				  table.children[0].children[k+1].children[1].innerHTML = "初级滤芯";
+			  }else if(data.param[k].id.substring(2,3) == '1') {
+				  table.children[0].children[k+1].children[1].innerHTML = "中级滤芯";
+			  }
+              table.children[0].children[k+1].children[2].innerHTML = data.param[k].id.toString().substring(0,2);
+			  table.children[0].children[k+1].children[3].innerHTML = data.param[k].washRemain;
+			  table.children[0].children[k+1].children[4].innerHTML = data.param[k].aliveTime;
+			  table.children[0].children[k+1].children[5].innerHTML = (data.param[k].inuse == 1) ? '正在使用' : '未使用';
+			  table.children[0].children[k+1].children[6].innerHTML = (data.param[k].alive == 1) ? '未报废' : '已报废';
 			}
 		}else {
 
@@ -73,20 +77,31 @@ $(document).ready(function(){
 	}
 	
 	//计时查询
-	function timingInquiryProcess(data){
+	function timingStopProcess(data){
 		if(data.errorCode == 0) {
-		    $('p#timingStatus').html("当前状态：正在计时");
-		}else if(data.errorCode == 1) {
 		    $('p#timingStatus').html("当前状态：停止计时");
+		}else if(data.errorCode == 1) {
+		}
+	}
+	function timingStartProcess(data){
+		if(data.errorCode == 0) {
+			$('p#timingStatus').html("当前状态：开始计时");
+		}
+	}
+	function timingQueryProcess(data){
+		if(data.errorCode == 0) {
+			$('p#timingStatus').html("当前状态：开始计时");
+		}else if(data.errorCode == 1) {
+			$('p#timingStatus').html("当前状态：停止计时");
 		}
 	}
 	
-	//计时操作  //chaxun
+	//计时操作 
 	$('button#stopTiming').bind('click',function(evt){
-	    $.get('../../aimin/timing/stop','','timingInquiryProcess','json');
+	    $.get('../../aimin/timing/stop','',timingStopProcess,'json');
 	});
 	$('button#startTiming').bind('click',function(evt){
-	    $.get('../../aimin/timing/start','','timingInquiryProcess','json');
+	    $.get('../../aimin/timing/start','',timingStartProcess,'json');
 	});
 	
 	//翻页操作
@@ -118,7 +133,6 @@ $(document).ready(function(){
     $('div#inquiryStatus button[type="submit"]').bind('click',function(evt){
 	    evt.preventDefault();
 		var sendData = changeString();	
-		alert(sendData);
 	    $.get('../../aimin/label/query',sendData,indexInquiryProcess);
 	});
 	
@@ -141,10 +155,10 @@ $(document).ready(function(){
 	//初始页面查询
 	function defaultInquiry(){
 	    var dataSend = changeString();
-	    alert(dataSend);
 		$.get('../../aimin/label/query',dataSend,indexInquiryProcess);
 	}
 	
 	defaultInquiry();
+	$.get('../../aimin/timing/query','',timingQueryProcess,'json');
 	//空调动态查询
 });
