@@ -14,7 +14,6 @@ $(document).ready(function(){
 	    evt.preventDefault();
 		var dataSend = 'username=' + $('form#loginForm input#exampleInputEmail1').val()
 		             + '&password=' + $('form#loginForm input#exampleInputPassword1').val();
-		alert("OK"+dataSend);
 		$.get('../../aimin/user/logon', dataSend, loginProcess);
 	});
 });

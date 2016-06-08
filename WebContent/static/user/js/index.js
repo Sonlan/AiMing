@@ -113,7 +113,6 @@ $(document).ready(function(){
 			currentPage --;
 			JSONData.page = currentPage;
 			var dataSend = changeString();
-			alert(dataSend);
 			$.get('../../aimin/label/query',sendData,indexInquiryProcess);
 		}
 	});
