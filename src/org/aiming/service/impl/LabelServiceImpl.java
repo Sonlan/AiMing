@@ -94,7 +94,7 @@ public class LabelServiceImpl implements LabelService {
 			map.put("level", level);
 			map.put("washRemain", washRemain);
 			List<Label> list = labelDao.getLablesSizeById(map);
-			if(!"".equals(aliveTime)){
+			if(-1!=aliveTime){
 				if(null != list && 0!=list.size()){
 					for(int i=0;i<list.size();i++){
 						long cTime = TimeRevert.toLong(list.get(i).getAliveTime());
@@ -122,7 +122,7 @@ public class LabelServiceImpl implements LabelService {
 			map.put("level", level);
 			map.put("washRemain", washRemain);
 			List<Label> list = labelDao.getLablesById(map);
-			if(!"".equals(aliveTime)){
+			if(-1!=aliveTime){
 				if(null != list && 0!=list.size()){
 					for(int i=0;i<list.size();i++){
 						long cTime = TimeRevert.toLong(list.get(i).getAliveTime());

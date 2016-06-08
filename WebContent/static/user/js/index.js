@@ -53,7 +53,10 @@ $(document).ready(function(){
 
 		if(data.errorCode == 0) { //操作成功显示查询信息
 		    //显示页码信息
-		    maxPage = Math.floor(data.errorMsg / 9);
+			alert(data.errorMsg);
+			var Msg = eval ("(" + data.errorMsg + ")");
+			alert(Msg.pageSize);
+		    maxPage = Math.floor(Msg.pageSize / 9);
 		    if((data.errorMsg % 9) == 0)
 		    	maxPage -= 1;
 

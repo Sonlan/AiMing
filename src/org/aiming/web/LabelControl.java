@@ -1,9 +1,11 @@
 package org.aiming.web;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -168,12 +170,21 @@ public class LabelControl {
 		String aliveTime_min = (null==request.getParameter("aliveTime_min") || "".equals(request.getParameter("aliveTime_min")))?"0":request.getParameter("aliveTime_min");  //距离报废的时间，单位小时
 		String washRemain =  null==request.getParameter("washRemain")?"":request.getParameter("washRemain");  //剩余清洗次数
 		int page = null==request.getParameter("page")?0:Integer.parseInt(request.getParameter("page"));  //页数，从0开始
+		
+		Properties prop=new Properties();
+		prop.load(new InputStreamReader(TimingControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
+		String  rate =prop.getProperty("rate");
+		List<String> limitTime = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
+		List<String> washCountLimit = JsonUtil.toObject(prop.getProperty("washCountLimit"), List.class);
+		List<String> ac_ids = JsonUtil.toObject(prop.getProperty("ac_id"), List.class);
+		
 		response.setContentType("application/json;charset=utf-8");
 		long aliveTime = Long.parseLong(aliveTime_day)*24*3600000+Long.parseLong(aliveTime_hour)*3600000+Long.parseLong(aliveTime_min)*60000;
+		
 		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,level,aliveTime,washRemain,page);
 		if(null != list){
 			if(0==list.size()) response.getWriter().write(JsonUtil.statusResponse(1, "没有符合条件的数据", ""));
-			else response.getWriter().write(JsonUtil.statusResponse(0, labelService.getlabelSizeQuery(id, inuse, alive, ac_id,level,aliveTime,washRemain), list));
+			else response.getWriter().write(JsonUtil.statusResponse(0, "{\"pageSize\":"+labelService.getlabelSizeQuery(id, inuse, alive, ac_id,level,aliveTime,washRemain)+",\"rate\":"+rate+",\"ac_ids\":"+ac_ids+",\"washCountLimit\":"+washCountLimit+"}", list));
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "查询失败", ""));
 		
 	}
