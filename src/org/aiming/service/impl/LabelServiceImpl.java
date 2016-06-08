@@ -39,7 +39,7 @@ public class LabelServiceImpl implements LabelService {
 				Properties prop=new Properties();
 				prop.load(new InputStreamReader(LabelControl.class.getClassLoader().getResourceAsStream("workConfig.properties"), "UTF-8"));
 				List<String> limitTimes = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
-				map.put("aliveTime", TimeRevert.toString(Long.parseLong(limitTimes.get(Integer.parseInt(id.substring(2, 3))))*3600000));
+				map.put("aliveTime", limitTimes.get(Integer.parseInt(id.substring(2, 3))));
 				map.put("id", id);
 				map.put("washRemain", label.getWashRemain()-1);
 				labelDao.deployLabel(map);

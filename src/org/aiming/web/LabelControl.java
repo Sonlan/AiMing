@@ -184,7 +184,7 @@ public class LabelControl {
 		List<Label> list = labelService.labelQuery(id,inuse,alive,ac_id,level,aliveTime,washRemain,page);
 		if(null != list){
 			if(0==list.size()) response.getWriter().write(JsonUtil.statusResponse(1, "没有符合条件的数据", ""));
-			else response.getWriter().write(JsonUtil.statusResponse(0, "{\"pageSize\":"+labelService.getlabelSizeQuery(id, inuse, alive, ac_id,level,aliveTime,washRemain)+",\"rate\":"+rate+",\"ac_ids\":"+ac_ids+",\"washCountLimit\":"+washCountLimit+"}", list));
+			else response.getWriter().write(JsonUtil.statusResponse(0, "{\"pageSize\":"+labelService.getlabelSizeQuery(id, inuse, alive, ac_id,level,aliveTime,washRemain)+",\"rate\":"+rate+",\"ac_ids\":"+ac_ids+",\"washCountLimit\":"+washCountLimit+",\"limitTime\":"+limitTime+"}", list));
 		}else response.getWriter().write(JsonUtil.statusResponse(1, "查询失败", ""));
 		
 	}
