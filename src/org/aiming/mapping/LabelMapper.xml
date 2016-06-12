@@ -124,7 +124,7 @@
   	update label 
   	<set>
   		<if test="label.aliveTime != null and label.aliveTime != '' ">
-  			aliveTime = ${label.aliveTime},
+  			aliveTime = #{label.aliveTime,jdbcType=VARCHAR},
   		</if>
   		<if test="label.activate_date != null and label.activate_date != '' ">
   			activate_date = ${label.activate_date},

@@ -177,7 +177,7 @@ public class LabelServiceImpl implements LabelService {
 				List<String> washCountLimits = JsonUtil.toObject(prop.getProperty("washCountLimit"), List.class);
 				List<String> limitTimes = JsonUtil.toObject(prop.getProperty("limitTime"), List.class);
 				map.put("id", id);
-				map.put("washRemain", Integer.parseInt(washCountLimits.get(Integer.parseInt(id.substring(2, 3))))+1);
+				map.put("washRemain", Integer.parseInt(washCountLimits.get(Integer.parseInt(id.substring(2, 3)))));
 				map.put("aliveTime", limitTimes.get(Integer.parseInt(id.substring(2, 3))));
 				labelDao.labelInsert(map);
 				return 0;
@@ -204,6 +204,7 @@ public class LabelServiceImpl implements LabelService {
 			labelDao.editLabel(map);
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

@@ -111,7 +111,7 @@ public class LabelControl {
 				for(int i=0;i<labels.size();i++){
 					Label label = labelService.labelRemove(labels.get(i));
 					if(null != label){
-						if(label.getWashRemain()<=0){
+						if(label.getWashRemain()<0){
 							erroMsg.add(labels.get(i)+": 已达到清洗次数上限");
 						}
 					}else{
