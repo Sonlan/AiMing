@@ -46,9 +46,9 @@
 	  </ul>
 	</div>
 	
-	<div class="container">
+	<div class="container-fluid">
 	  <div class="row">
-	    <div class="col-md-3 bg-info m-padding l-top-margin">
+	    <div class="col-md-2 col-md-offset-1 bg-info m-padding l-top-margin">
 		    <p class="big-font">计时功能:</p>
 			<div class="btn-group" role="group">
 			  <button type="button" class="btn btn-default" id="stopTiming">停止计时</button>
@@ -208,18 +208,19 @@
 			
 			<button class="btn btn-default" type="submit">提交查询</button>
 		</div>
-	  </div><!-- col-md-3 -->
-	  <div class="col-md-9 l-top-margin">
+	  </div><!-- col-md-2 -->
+	  <div class="col-md-8 l-top-margin">
 	    <table class="table table-hover table-striped table-bordered" id="mainTable">
 		  <tr>
 			  <th>滤芯号</th>
 			  <th>滤芯等级</th>
 			  <th>空调号</th>
 			  <th>清洗次数</th>
-			  <th>使用时间(天:时:分)</th>
+			  <th>剩余时间(天:时:分)</th>
 			  <th>是否使用</th>
 			  <th>是否报废</th>
 			  <th>编辑</th>
+			  <th>删除</th>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -231,14 +232,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -250,14 +252,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -269,14 +272,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -288,14 +292,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -307,14 +312,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -326,14 +332,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -345,14 +352,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -364,14 +372,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td class="td_invalid"><select class='form-control inline-display width-middle select_invalid'> 
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		  <tr>
 		      <td></td>
@@ -383,14 +392,15 @@
 			  <td><input type="text" class="input_wash width-small"></td>
 			  <td><input type="text" class="input_time width-small"></td>
 			  <td><select class='form-control inline-display width-middle select_inuse'>
-			        <option value=0 selected>正使用</option>
-		            <option value=1>未使用</option>
+			        <option value=1 selected>正使用</option>
+		            <option value=0>未使用</option>
 		          </select></td>
 			  <td><select class='form-control inline-display width-middle select_invalid'>
 			        <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
+		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
 		</table>
 		

@@ -42,6 +42,7 @@ $(document).ready(function(){
 		}
 	} 
 	
+	
 	//剩余清洗次数刷新
 	function refreshWashRemain(maxWash){
 		$('select#selectWashRemain option:gt(0)').remove();
@@ -71,11 +72,25 @@ $(document).ready(function(){
 		$('select#selectRemainDay option[value=1]').attr('selected','selected');
 	}
 	
+	//表单项删除回调函数
+	function itemDeleteProcess(data){
+		if(data.errorCode == 0) {
+			alert('删除成功！');
+			defaultInquiry();
+		} else {
+			alert(data.errorMsg);
+			defaultInquiry();
+		}
+	}
+	
+	//表单数据手动修改 回调函数
 	function dataEditProcess(data){
 		if(data.errorCode == 0) {
-			alert('OK!');
+			alert('修改成功！');
+			defaultInquiry();
 		}else {
 			alert(data.errorCode + data.errorMsg);
+			defaultInquiry();
 		}
 	}
 	
@@ -120,6 +135,7 @@ $(document).ready(function(){
 	    $('select.select_invalid').hide();
 	    $('button.buttonEdit').hide();
 	    $('button.buttonDone').hide();
+	    $('button.buttonDelete').hide();
 	    //清零
 		
 
@@ -177,6 +193,7 @@ $(document).ready(function(){
 			  $('.select_inuse:eq(' + k + ')').show().attr('disabled', 'disabled');
 			  $('button.buttonEdit:eq(' + k + ')').show();
 			  $('button.buttonDone:eq(' + k + ')').show();
+			  $('button.buttonDelete:eq(' + k + ')').show();
 			  //滤芯id
 			  table.children[0].children[k+1].children[0].innerHTML = data.param[k].id;  
 			  //滤芯等级
@@ -342,10 +359,20 @@ $(document).ready(function(){
 	}
 	
 	/* 操作 */
+	
+	//表单项删除
+	$('button.buttonDelete').bind('click', function(evt){
+		var conf = window.confirm('确定删除？');
+		if(conf) {
+			alert('已删除');
+			//$.get('../../aimin/label/query',dataSend,itemDeleteProcess);
+		}
+	});
+	
 	$('select.select_invalid').bind('focus', function(evt){
 		var conf = window.confirm('数据将被改变！是否继续？');
 		if(!conf) {
-
+ 
 		} 
 	});
 	$('td.td_invalid').bind('dblclick', function(evt){
