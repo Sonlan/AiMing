@@ -31,7 +31,6 @@
 		<div class="col-md-3 right-align">
 		<!-- 用户管理导航 -->
 		  <div>
-			  <a href="password" class="white-font s-right-margin"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>修改密码</a>
 			  <a href="logout" class="white-font s-right-margin"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>退出登录</a>
 		  </div>
 		</div>

@@ -31,7 +31,6 @@
 		<div class="col-md-3 right-align">
 		<!-- 用户管理导航 -->
 		  <div>
-			  <a href="password" class="white-font s-right-margin"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>修改密码</a>
 			  <a href="logout" class="white-font s-right-margin"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>退出登录</a>
 		  </div>
 		</div>
@@ -217,7 +216,7 @@
 			  <th>滤芯等级</th>
 			  <th>空调号</th>
 			  <th>清洗次数</th>
-			  <th>使用时间</th>
+			  <th>使用时间(天:时:分)</th>
 			  <th>是否使用</th>
 			  <th>是否报废</th>
 			  <th>编辑</th>

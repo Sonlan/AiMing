@@ -13,7 +13,13 @@ $(document).ready(function(){
     maxMin_mid = 0;
     maxWash_mid = 0;  //最大清洗次数
     maxAirNum = 0;  //最大空调数
-    refreshRate = 0;  //刷新周期
+    refreshRate = 0;  //刷新周期 min
+    tempCount = 0;
+    
+    //表单验证数据
+    airIDTemp = 0;
+    washRemainTemp = 0;
+    usingTimeTemp = 0;
     
 	JSONData = {                    //查询请求JSON
 		aliveTime_day : 1,  //剩余时间
@@ -26,6 +32,15 @@ $(document).ready(function(){
 		ac_id : '01',  //空调号
 		page : 0  //当前页面
 	};
+	
+	//定时刷新
+	function startrequest(){
+		tempCount += 5;
+		if(tempCount >= refreshRate*60) {
+			tempCount = 0;
+			defaultInquiry();
+		}
+	} 
 	
 	//剩余清洗次数刷新
 	function refreshWashRemain(maxWash){
@@ -51,6 +66,16 @@ $(document).ready(function(){
 		for(var i = 0; i <= day; i ++) {
 			var opt = "<option value=" + i + ">" + i + "</option>";
 			$('select#selectRemainDay').append(opt);
+		}
+		//choose value=1
+		$('select#selectRemainDay option[value=1]').attr('selected','selected');
+	}
+	
+	function dataEditProcess(data){
+		if(data.errorCode == 0) {
+			alert('OK!');
+		}else {
+			alert(data.errorCode + data.errorMsg);
 		}
 	}
 	
@@ -87,22 +112,25 @@ $(document).ready(function(){
 		for(var i=0; i<9; i++) {
             table.children[0].children[i+1].children[0].innerHTML = '';    
 		}
-	  $('input.input_air').val('').hide();
-	  $('input.input_wash').val('').hide();
-	  $('input.input_time').val('').hide();
-	  $('select.select_filter').hide();
-	  $('select.select_inuse').hide();
-	  $('select.select_invalid').hide();
-	  $('button.buttonEdit').hide();
-	  $('button.buttonDone').hide();
+	    $('input.input_air').val('').hide();
+	    $('input.input_wash').val('').hide();
+	    $('input.input_time').val('').hide();
+	    $('select.select_filter').hide();
+	    $('select.select_inuse').hide();
+	    $('select.select_invalid').hide();
+	    $('button.buttonEdit').hide();
+	    $('button.buttonDone').hide();
+	    //清零
 		
 
 		if(data.errorCode == 0) { //操作成功显示查询信息
 		    //显示页码信息
-			alert(data.errorMsg);
+			//alert(data.errorMsg);
+			
 			//data.errorMsg转化为JSON对象
 			var msg = eval ("(" + data.errorMsg + ")");
-			//剩余时间信息
+			
+			//获取剩余时间信息
 			var timeMsg_prim = msg.limitTime[0].split('-');
 			maxDay_prim = timeMsg_prim[0];
 			maxHour_prim = timeMsg_prim[1];
@@ -112,56 +140,63 @@ $(document).ready(function(){
 			maxHour_mid = timeMsg_mid[1];
 			maxMin_mid = timeMsg_mid[2];
 			
-			//清洗次数信息
+			//获取清洗次数信息
 			maxWash_prim = msg.washCountLimit[0];
 			maxWash_mid = msg.washCountLimit[1];
 			
-			//空调数
+			//获取空调数信息
 			maxAirNum = msg.ac_ids.length;
 			
-			//刷新周期
+			//获取刷新周期信息
 			refreshRate = msg.rate;
 			
-			
+			//计算最大页数信息
 		    maxPage = Math.floor(msg.pageSize / 9);
 		    if((data.errorMsg % 9) == 0)
 		    	maxPage -= 1;
 		    
-		    /* 更新查询项 */
-		    // 清洗次数及时间
-		    //初级
+		    /* 更新下拉菜单 */
+		    // 剩余清洗次数 及 剩余使用时间下拉菜单
+		    //此时初级滤芯被选中
 		    if($('input[name="filter-class"]:checked').attr('value') == 0) {
 		    	refreshWashRemain(maxWash_prim);
 		    	refreshTime(maxDay_prim);
+		    //此时中级滤芯被选中
 		    }else if($('input[name="filter-class"]:checked').attr('value') == 1) {
 		    	refreshWashRemain(maxWash_mid);
 		    	refreshTime(maxDay_mid);
 		    }
-		    // 空调号查询 
-		    refreshAirNum(maxAirNum);
+		    // 空调号查询下拉菜单
+		    refreshAirNum(maxAirNum);/* 更新下拉菜单 */
 
+		    /* 填充mainTable */
 			var itemNum = data.param.length;  //本次返回条目数
-
 			for(var k=0; k<itemNum; k++) {
 			  $('.select_filter:eq(' + k + ')').show().attr('disabled', 'disabled');
 			  $('.select_invalid:eq(' + k + ')').show().attr('disabled', 'disabled');
 			  $('.select_inuse:eq(' + k + ')').show().attr('disabled', 'disabled');
 			  $('button.buttonEdit:eq(' + k + ')').show();
 			  $('button.buttonDone:eq(' + k + ')').show();
-			  table.children[0].children[k+1].children[0].innerHTML = data.param[k].id;  //滤芯id
+			  //滤芯id
+			  table.children[0].children[k+1].children[0].innerHTML = data.param[k].id;  
 			  //滤芯等级
 			  (data.param[k].id.substring(2,3) == '0') ?
 					                     ($('.select_filter:eq(' + k + ') option:eq(0)').attr('selected','selected')) : 
 		                                 ($('.select_filter:eq(' + k + ') option:eq(1)').attr('selected','selected'));
-				                                    
+			  //空调id显示                              
               $('input.input_air:eq(' + k + ')').val(data.param[k].id.toString().substring(0,2)).show().attr('disabled', 'disabled');
+              //剩余清洗次数
               $('input.input_wash:eq(' + k + ')').val(data.param[k].washRemain).show().attr('disabled', 'disabled');
+              //剩余使用时间
               $('input.input_time:eq(' + k + ')').val(data.param[k].aliveTime).show().attr('disabled', 'disabled');
-
+              //$('input.input_time:eq(' + k + ')').val(data.param[k].aliveTime.split(':')[0] + '天' +
+              //                                        data.param[k].aliveTime.split(':')[1] + '时' +
+              //                                        data.param[k].aliveTime.split(':')[2] + '分').show().attr('disabled', 'disabled');
+              //是否使用
 			  (data.param[k].inuse == 1) ? 
 					                     ($('.select_inuse:eq(' + k + ') option:eq(0)').attr('selected','selected')) : 
 					                     ($('.select_inuse:eq(' + k + ') option:eq(1)').attr('selected','selected'));
-			  
+			  //是否报废
 			  (data.param[k].alive == 1) ? 
 					                     ($('.select_invalid:eq(' + k + ') option:eq(1)').attr('selected','selected')) : 
 					                     ($('.select_invalid:eq(' + k + ') option:eq(0)').attr('selected','selected'));
@@ -175,9 +210,13 @@ $(document).ready(function(){
 	$('button.buttonEdit').bind('click', function(evt){
 		var conf = window.confirm('数据将被修改，是否继续？');
 		if(conf) {
-			$('button.buttonDone').click();
-			$(this).parent().parent().children('td:eq(1)').children('select').attr('disabled', false);
-			$(this).parent().parent().children('td:eq(2)').children('input').attr('disabled', false);
+			//失能其他编辑按钮
+			$('button.buttonEdit').attr('disabled', 'disabled');
+			$('button.buttonDone').attr('disabled', 'disabled');
+			$(this).next('button.buttonDone').attr('disabled', false);
+			
+			//$(this).parent().parent().children('td:eq(1)').children('select').attr('disabled', false);
+			//$(this).parent().parent().children('td:eq(2)').children('input').attr('disabled', false);
 			$(this).parent().parent().children('td:eq(3)').children('input').attr('disabled', false);
 			$(this).parent().parent().children('td:eq(4)').children('input').attr('disabled', false);
 			$(this).parent().parent().children('td:eq(5)').children('select').attr('disabled', false);
@@ -186,14 +225,101 @@ $(document).ready(function(){
 			
 		}
 	});
+	//表单编辑  确定按钮
 	$('button.buttonDone').bind('click', function(evt){
+		//失能信息编辑
 		$(this).parent().parent().children('td:eq(1)').children('select').attr('disabled', 'disabled');
 		$(this).parent().parent().children('td:eq(2)').children('input').attr('disabled', 'disabled');
 		$(this).parent().parent().children('td:eq(3)').children('input').attr('disabled', 'disabled');
 		$(this).parent().parent().children('td:eq(4)').children('input').attr('disabled', 'disabled');
 		$(this).parent().parent().children('td:eq(5)').children('select').attr('disabled', 'disabled');
 		$(this).parent().parent().children('td:eq(6)').children('select').attr('disabled', 'disabled');
+		//使能buttonEdit以及buttonDone
+		$('button.buttonEdit').attr('disabled', false);
+		$('button.buttonDone').attr('disabled', false);		
+		//向后台发送数据
+		var dataSend = "";
+		dataSend = 'id=' + $(this).parent().parent().children('td:eq(0)').html()
+		         //+ '&filter=' + $(this).parent().parent().children('td:eq(1)').children('select').children('option:selected').attr('value')
+		         //+ '&acId=' +  $(this).parent().parent().children('td:eq(2)').children('input').val()
+		         + '&washRemain=' + $(this).parent().parent().children('td:eq(3)').children('input').val()
+		         + '&aliveTime=' + $(this).parent().parent().children('td:eq(4)').children('input').val()
+		         + '&inuse=' + $(this).parent().parent().children('td:eq(5)').children('select').children('option:selected').attr('value')
+		         + '&alive=' + $(this).parent().parent().children('td:eq(6)').children('select').children('option:selected').attr('value');
+		$.get('../../aimin/label/edit',dataSend,dataEditProcess,'json');
 	});
+	//编辑中，改变滤芯等级后检测剩余清洗次数是否合法
+	$('table#mainTable td:nth-child(2) select').bind('change', function(evt){
+		$(this).parent().parent().children('td:nth-child(4)').children('input').blur();
+	});
+	//表单验证，空调id
+	$('table#mainTable td:nth-child(3) input').bind('focus', function(evt){
+		airIDTemp = $(this).val();
+	});
+	$('table#mainTable td:nth-child(3) input').bind('blur', function(evt){
+		var newAirID = $(this).val();
+		var regExp = /[0-9]{2}/g;
+		//2位数字 不大于maxAirNum
+		if(regExp.test(newAirID) && (newAirID.length == 2) && (parseInt(newAirID) <= maxAirNum)){
+		} else {
+			alert('空调号输入不合法！');
+			$(this).val(airIDTemp);
+		}
+
+	});
+	//表单验证，剩余清洗次数
+	$('table#mainTable td:nth-child(4) input').bind('focus', function(evt){
+		washRemainTemp = $(this).val();
+	});
+	$('table#mainTable td:nth-child(4) input').bind('blur', function(evt){
+		var newWashRemain = $(this).val();
+		var regExp = /^[0-9]*$/g;
+		var washRemain = 0;
+		//初级滤芯
+		if($(this).parent().parent().children('td:nth-child(2)').children('select').children('option:selected').attr('value') == 0) {
+			washRemain = maxWash_prim;
+		}else {
+			washRemain = maxWash_mid;
+		}
+		if(regExp.test(newWashRemain) && (parseInt(newWashRemain) <= washRemain)){
+		} else {
+			alert('清洗次数输入不合法！最大清洗次数为' + washRemain);
+			$(this).val(washRemainTemp);
+		}
+	});
+	//表单验证，剩余时间
+	$('table#mainTable td:nth-child(5) input').bind('focus', function(evt){
+		usingTimeTemp = $(this).val();
+	});
+	$('table#mainTable td:nth-child(5) input').bind('blur', function(evt){
+		var newUsingTime = $(this).val();
+		var regExp = /\d{2}:\d{2}:\d{2}/g;
+		//初级滤芯
+		if($(this).parent().parent().children('td:nth-child(2)').children('select').children('option:selected').attr('value') == 0) {
+			var dhms = newUsingTime.split(':');
+			var maxdhms = parseInt(dhms[0] + dhms[1] + dhms[2]);
+			var maxdhms_prim = parseInt(maxDay_prim + maxHour_prim + maxMin_prim);
+			var hourMinFlag = (parseInt(dhms[1]) <= 23)&&(parseInt(dhms[2]) <= 59);
+			if(hourMinFlag && regExp.test(newUsingTime) && (newUsingTime.length==8) && (maxdhms <= maxdhms_prim)) {
+				//符合条件
+			}else {
+				alert('输入剩余时间不合法！格式为天:时:分，最大剩余时间：' 
+						+ maxDay_prim + ':' + maxHour_prim + ':' + maxMin_prim);
+				$(this).val(usingTimeTemp);
+			}
+		}else { //中级滤芯
+			var dhms = newUsingTime.split(':');
+			var maxdhms = parseInt(dhms[0] + dhms[1] + dhms[2]);
+			var maxdhms_mid = parseInt(maxDay_mid + maxHour_mid + maxMin_mid);
+			if(regExp.test(newUsingTime) && (newUsingTime.length==8) && (maxdhms <= maxdhms_mid)) {
+				//符合条件
+			}else {
+				alert('输入剩余时间不合法！格式为天:时:分，最大剩余时间：' 
+						+ maxDay_mid + ':' + maxHour_mid + ':' + maxMin_mid);
+				$(this).val(usingTimeTemp);
+			}
+		}
+	});	
 	
 	//计时查询
 	function timingStopProcess(data){
@@ -298,6 +424,7 @@ $(document).ready(function(){
 	}
 	
 	defaultInquiry();
-	
+	//定时器
+	setInterval(startrequest,5000);  
 	//空调动态查询
 });

@@ -38,55 +38,60 @@ $(document).ready(function(){
     		
     	} else {
     		userCurrentPage ++;
-    		var dataSend = 'page=' + user_currentPage;
+    		var dataSend = 'page=' + userCurrentPage;
     		$.get('../../aimin/user/query',dataSend,userManageProcess);  		
     	}
 	});
 	//删除、更改密码操作
-	for(var i=0; i<5; i++) {
-	    var btns = $('table#userManageTable tbody td');
-	    btns.slice(i,i+1).children('td input:first').bind('click', function(){
-		    var con = window.confirm('确定删除该用户？');
-		    if(con) {
-			    var dataSend = 'username=' + $(this).parent().prev().text();
-				$.get('../../aimin/user/delete',dataSend,deleteCallBack);
-		    }
-		});
-	    btns.slice(i,i+1).children('td input:last').bind('click', function(){
-            var newPassword = window.prompt("请输入新密码","");
-			//发送新密码
-			var dataSend = 'username=' + $(this).parent().prev().text()
-			             + '&password=' + newPassword;
-			$.get('../../aimin/user/edit', dataSend, userNewPasswordProcess);
-		});
-	}
+	$('table#userManageTable td.userEdit input:first-child').bind('click', function(evt){
+		var con = window.confirm('确定删除该用户？');
+	    if(con) {
+		    var dataSend = 'username=' + $(this).parent().prev().text();
+			$.get('../../aimin/user/delete', dataSend, userDeleteProcess);
+	    }
+	});
+	$('table#userManageTable td.userEdit input:last-child').bind('click', function(evt){
+	    var newPassword = window.prompt("请输入新密码","");
+		//发送新密码
+	    var dataSend = 'username=' + $(this).parent().prev().text()
+			         + '&password=' + newPassword;
+		$.get('../../aimin/user/edit', dataSend, userNewPasswordProcess);
+	});
+
 	//用户注册提交回调函数
 	function userRegisterProcess(data){
-	    var jsData = JSON.parse(data);
 		var alertMsg = "";
-		if(jsData.errorCode == 0)
+		if(data.errorCode == 0)
 		  alertMsg += "注册成功！";
-		else if(jsData.errorCode == 1)
+		else if(data.errorCode == 1)
 		  alertMsg += "注册失败！";
-	    else if(jsData.errorCode == 2)
+	    else if(data.errorCode == 2)
 		  alertMsg += "后台异常！";
 		  
-		alertMsg += jsData.errorMsg;
+		alertMsg += data.errorMsg;
 		
+		//重置表单
 		$('form#formUserRegister')[0].reset();
 		alert(alertMsg);
+		//刷新用户页面
+		$.get('../../aimin/user/query',"page=0",userManageProcess);
 	}
 	//用户删除回调函数
 	function userDeleteProcess(data) {
 	    if(data.errorCode == 0) {
+	    	alert('删除成功！');
 	        var dataSend = 'page=' + userCurrentPage;
     		$.get('../../aimin/user/query',dataSend,userManageProcess);  //更新用户列表
+		} else {
+			alert('删除操作异常！');
 		}
 	}
 	//用户新密码回调函数
-	function userNewPasswordProcess(){
+	function userNewPasswordProcess(data){
 	    if(data.errorCode == 0) {
 			alert('密码修改成功！');
+		} else {
+			alert('密码修改失败！');
 		}
 	}
 	//用户管理页面查询翻页回调函数

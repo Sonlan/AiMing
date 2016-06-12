@@ -14,7 +14,25 @@ $(document).ready(function(){
 
     $('div#validControl button').bind('click',function(){
 	    var dataSend = $('div#validControl input').val();
-		$.post('../../aimin/label/bind',dataSend,validProcess,"json");
+	    var idsFlag = 0;
+	    ids = dataSend.split(',');
+	    len = ids.length;
+	    dataSend = 'data=[';
+	    for(var i=0; i<len; i++) {
+            if(ids[i].length != 13) {
+            	idsFlag = 1;
+            	break;
+            }
+	    }
+	    dataSend += $('div#validControl input').val()
+	              + ']'; 
+	    
+	    if(idsFlag == 1) {
+	    	alert('输入格式有误！');
+	    } else if(idsFlag == 0) {
+	    	//$.post('../../aimin/label/bind',dataSend,validProcess,"json");
+	    }
+		//$.post('../../aimin/label/bind',dataSend,validProcess,"json");
 	});
 
     

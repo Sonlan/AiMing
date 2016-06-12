@@ -31,7 +31,6 @@
 		<div class="col-md-3 right-align">
 		<!-- 用户管理导航 -->
 		  <div>
-			  <a href="password" class="white-font s-right-margin"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>修改密码</a>
 			  <a href="logout" class="white-font s-right-margin"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>退出登录</a>
 		  </div>
 		</div>
@@ -79,27 +78,27 @@
 			<tbody>
 			  <tr>
 			    <td></td>
-				<td class="center-text"><input type="button" value="删除">
+				<td class="center-text userEdit"><input type="button" value="删除">
 				                        <input type="button" value="修改密码"></td>
 			  </tr>
 			  <tr>
 			    <td></td>
-				<td class="center-text"><input type="button" value="删除">
+				<td class="center-text userEdit"><input type="button" value="删除">
 				                        <input type="button" value="修改密码"></td>
 			  </tr>
 			  <tr>
 			    <td></td>
-				<td class="center-text"><input type="button" value="删除">
+				<td class="center-text userEdit"><input type="button" value="删除">
 				                        <input type="button" value="修改密码"></td>
 			  </tr>
 			  <tr>
 			    <td></td>
-				<td class="center-text"><input type="button" value="删除">
+				<td class="center-text userEdit"><input type="button" value="删除">
 				                        <input type="button" value="修改密码"></td>
 			  </tr>
 			  <tr>
 			    <td></td>
-				<td class="center-text"><input type="button" value="删除">
+				<td class="center-text userEdit"><input type="button" value="删除">
 				                        <input type="button" value="修改密码"></td>
 			  </tr>
 			</tbody>
