@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.aiming.entity.Label;
+import org.aiming.entity.User;
 import org.aiming.service.LabelService;
 import org.aiming.utils.JsonUtil;
 import org.aiming.utils.LabelValidate;
@@ -197,22 +198,28 @@ public class LabelControl {
 	@RequestMapping(value="/edit")
 	public void edit(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		try {
-			response.setContentType("application/json;charset=utf-8");
-			String id = request.getParameter("id");
-			String inuse = (null == request.getParameter("inuse")|| "".equals(request.getParameter("inuse")))?"-1":request.getParameter("inuse");
-			String alive = (null == request.getParameter("alive")|| "".equals(request.getParameter("alive")))?"-1":request.getParameter("alive");
-			String aliveTime = request.getParameter("aliveTime");
-			String washRemain = (null == request.getParameter("washRemain")|| "".equals(request.getParameter("washRemain")))?"-1":request.getParameter("washRemain");
-			Label label = new Label();
-			label.setId(id);
-			label.setAlive(Integer.parseInt(alive));
-			label.setInuse(Integer.parseInt(inuse));
-			label.setWashRemain(Integer.parseInt(washRemain));
-			label.setAliveTime(aliveTime);
-			if(labelService.editLabel(label)){
-				response.getWriter().write(JsonUtil.statusResponse(0, "修改成功", ""));
+			response.setContentType("application/json;cha rset=utf-8");
+			
+			User user = (User) request.getSession().getAttribute("_USER");	
+			if(0!=user.getLevel()){
+				response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
 			}else{
-				response.getWriter().write(JsonUtil.statusResponse(1, "修改失败", ""));
+				String id = request.getParameter("id");
+				String inuse = (null == request.getParameter("inuse")|| "".equals(request.getParameter("inuse")))?"-1":request.getParameter("inuse");
+				String alive = (null == request.getParameter("alive")|| "".equals(request.getParameter("alive")))?"-1":request.getParameter("alive");
+				String aliveTime = request.getParameter("aliveTime");
+				String washRemain = (null == request.getParameter("washRemain")|| "".equals(request.getParameter("washRemain")))?"-1":request.getParameter("washRemain");
+				Label label = new Label();
+				label.setId(id);
+				label.setAlive(Integer.parseInt(alive));
+				label.setInuse(Integer.parseInt(inuse));
+				label.setWashRemain(Integer.parseInt(washRemain));
+				label.setAliveTime(aliveTime);
+				if(labelService.editLabel(label)){
+					response.getWriter().write(JsonUtil.statusResponse(0, "修改成功", ""));
+				}else{
+					response.getWriter().write(JsonUtil.statusResponse(1, "修改失败", ""));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -228,11 +235,17 @@ public class LabelControl {
 	@RequestMapping(value="/delete")
 	public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.setContentType("application/json;charset=utf-8");
-		String id = request.getParameter("id");
-		if(labelService.deleteLabelInfo(id)){
-			response.getWriter().write(JsonUtil.statusResponse(0, "删除成功", ""));
+		
+		User user = (User) request.getSession().getAttribute("_USER");	
+		if(0!=user.getLevel()){
+			response.getWriter().write(JsonUtil.statusResponse(1, "您无此权限", ""));
 		}else{
-			response.getWriter().write(JsonUtil.statusResponse(1, "删除失败", ""));
+			String id = request.getParameter("id");
+			if(labelService.deleteLabelInfo(id)){
+				response.getWriter().write(JsonUtil.statusResponse(0, "删除成功", ""));
+			}else{
+				response.getWriter().write(JsonUtil.statusResponse(1, "删除失败", ""));
+			}
 		}
 	}
 	
