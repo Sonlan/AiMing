@@ -125,7 +125,8 @@ $(document).ready(function(){
 		//清零
 		var table = document.getElementById('mainTable');
 		for(var i=0; i<9; i++) {
-            table.children[0].children[i+1].children[0].innerHTML = '';    
+            table.children[0].children[i+1].children[0].innerHTML = ''; 
+            table.children[0].children[i+1].children[7].innerHTML = ''; 
 		}
 	    $('input.input_air').val('').hide();
 	    $('input.input_wash').val('').hide();
@@ -217,6 +218,8 @@ $(document).ready(function(){
 			  (data.param[k].alive == 1) ? 
 					                     ($('.select_invalid:eq(' + k + ') option:eq(1)').attr('selected','selected')) : 
 					                     ($('.select_invalid:eq(' + k + ') option:eq(0)').attr('selected','selected'));
+			  //报废时间
+			  table.children[0].children[k+1].children[7].innerHTML = (data.param[k].scrap_time == undefined) ? '-' : data.param[k].scrap_time;  		                     
 			}
 		}else {
 
@@ -364,18 +367,9 @@ $(document).ready(function(){
 	$('button.buttonDelete').bind('click', function(evt){
 		var conf = window.confirm('确定删除？');
 		if(conf) {
-			alert('已删除');
-			//$.get('../../aimin/label/query',dataSend,itemDeleteProcess);
+			var dataSend = 'id=' + $(this).parent().parent().children('td:eq(0)').html();
+			$.get('../../aimin/label/delete',dataSend,itemDeleteProcess);
 		}
-	});
-	
-	$('select.select_invalid').bind('focus', function(evt){
-		var conf = window.confirm('数据将被改变！是否继续？');
-		if(!conf) {
- 
-		} 
-	});
-	$('td.td_invalid').bind('dblclick', function(evt){
 	});
 	
 	//计时操作 

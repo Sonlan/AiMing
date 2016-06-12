@@ -219,6 +219,7 @@
 			  <th>剩余时间(天:时:分)</th>
 			  <th>是否使用</th>
 			  <th>是否报废</th>
+			  <th>报废时间</th>
 			  <th>编辑</th>
 			  <th>删除</th>
 		  </tr>
@@ -239,6 +240,7 @@
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
@@ -259,6 +261,7 @@
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
@@ -279,6 +282,7 @@
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
@@ -299,6 +303,7 @@
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
@@ -319,6 +324,7 @@
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
@@ -339,6 +345,7 @@
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
@@ -359,6 +366,7 @@
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
@@ -379,6 +387,7 @@
 		            <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
@@ -399,6 +408,7 @@
 			        <option value=0 selected>已报废</option>
 		            <option value=1>未报废</option>
 		          </select></td>
+		      <td class='center-text'></td>
 		      <td><button class="buttonEdit">修改</button><button class="buttonDone">确定</button></td>
 		      <td><button class="buttonDelete">删除</button></td>
 		  </tr>
