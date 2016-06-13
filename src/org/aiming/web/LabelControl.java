@@ -36,10 +36,10 @@ public class LabelControl {
 		List<String> erroMsg = new ArrayList<>();
 		if(null != data && !"".equals(data)){
 			try {
-				List<String> labels = JsonUtil.toObject(data, List.class);
+				List<String> labels = JsonUtil.toObject(data.replace("[", "['").replace(",", "','").replace("]", "']"), List.class);
 				if(null != labels){
 					for(int i = 0; i<labels.size();i++){
-						if(LabelValidate.validate(labels.get(i))){
+						if(LabelValidate.validate(labels.get(i)+"")){
 							int flag= labelService.labelBind(labels.get(i));
 							if(1==flag){
 								erroMsg.add(labels.get(i)+": 激活失败，请检查滤芯id");
@@ -71,7 +71,7 @@ public class LabelControl {
 		List<String> erroMsg = new ArrayList<>();
 		if(null != data && !"".equals(data)){
 			try {
-				List<String> labels = JsonUtil.toObject(data, List.class);
+				List<String> labels = JsonUtil.toObject(data.replace("[", "['").replace(",", "','").replace("]", "']"), List.class);
 				if(null != labels || 0!=labels.size()){
 					for(int i=0;i<labels.size();i++){
 						int flag = labelService.labelDepoy(labels.get(i));
@@ -107,7 +107,7 @@ public class LabelControl {
 		String data = request.getParameter("data"); 
 		List<String> erroMsg = new ArrayList<>();
 		if(null != data && !"".equals(data)){
-			List<String> labels = JsonUtil.toObject(data, List.class);
+			List<String> labels = JsonUtil.toObject(data.replace("[", "['").replace(",", "','").replace("]", "']"), List.class);
 			if(null != labels){
 				for(int i=0;i<labels.size();i++){
 					Label label = labelService.labelRemove(labels.get(i));
@@ -137,7 +137,7 @@ public class LabelControl {
 		String data = request.getParameter("data"); 
 		List<String> erroMsg = new ArrayList<>();
 		if(null != data && !"".equals(data)){
-			List<String> labels = JsonUtil.toObject(data, List.class);
+			List<String> labels = JsonUtil.toObject(data.replace("[", "['").replace(",", "','").replace("]", "']"), List.class);
 			if(null != labels){
 				for(int i=0;i<labels.size();i++){
 					int flag= labelService.labelScrap(labels.get(i));
