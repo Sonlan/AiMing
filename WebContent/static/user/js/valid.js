@@ -30,7 +30,7 @@ $(document).ready(function(){
 	    if(idsFlag == 1) {
 	    	alert('输入格式有误！');
 	    } else if(idsFlag == 0) {
-	    	//$.post('../../aimin/label/bind',dataSend,validProcess,"json");
+	    	$.post('../../aimin/label/bind',dataSend,validProcess,"json");
 	    }
 		//$.post('../../aimin/label/bind',dataSend,validProcess,"json");
 	});

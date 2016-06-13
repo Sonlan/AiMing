@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    function invalidProcess(){
+    function invalidProcess(data){
 	    $('div#invalidControl input').val("");
 	    if(data.errorCode == 0) {
 		    alert('报废成功！');
@@ -29,8 +29,7 @@ $(document).ready(function(){
 	    if(idsFlag == 1) {
 	    	alert('输入格式有误！');
 	    } else if(idsFlag == 0) {
-	    	alert(dataSend);
-	    	//$.post('../../aimin/label/bind',dataSend,validProcess,"json");
+	    	$.post('../../aimin/label/bind',dataSend,invalidProcess,"json");
 	    }
 		//var dataSend = $('div#invalidControl input').val();
 		//$.post('../../aimin/label/scrap',dataSend,invalidProcess,"json");
