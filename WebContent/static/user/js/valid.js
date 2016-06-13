@@ -5,10 +5,8 @@ $(document).ready(function(){
 	    $('div#validControl input').val("");
 	    if(data.errorCode == 0) {
 		    alert('激活成功！');
-		} else if (data.errorCode == 1) {
-		    alert('激活失败！');
-		} else if (data.errorCode == 2) {
-		    alert('后台异常！');
+		} else {
+		    alert(data.errorMsg);
 		}
 	}
 

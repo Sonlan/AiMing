@@ -4,10 +4,8 @@ $(document).ready(function(){
 	    $('div#invalidControl input').val("");
 	    if(data.errorCode == 0) {
 		    alert('报废成功！');
-		} else if (data.errorCode == 1) {
-		    alert('报废失败！');
-		} else if (data.errorCode == 2) {
-		    alert('后台异常！');
+		} else {
+		    alert(data.errorMsg);
 		}
 	}
     //点击提交
