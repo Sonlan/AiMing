@@ -407,8 +407,10 @@ $(document).ready(function(){
 	//滤芯类型选择
 	$('input[name="filter-class"]').bind('change',function(evt){
 		if($(this).val() == 0) {//初级滤芯
+			refreshTime(maxDay_prim);
 			refreshWashRemain(maxWash_prim);
 		}else if($(this).val() == 1) {//中级滤芯
+			refreshTime(maxDay_mid);
 			refreshWashRemain(maxWash_mid);
 		}
 	});
