@@ -89,6 +89,8 @@
               <p class="inline-display">空调号选择：</p>
 			  <select class="form-control inline-display width-middle" id="selectAIRId">
 			    <option value='01'>1</option>
+			    <option value='02'>2</option>
+			    <option value='03'>3</option>
 			  </select>
 			</div>
 			
