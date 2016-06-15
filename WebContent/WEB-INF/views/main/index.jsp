@@ -95,7 +95,7 @@
 			<div class="s-bottom-margin"><!-- 剩余清洗次数 -->
 			  <p class="inline-display">剩余清洗次数：</p>
 			  <select class="form-control inline-display width-middle" id="selectWashRemain">
-			    <option value=''>--所有--</option>
+			    <option value=0>--所有--</option>
 			    <option value=1>1</option>
 				<option value=2>2</option>
 				<option value=3>3</option>

@@ -4,6 +4,9 @@ $(document).ready(function(){
 	maxPage = 0,  //最大页数
 	currentPage = 0,  //当前页数
 	
+	currentDay = 1;
+    currentWashRemain = '';
+	
 	maxDay_prim = 0;
     maxHour_prim = 0;
     maxMin_prim = 0;
@@ -47,9 +50,11 @@ $(document).ready(function(){
 	function refreshWashRemain(maxWash){
 		$('select#selectWashRemain option:gt(0)').remove();
 		for(var i = 0; i < maxWash + 1; i ++) {
-			var opt = "<option value=" + i + ">" + i + "</option>";
+			var opt = "<option value=" + (i+1) + ">" + (i+1) + "</option>";
 			$('select#selectWashRemain').append(opt);
 		}
+		
+		$('select#selectWashRemain option[value=' + JSONData.washRemain + ']').attr('selected','selected');
 	}
 	
 	//空调号查询
@@ -68,8 +73,8 @@ $(document).ready(function(){
 			var opt = "<option value=" + i + ">" + i + "</option>";
 			$('select#selectRemainDay').append(opt);
 		}
-		//choose value=1
-		//$('select#selectRemainDay option[value=1]').attr('selected','selected');
+		//choose value
+		$('select#selectRemainDay option[value=' + JSONData.aliveTime_day + ']').attr('selected','selected');
 	}
 	
 	//表单项删除回调函数
@@ -110,7 +115,7 @@ $(document).ready(function(){
 		dataSend = 'aliveTime_day=' + JSONData.aliveTime_day
 			 + '&aliveTime_hour=' + JSONData.aliveTime_hour
 			 + '&aliveTime_min=' + JSONData.aliveTime_min
-			 + '&washRemain=' + JSONData.washRemain
+			 + '&washRemain=' + ((JSONData.washRemain == 0) ? '' : JSONData.washRemain)
 			 + '&level=' + JSONData.level
 			 + '&inuse=' + JSONData.inuse
 			 + '&alive=' + JSONData.alive
