@@ -56,7 +56,7 @@ $(document).ready(function(){
 	function refreshAirNum(maxAir) {
 		$('select#selectAIRId option').remove();
 		for(var i = 0; i < maxAir; i ++) {
-			var opt = "<option value=" + i + ">" + (i+1) + "</option>";
+			var opt = "<option value=" + (i+1) + ">" + (i+1) + "</option>";
 			$('select#selectAIRId').append(opt);
 		}
 	}
@@ -69,7 +69,7 @@ $(document).ready(function(){
 			$('select#selectRemainDay').append(opt);
 		}
 		//choose value=1
-		$('select#selectRemainDay option[value=1]').attr('selected','selected');
+		//$('select#selectRemainDay option[value=1]').attr('selected','selected');
 	}
 	
 	//表单项删除回调函数
